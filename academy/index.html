@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JesTech Academy — 12-week AI Business Operations Specialist program. Build a portfolio, get hired. Cohort-based learning with self-paced flexibility.">
+    <title>JesTech Academy — AI Business Operations Specialist Program</title>
+    <link rel="icon" type="image/png" href="/jestech-logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fafafa;
+        }
+        
+        a {
+            color: #1a5fa0;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Navigation - matching JesTech main site */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 5%;
+            background: #ffffff;
+            border-bottom: 1px solid #eaeaea;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: translateY(-1px);
+        }
+        
+        .navbar-brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            transition: filter 0.2s ease;
+        }
+        
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            gap: 3px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .brand-text .main {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a1a1a;
+            letter-spacing: -0.01em;
+        }
+        
+        .brand-text .sub {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            color: #888;
+            text-transform: uppercase;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .navbar-nav a {
+            font-size: 14px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .navbar-nav a:hover {
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+        
+        .navbar-cta {
+            background: #1a1a1a;
+            color: white;
+            padding: 0.65rem 1.25rem;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .navbar-cta:hover {
+            background: #333;
+        }
+        
+        /* Status banner */
+        .status-banner {
+            background: #f0f9ff;
+            border-bottom: 1px solid #e1eefb;
+            padding: 0.5rem 5%;
+            text-align: center;
+            font-size: 13px;
+            color: #1a5fa0;
+            font-weight: 500;
+        }
+        
+        .status-banner::before {
+            content: "● ";
+            color: #10b981;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 5rem 5% 4rem;
+            background: #ffffff;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 52px;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+            font-weight: 700;
+            letter-spacing: -1px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero h1 .accent {
+            color: #1a5fa0;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: #555;
+            max-width: 640px;
+            margin: 1.5rem auto 2.5rem;
+            line-height: 1.7;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0 3rem;
+        }
+        
+        .btn-primary {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1a1a1a;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            border: 1px solid #d4d4d4;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #1a1a1a;
+        }
+        
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 5% 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a5fa0;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        /* Section */
+        .section {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-label {
+            font-size: 12px;
+            color: #1a5fa0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+        
+        .section h2 {
+            font-size: 38px;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #1a1a1a;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        
+        .section-subtitle {
+            font-size: 17px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        
+        /* Problem cards */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .problem-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+            transition: all 0.2s;
+        }
+        
+        .problem-card:hover {
+            border-color: #1a5fa0;
+            transform: translateY(-2px);
+        }
+        
+        .problem-number {
+            font-size: 12px;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .problem-card h3 {
+            font-size: 18px;
+            margin-bottom: 0.75rem;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        
+        .problem-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* Hybrid Model */
+        .hybrid-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            padding: 5rem 5%;
+        }
+        
+        .hybrid-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .model-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .model-icon {
+            font-size: 32px;
+            margin-bottom: 1rem;
+        }
+        
+        .model-card h3 {
+            font-size: 18px;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        
+        .model-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .model-card li {
+            font-size: 14px;
+            color: #555;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .model-card li::before {
+            content: "✓";
+            color: #1a5fa0;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .hybrid-note {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+            font-size: 15px;
+            color: #555;
+        }
+        
+        .hybrid-note strong {
+            color: #1a5fa0;
+        }
+        
+        /* Timeline */
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .timeline-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+            position: relative;
+        }
+        
+        .timeline-month {
+            display: inline-block;
+            background: #f0f9ff;
+            color: #1a5fa0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-card h3 {
+            font-size: 18px;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        
+        .timeline-card p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .timeline-card li {
+            font-size: 13px;
+            color: #555;
+            padding: 0.25rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+        
+        .timeline-card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #1a5fa0;
+            font-weight: 600;
+        }
+        
+        /* Skills grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #eaeaea;
+            font-size: 14px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .skill-item::before {
+            content: "✓";
+            color: #1a5fa0;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        /* Careers */
+        .careers-section {
+            background: #fafafa;
+        }
+        
+        .careers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        
+        .career-tag {
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #eaeaea;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+        }
+        
+        /* Pricing */
+        .pricing-section {
+            background: white;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: white;
+            border: 2px solid #eaeaea;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.2s;
+        }
+        
+        .pricing-card:hover {
+            border-color: #1a5fa0;
+        }
+        
+        .pricing-card.featured {
+            border-color: #1a1a1a;
+            background: #1a1a1a;
+            color: white;
+            position: relative;
+        }
+        
+        .pricing-card.featured h3,
+        .pricing-card.featured .pricing-price {
+            color: white;
+        }
+        
+        .pricing-card.featured .pricing-features li {
+            color: #d4d4d4;
+        }
+        
+        .pricing-badge {
+            background: #1a5fa0;
+            color: white;
+            padding: 0.35rem 0.85rem;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .pricing-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-tagline {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-card.featured .pricing-tagline {
+            color: #aaa;
+        }
+        
+        .pricing-price {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-period {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-card.featured .pricing-period {
+            color: #aaa;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            padding: 1.5rem 0;
+            border-top: 1px solid #eaeaea;
+            border-bottom: 1px solid #eaeaea;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-card.featured .pricing-features {
+            border-color: #333;
+        }
+        
+        .pricing-features li {
+            font-size: 14px;
+            color: #555;
+            padding: 0.4rem 0;
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+            line-height: 1.5;
+        }
+        
+        .pricing-features li::before {
+            content: "✓";
+            color: #1a5fa0;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .pricing-card.featured .pricing-features li::before {
+            color: #60a5fa;
+        }
+        
+        .pricing-cta {
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .pricing-card.featured .pricing-cta {
+            background: white;
+            color: #1a1a1a;
+        }
+        
+        .pricing-cta:hover {
+            opacity: 0.9;
+        }
+        
+        .pricing-note {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            background: #fafafa;
+        }
+        
+        .faq-container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: white;
+            margin-bottom: 0.75rem;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+        }
+        
+        .faq-question {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+        
+        .faq-question:hover {
+            background: #fafafa;
+        }
+        
+        .faq-toggle {
+            color: #1a5fa0;
+            font-size: 24px;
+            font-weight: 300;
+            flex-shrink: 0;
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem 1.25rem;
+            color: #555;
+            font-size: 14px;
+            display: none;
+            line-height: 1.7;
+        }
+        
+        .faq-answer.show {
+            display: block;
+        }
+        
+        /* CTA */
+        .cta-section {
+            background: #1a1a1a;
+            color: white;
+            padding: 5rem 5%;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .cta-section p {
+            font-size: 17px;
+            margin-bottom: 2.5rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-light {
+            background: white;
+            color: #1a1a1a;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        
+        .btn-light:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: #aaa;
+            padding: 3rem 5% 2rem;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+        
+        .footer-col h4 {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .footer-col p,
+        .footer-col a {
+            color: #aaa;
+            font-size: 13px;
+            display: block;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            line-height: 1.7;
+        }
+        
+        .footer-col a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333;
+            font-size: 13px;
+            color: #777;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-bottom a {
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 34px;
+            }
+            
+            .section h2 {
+                font-size: 28px;
+            }
+            
+            .cta-section h2 {
+                font-size: 32px;
+            }
+            
+            .navbar-nav {
+                display: none;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-primary, .btn-secondary {
+                justify-content: center;
+            }
+            
+            .stat-number {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand" aria-label="JesTech Solutions home">
+            <img src="/jestech-logo.png" alt="JesTech Solutions logo">
+            <span class="brand-text">
+                <span class="main">JesTech</span>
+                <span class="sub">Solutions</span>
+            </span>
+        </a>
+        <ul class="navbar-nav">
+            <li><a href="/#services">Services</a></li>
+            <li><a href="/academy" style="color: #1a1a1a;">Academy</a></li>
+            <li><a href="/#process">How it works</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <a href="https://forms.gle/zS1fihbsbmJu5omZ8" class="navbar-cta" target="_blank" rel="noopener">Apply to Academy</a>
+    </nav>
+    
+    <!-- Status banner -->
+    <div class="status-banner">
+        Cohort #1 starting 15th June 2026 · Limited to 15 students
+    </div>
+    
+    <!-- Hero -->
+    <section class="hero">
+        <h1>From job search to <span class="accent">job-ready</span> in 12 weeks.</h1>
+        <p class="hero-subtitle">A career accelerator for job-seekers and career changers. Build real AI and business operations skills, ship a portfolio, and land your next role—with hands-on mentoring and cohort accountability.</p>
+        
+        <div class="hero-cta">
+            <a href="#apply" class="btn-primary">Apply for Cohort #1 →</a>
+            <a href="#program" class="btn-secondary">See the curriculum</a>
+        </div>
+    </section>
+    
+    <!-- Stats -->
+    <section class="stats-row">
+        <div class="stat">
+            <div class="stat-number">12</div>
+            <div class="stat-label">Weeks to job-ready</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">9</div>
+            <div class="stat-label">Portfolio pieces you'll build</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Practical, real-world projects</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">15</div>
+            <div class="stat-label">Small, focused cohort</div>
+        </div>
+    </section>
+    
+    <!-- Problem -->
+    <section class="section" id="program">
+        <div class="section-label">The Problem</div>
+        <h2>Modern jobs need modern skills.<br>Most courses don't teach them.</h2>
+        <p class="section-subtitle">Employers want professionals who can blend AI tools with business operations. You won't find that in a typical CV-writing course or a generic bootcamp.</p>
+        
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-number">01 · Outdated</div>
+                <h3>Skills employers no longer want.</h3>
+                <p>You're learning from courses written 5+ years ago. Today's employers want AI fluency, automation thinking, and operational savvy.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-number">02 · Generic</div>
+                <h3>One-size-fits-all advice.</h3>
+                <p>Generic CV templates, mass-produced LinkedIn tips, and cookie-cutter interview prep. Nothing tailored to your situation or the modern workplace.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-number">03 · Theory Only</div>
+                <h3>No portfolio, no proof.</h3>
+                <p>You finish a course with a certificate—but nothing tangible to show employers. Interviews fall flat without real project examples to discuss.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-number">04 · Alone</div>
+                <h3>Job searching in isolation.</h3>
+                <p>Endless applications, no feedback, no accountability. You can't tell if you're improving or just spinning your wheels.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Hybrid Model -->
+    <section class="hybrid-section">
+        <div class="hybrid-container">
+            <div class="section-label">How it Works</div>
+            <h2>Cohort-based learning,<br>at your own pace.</h2>
+            <p class="section-subtitle">The structure of a cohort. The flexibility of self-paced. The best of both, designed around your life.</p>
+            
+            <div class="model-grid">
+                <div class="model-card">
+                    <div class="model-icon">🎯</div>
+                    <h3>Cohort Community</h3>
+                    <ul>
+                        <li>Live group calls every Thursday (recorded if you miss)</li>
+                        <li>Private community (questions, wins, peer support)</li>
+                        <li>Workshops on CV, LinkedIn, interviews</li>
+                        <li>Job opportunities shared weekly</li>
+                        <li>Accountability + motivation from your peers</li>
+                    </ul>
+                </div>
+                <div class="model-card">
+                    <div class="model-icon">🏃</div>
+                    <h3>Self-Paced Learning</h3>
+                    <ul>
+                        <li>Watch lessons whenever fits your schedule</li>
+                        <li>Submit assignments by Sunday, grace period available</li>
+                        <li>Office hours for 1-on-1 questions</li>
+                        <li>Catch up if life happens</li>
+                        <li>Lifetime access to course materials</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="hybrid-note">
+                <strong>The bottom line:</strong> You control your pace. Your cohort provides structure, support, and accountability. Roughly 8–10 hours per week.
+            </div>
+        </div>
+    </section>
+    
+    <!-- Timeline -->
+    <section class="section">
+        <div class="section-label">The 12-Week Journey</div>
+        <h2>A clear path from where you are<br>to where you want to be.</h2>
+        
+        <div class="timeline">
+            <div class="timeline-card">
+                <span class="timeline-month">Month 1</span>
+                <h3>Foundation & Profile</h3>
+                <p>Build AI and business ops foundations. Optimise your professional presence. Begin active job search.</p>
+                <ul>
+                    <li>AI fundamentals (ChatGPT, Claude, Gemini)</li>
+                    <li>Business operations 101</li>
+                    <li>CV overhaul + ATS optimisation</li>
+                    <li>LinkedIn profile redesign</li>
+                    <li>Start applying to jobs</li>
+                </ul>
+            </div>
+            
+            <div class="timeline-card">
+                <span class="timeline-month">Month 2</span>
+                <h3>Practical Experience</h3>
+                <p>Build real portfolio pieces. Practise interviews. Apply with confidence.</p>
+                <ul>
+                    <li>Project management projects</li>
+                    <li>Business analysis frameworks</li>
+                    <li>Process mapping exercises</li>
+                    <li>Live mock interviews</li>
+                    <li>Application coaching</li>
+                </ul>
+            </div>
+            
+            <div class="timeline-card">
+                <span class="timeline-month">Month 3</span>
+                <h3>Advanced & Launch</h3>
+                <p>Capstone project. Interview mastery. Job search support and onboarding guidance.</p>
+                <ul>
+                    <li>Advanced AI & automation projects</li>
+                    <li>Capstone portfolio project</li>
+                    <li>Job offer negotiation support</li>
+                    <li>First 90 days guidance</li>
+                    <li>Continued post-launch support</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills -->
+    <section class="section" style="background: #fafafa;">
+        <div class="section-label">What You'll Learn</div>
+        <h2>The skills modern businesses<br>are actually hiring for.</h2>
+        
+        <div class="skills-grid">
+            <div class="skill-item">AI tools & prompt engineering</div>
+            <div class="skill-item">Business operations fundamentals</div>
+            <div class="skill-item">Project management</div>
+            <div class="skill-item">Business analysis</div>
+            <div class="skill-item">Workflow automation</div>
+            <div class="skill-item">Data analysis & reporting</div>
+            <div class="skill-item">Process improvement</div>
+            <div class="skill-item">Professional communication</div>
+            <div class="skill-item">Stakeholder management</div>
+            <div class="skill-item">Problem-solving</div>
+            <div class="skill-item">Executive presentations</div>
+            <div class="skill-item">Digital transformation</div>
+        </div>
+    </section>
+    
+    <!-- Portfolio -->
+    <section class="section">
+        <div class="section-label">Your Portfolio</div>
+        <h2>9 professional pieces you'll<br>show off in interviews.</h2>
+        <p class="section-subtitle">Every assignment becomes portfolio-ready. By Week 12, you'll have evidence employers can't ignore.</p>
+        
+        <div class="skills-grid">
+            <div class="skill-item">Business analysis reports</div>
+            <div class="skill-item">Process maps & flowcharts</div>
+            <div class="skill-item">Automation proposals</div>
+            <div class="skill-item">Business dashboards</div>
+            <div class="skill-item">Executive presentations</div>
+            <div class="skill-item">AI prompt libraries</div>
+            <div class="skill-item">Project charters</div>
+            <div class="skill-item">Capstone improvement plan</div>
+            <div class="skill-item">Optimised CV + LinkedIn</div>
+        </div>
+    </section>
+    
+    <!-- Careers -->
+    <section class="section careers-section">
+        <div class="section-label">Career Pathways</div>
+        <h2>Where this program leads.</h2>
+        <p class="section-subtitle">Entry-level and junior roles graduates commonly land. These titles consistently hire from our skill set.</p>
+        
+        <div class="careers-grid">
+            <div class="career-tag">Project Coordinator</div>
+            <div class="career-tag">Business Operations Coordinator</div>
+            <div class="career-tag">Junior Business Analyst</div>
+            <div class="career-tag">Operations Analyst</div>
+            <div class="career-tag">PMO Assistant</div>
+            <div class="career-tag">AI Operations Coordinator</div>
+            <div class="career-tag">Digital Transformation Assistant</div>
+            <div class="career-tag">Workflow Automation Assistant</div>
+            <div class="career-tag">Product Operations Coordinator</div>
+            <div class="career-tag">Process Improvement Assistant</div>
+            <div class="career-tag">Implementation Coordinator</div>
+            <div class="career-tag">Customer Success Coordinator</div>
+        </div>
+    </section>
+    
+    <!-- Pricing -->
+    <section class="section pricing-section" id="pricing">
+        <div class="section-label">Pricing</div>
+        <h2>Three ways to join.<br>All include lifetime course access.</h2>
+        <p class="section-subtitle">Choose the level of mentoring that fits your goals. Payment plans available—we want commitment, not financial stress.</p>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Core</h3>
+                <p class="pricing-tagline">Self-driven learners</p>
+                <div class="pricing-price">£699</div>
+                <p class="pricing-period">One-time · 12 weeks</p>
+                <ul class="pricing-features">
+                    <li>All 12 weeks of video lessons</li>
+                    <li>Weekly live cohort calls</li>
+                    <li>Private community access</li>
+                    <li>All assignments & projects</li>
+                    <li>Group office hours weekly</li>
+                    <li>Lifetime materials access</li>
+                </ul>
+                <button class="pricing-cta" onclick="scrollToApply()">Choose Core</button>
+            </div>
+            
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <h3>Pro</h3>
+                <p class="pricing-tagline">Career changers needing mentoring</p>
+                <div class="pricing-price">£999</div>
+                <p class="pricing-period">One-time · 12 weeks</p>
+                <ul class="pricing-features">
+                    <li>Everything in Core, plus:</li>
+                    <li>4 × 1-on-1 mentoring calls</li>
+                    <li>CV redesign & review</li>
+                    <li>LinkedIn profile audit</li>
+                    <li>Job application review</li>
+                    <li>Interview prep coaching</li>
+                </ul>
+                <button class="pricing-cta" onclick="scrollToApply()">Choose Pro</button>
+            </div>
+            
+            <div class="pricing-card">
+                <h3>Premium</h3>
+                <p class="pricing-tagline">Intensive support seekers</p>
+                <div class="pricing-price">£1,299</div>
+                <p class="pricing-period">One-time · 12 weeks + 90 days</p>
+                <ul class="pricing-features">
+                    <li>Everything in Pro, plus:</li>
+                    <li>8 × 1-on-1 mentoring calls</li>
+                    <li>2 × live mock interviews</li>
+                    <li>Job offer evaluation help</li>
+                    <li>Negotiation coaching</li>
+                    <li>90-day post-launch support</li>
+                </ul>
+                <button class="pricing-cta" onclick="scrollToApply()">Choose Premium</button>
+            </div>
+        </div>
+        
+        <div class="pricing-note">
+            <strong>Payment options:</strong> Full upfront (save 5%) or 3 monthly instalments. 7-day full refund.
+        </div>
+    </section>
+    
+    <!-- FAQ -->
+    <section class="section faq-section">
+        <div class="section-label">FAQ</div>
+        <h2>Questions, answered.</h2>
+        
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Who is this program for?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Career changers, recent grads, freelancers, and anyone looking to break into business operations or AI-enabled roles. No prior business experience required—just commitment to put in 8–10 hours per week for 12 weeks.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How much time per week is needed?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Expect 8–10 hours per week: 2 hours for live cohort calls (Thursdays 7–8:30 PM UK), 4–6 hours for lessons and assignments, plus optional office hours and community time. You control the exact schedule.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What if I've never worked in business?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">No problem. The program starts from fundamentals. Many of our students are career changers or recent graduates with no business background. We teach you the concepts, tools, and frameworks step-by-step.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Do you guarantee a job?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">No one can ethically guarantee a job, but we provide everything you need to succeed: a portfolio, curated job opportunities, application coaching, interview prep, and mentoring. Most graduates land roles within 30–60 days of completing the program.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>When does the next cohort start?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer"><strong>Cohort #1 starts 15th June 2026.</strong> Subsequent cohorts roughly every 8 weeks. Early applications get priority—we cap each cohort at 15 students.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What tools will I need?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">A laptop with internet, plus accounts on free or freemium tools (ChatGPT, Google Docs, Calendly). We'll guide you through anything else as needed.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Is there a refund policy?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Yes. Full refund within 7 days of purchase, no questions. After that, no refunds—but we're committed to your success. If you're struggling, we'll work with you, including pausing or rejoining a later cohort.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What's the cohort size?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">We cap cohorts at 15 students. Small enough that you'll get personal attention and your peers will know your name. Large enough to have a vibrant community.</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section class="cta-section" id="apply">
+        <h2>Ready to become<br>job-ready?</h2>
+        <p>Cohort #1 starts 15th June 2026. Only 15 spots. Apply today—we'll be in touch within 24 hours to discuss your fit and goals.</p>
+        <div class="cta-buttons">
+            <a href="https://forms.gle/zS1fihbsbmJu5omZ8" class="btn-light" target="_blank" rel="noopener">Register via Application Form →</a>
+            <a href="https://www.skool.com/goodlypearls-ai-9489/about" class="btn-outline" target="_blank" rel="noopener">Join via Skool Community</a>
+        </div>
+        <p style="margin-top: 2rem; font-size: 14px; opacity: 0.8;">
+            Prefer something else? <a href="mailto:info@jestechsolutions.co.uk?subject=Academy Application" style="color: white; text-decoration: underline;">Email us</a> &nbsp;·&nbsp; <a href="https://wa.me/447304372973" target="_blank" rel="noopener" style="color: white; text-decoration: underline;">WhatsApp +44 7304 372973</a>
+        </p>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>JesTech Academy</h4>
+                <p>A career accelerator for the modern, AI-enabled workplace.</p>
+                <p style="margin-top: 1rem;">Part of <a href="/">JesTech Solutions</a></p>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Program</h4>
+                <a href="#program">Curriculum</a>
+                <a href="#pricing">Pricing</a>
+                <a href="https://forms.gle/zS1fihbsbmJu5omZ8" target="_blank" rel="noopener">Apply Now</a>
+                <a href="https://www.skool.com/goodlypearls-ai-9489/about" target="_blank" rel="noopener">Community</a>
+            </div>
+            
+            <div class="footer-col">
+                <h4>JesTech Solutions</h4>
+                <a href="/">Home</a>
+                <a href="/#services">Automation Services</a>
+                <a href="/#process">How it works</a>
+                <a href="/#pricing">Service Pricing</a>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:info@jestechsolutions.co.uk">info@jestechsolutions.co.uk</a>
+                <a href="https://wa.me/447304372973">WhatsApp +44 7304 372973</a>
+                <a href="https://instagram.com/jestechsolutions">Instagram</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            © 2026 JesTech Solutions Ltd. All rights reserved. · <a href="/">Back to main site</a>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            answer.classList.toggle('show');
+            toggle.textContent = answer.classList.contains('show') ? '−' : '+';
+        }
+        
+        function scrollToApply() {
+            document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
