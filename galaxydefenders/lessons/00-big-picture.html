@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 0 — The Big Picture · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <!-- Lesson 0 is a FREE PREVIEW — no unlock required. -->
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <span class="stage-chip">Lesson 0 · Welcome</span>
+    <h2 class="stage-title">The Big Picture</h2>
+    <p class="stage-sub">Before we touch any code, let's see the whole rocket.</p>
+
+    <div class="quick-recap">
+      <h3>🚀 Before we start — what to expect</h3>
+      <p>Two quick questions. Click each to open the answer.</p>
+      <details>
+        <summary><strong>Q1.</strong> Will I be writing REAL code?</summary>
+        <p>Yes — real Python, real pygame. By the end you'll have built an arcade game you can share with your friends. Every line of code in this course actually runs.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> What if I get stuck?</summary>
+        <p>Every lesson ships with a working example, an in-browser editor, and a list of tiny challenges. Errors are clues, not punishments — and you can always email <a href="mailto:nextgencoders@jestechsolutions.co.uk">nextgencoders@jestechsolutions.co.uk</a> for help.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Every game is a rocket with 4 parts</h3>
+      <p>
+        It doesn't matter if your game is about spaceships, baking cakes, or chasing eggs —
+        every Python game has the same 4 big parts. Once you know the 4 parts, you can build
+        anything. We'll build a space shooter called <strong>Galaxy Defender</strong>.
+      </p>
+      <img src="../assets/infographics/1_Big_Picture.png" alt="Build-a-Game Rocket infographic." class="infographic" />
+      <p class="caption">Print this and stick it on your wall. You'll come back to it a LOT.</p>
+    </div>
+
+    <div class="card">
+      <h3>The 10-planet mission</h3>
+      <p>
+        Inside "The Body" of the rocket are <strong>10 little planets</strong> we'll visit one at a time.
+        Each planet is one lesson.
+      </p>
+      <img src="../assets/infographics/2_Galaxy_Map.png" alt="Galaxy Map of Code infographic." class="infographic" />
+      <p class="caption">
+        🔐 <strong>Secret mission code:</strong> <em>"I See Cool Pilots Blast Enemies, Scoring Galactic Hero GOALS!"</em>
+        — the first letter of each word is the first letter of each lesson. Memorize it!
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Pick a planet to visit</h3>
+      <p class="small">Lessons are best done in order, but jump around if you need to.</p>
+      <div class="roadmap">
+        <a href="01-imports.html"><span class="num">1</span>Imports</a>
+        <a href="02-setup-screen.html"><span class="num">2</span>Setup Screen</a>
+        <a href="03-colours.html"><span class="num">3</span>Colours</a>
+        <a href="04-player.html"><span class="num">4</span>Player</a>
+        <a href="05-bullets.html"><span class="num">5</span>Bullets</a>
+        <a href="06-enemies.html"><span class="num">6</span>Enemies</a>
+        <a href="07-score-and-font.html"><span class="num">7</span>Score &amp; Font</a>
+        <a href="08-game-states.html"><span class="num">8</span>Game States</a>
+        <a href="09-helpers.html"><span class="num">9</span>Helpers</a>
+        <a href="10-game-loop.html"><span class="num">10</span>Game Loop</a>
+        <a href="11-design-your-game.html" class="capstone"><span class="num">11</span>🏆 CAPSTONE · Design YOUR Game</a>
+      </div>
+      <p class="small">
+        ✅ All 10 lessons are live, plus the Capstone — design and ship YOUR own game.
+      </p>
+    </div>
+
+    <!-- Handouts for this lesson -->
+    <div class="card">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these or keep them open — you'll come back to them all course long.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/1_Big_Picture.pdf" target="_blank">📄 Big Picture</a>
+        <a class="dl-btn" href="../assets/handouts/2_Galaxy_Map.pdf" target="_blank">📄 Galaxy Map</a>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p style="margin-top:14px;background:#eef6ff;padding:12px 14px;border-radius:8px;border-left:4px solid var(--space-2);" class="small">
+        📖 <strong>Teaching this to a kid or running it in a classroom?</strong>
+        Grab the <a href="../22_Teacher_And_Parent_Guide.pdf" target="_blank"><strong>Teacher &amp; Homeschool Parent's Guide</strong></a> —
+        pacing plans, stumbling-block fixes, FAQ, and the "what to say when they're stuck" cheat sheet.
+      </p>
+    </div>
+
+    <div class="lesson-nav">
+      <a href="../index.html">
+        <span class="label">← Back</span>
+        Home
+      </a>
+      <a href="01-imports.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 1 · Imports
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(0);
+    initLessonMenu(0);
+    initRoadmapTicks();
+  </script>
+</body>
+</html>

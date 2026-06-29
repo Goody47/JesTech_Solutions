@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 11 — Design YOUR Game · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+  <style>
+    /* Lesson-11-specific touches */
+    .hero-finish {
+      background: radial-gradient(ellipse at top, #f5a623 0%, #ef5350 70%);
+      color: #16243a;
+      padding: 56px 24px 60px;
+      text-align: center;
+      margin-bottom: 32px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-finish h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      margin: 0 0 12px;
+      color: #16243a;
+    }
+    .hero-finish p { font-size: 1.15rem; max-width: 720px; margin: 0 auto; color: #16243a; }
+    .idea-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+    .idea-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border-top: 6px solid var(--green);
+    }
+    .idea-card.dragon  { border-top-color: var(--red); }
+    .idea-card.pizza   { border-top-color: var(--orange); }
+    .idea-card.soccer  { border-top-color: var(--space-2); }
+    .idea-card.invent  { border-top-color: var(--yellow); background: #fff7d6; }
+    .idea-card h4 { margin: 0 0 6px; font-size: 1.1rem; }
+    .idea-card .emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+    .idea-card p { font-size: .9rem; margin: 4px 0; color: var(--muted); }
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+    .checklist li {
+      padding: 8px 0 8px 32px;
+      position: relative;
+      border-bottom: 1px dashed #e1e8f2;
+    }
+    .checklist li::before {
+      content: "☐";
+      position: absolute;
+      left: 4px;
+      font-size: 1.4rem;
+      color: var(--space-2);
+    }
+    .day-row {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 12px 0;
+      border-bottom: 1px solid #eef2f9;
+    }
+    .day-num {
+      background: var(--space-2);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.4rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .day-row p { margin: 4px 0; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Celebratory hero ─────────────────────────────────────── -->
+    <div class="hero-finish">
+      <h1>🏆 You did it. Now make YOUR game.</h1>
+      <p>
+        Galaxy Defender taught you the framework. Stage 11 is where you
+        cross the bridge — from coder following along to <strong>game
+        designer with your own idea</strong>. This is the lesson you'll
+        remember in ten years.
+      </p>
+    </div>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 10 (Game Loop)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> What are the six phases inside the game loop?</summary>
+        <p><strong>Events &middot; Keys &middot; Update &middot; Collisions &middot; Draw &middot; Flip + Tick.</strong> Every frame runs them in that order, 60 times a second.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> What does <code>clock.tick(60)</code> do?</summary>
+        <p>It makes the loop run at <strong>exactly 60 frames per second</strong> — smooth on fast machines, not too slow on old ones. Without it the game would teleport on fast laptops and crawl on slow ones.</p>
+      </details>
+    </div>
+
+    <!-- 2. Why this matters ────────────────────────────────────── -->
+    <div class="card">
+      <h3>The most important moment in your coding life</h3>
+      <p>
+        Every professional game developer remembers the moment they stopped
+        copying tutorials and made the thing in their own head come alive on
+        a screen. That's the moment <strong>"I can code"</strong> becomes
+        <strong>"I am a creator"</strong>. It's the moment your friends and
+        family stop saying "cool, you're learning Python" and start saying
+        <em>"wait, YOU made that?"</em>
+      </p>
+      <p>
+        You already have everything you need. The 10 stages of Galaxy
+        Defender — imports, screen, colours, player, bullets, enemies,
+        score, states, helpers, the loop — are the framework for
+        <strong>every 2D game ever made</strong>. Maze games, racing games,
+        platformers, top-down adventures, tower defence — same 10 stages,
+        different ingredients.
+      </p>
+      <p class="small">
+        🎯 <strong>Today's mission:</strong> pick an idea, fill out a Game
+        Design Document, build a playable prototype, share it with someone
+        who's never seen it. That's the whole capstone in one sentence.
+      </p>
+    </div>
+
+    <!-- 3. Idea sparks ──────────────────────────────────────────── -->
+    <div class="card">
+      <h3>Need an idea? Steal one of these (or invent your own)</h3>
+      <p>
+        Stuck on what to make? Pick one of these four. Each one uses the
+        <em>exact same 10-stage framework</em> as Galaxy Defender — you'll
+        just swap the sprites and tweak the rules.
+      </p>
+      <div class="idea-grid">
+        <div class="idea-card">
+          <span class="emoji">🐢</span>
+          <h4>Ocean Adventure</h4>
+          <p><strong>Player:</strong> a sea turtle</p>
+          <p><strong>Bullets:</strong> bubbles</p>
+          <p><strong>Enemies:</strong> jellyfish drifting down</p>
+          <p><strong>Background:</strong> dark blue with rising bubbles</p>
+        </div>
+        <div class="idea-card dragon">
+          <span class="emoji">🐉</span>
+          <h4>Dragon Quest</h4>
+          <p><strong>Player:</strong> a knight</p>
+          <p><strong>Bullets:</strong> arrows shot upward</p>
+          <p><strong>Enemies:</strong> dragons flying from above</p>
+          <p><strong>Background:</strong> stone wall + clouds</p>
+        </div>
+        <div class="idea-card pizza">
+          <span class="emoji">🍕</span>
+          <h4>Pizza Panic</h4>
+          <p><strong>Player:</strong> a chef</p>
+          <p><strong>Bullets:</strong> pizzas tossed up</p>
+          <p><strong>Enemies:</strong> hungry customers walking left/right</p>
+          <p><strong>Background:</strong> kitchen tiles</p>
+        </div>
+        <div class="idea-card soccer">
+          <span class="emoji">⚽</span>
+          <h4>Penalty Pro</h4>
+          <p><strong>Player:</strong> a goalkeeper</p>
+          <p><strong>Bullets:</strong> n/a — dive to block balls</p>
+          <p><strong>Enemies:</strong> footballs flying at the goal</p>
+          <p><strong>Background:</strong> green grass + goal net</p>
+        </div>
+        <div class="idea-card invent">
+          <span class="emoji">✨</span>
+          <h4>Invent your own</h4>
+          <p>Pick a hero you love. Pick something they shoot, throw, jump on, or dodge. Pick what they win.</p>
+          <p><strong>The rule of three:</strong> three things to do, three things to avoid, three ways to win.</p>
+        </div>
+      </div>
+
+      <p class="small" style="margin-top:18px;background:#fff7d6;padding:14px 18px;border-radius:10px;border-left:4px solid #f7d24a;">
+        🛤️ <strong>Want a full 10-project learning path?</strong> Grab the
+        <a href="../21_Pygame_Project_Path.pdf" target="_blank"><strong>10 Pygame Projects PDF</strong></a> —
+        ten progressively harder games in suggested order (Balloon Pop → Catch the Star
+        → Rainbow Drawing → Dodge → Guess the Colour → Maze → Road → Alien Shooter →
+        Snake → Space Explorer). Project 1 ships with full code. Each one adds just one
+        new idea, so by Project 10 you've practised every core 2D-game skill.
+      </p>
+    </div>
+
+    <!-- 3.5. Showcase / "What yours could look like" ───────────── -->
+    <div class="card" id="showcase-section" style="border-left:6px solid #f7d24a;">
+      <h3>🎮 Here's what your capstone could look like</h3>
+      <p>
+        This is a polished version of Galaxy Defender — your starting point if
+        you want to skip straight to the "polished arcade game" tier. Four-way
+        movement, three alien types, score, lives, win/lose screens. Press
+        SPACE to start, arrows to move, SPACE to shoot.
+      </p>
+
+      <div class="trinket-box">
+        <span class="label">Try the showcase</span>
+        <h3 style="margin:6px 0 12px;">Play it in your browser — no install needed</h3>
+
+        <iframe src="https://trinket.io/embed/pygame/8bcbfcb4a31d" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+      </div>
+
+      <details class="collapsible-code">
+        <summary>📄 The Showcase code (paste into a new pygame Trinket) — full file</summary>
+        <div class="preview"># ═══════════════════════════════════════════════════════
+# GALAXY DEFENDER · SHOWCASE BUILD
+# 4-way player, 3 alien types, sound, win + lose screens.
+# Press SPACE to start, arrows to move, SPACE to shoot.
+# ═══════════════════════════════════════════════════════
+…about 180 more lines below — click above to expand…</div>
+<pre><code># ═══════════════════════════════════════════════════════
+# GALAXY DEFENDER · SHOWCASE BUILD
+# 4-way player, 3 alien types, sound, win + lose screens.
+# Press SPACE to start, arrows to move, SPACE to shoot.
+# ═══════════════════════════════════════════════════════
+
+import pygame
+import random
+
+pygame.init()
+try: pygame.mixer.init()
+except: pass
+
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender · Showcase")
+clock = pygame.time.Clock()
+
+# ─── Colours ───
+SPACE  = (5, 5, 25)
+WHITE  = (255, 255, 255)
+CYAN   = (80, 230, 255)         # bright player
+YELLOW = (255, 215, 0)
+RED    = (240, 60, 60)
+PURPLE = (200, 80, 200)
+ORANGE = (255, 140, 40)
+
+# ─── Sound (each call is silent if the file isn't uploaded) ───
+def load_sound(name):
+    try: return pygame.mixer.Sound(name)
+    except: return None
+
+def play(s, vol=0.7):
+    if s:
+        s.set_volume(vol)
+        s.play()
+
+snd_intro = load_sound("game_intro.mp3")
+snd_start = load_sound("game_start.mp3")
+snd_fire  = load_sound("bullet_fire.mp3")
+snd_over  = load_sound("game_over.mp3")
+
+def start_music():
+    try:
+        pygame.mixer.music.load("game_playing.mp3")
+        pygame.mixer.music.set_volume(0.35)
+        pygame.mixer.music.play(-1)         # loop forever during play
+    except: pass
+
+def stop_music():
+    try: pygame.mixer.music.stop()
+    except: pass
+
+# 🎵 game_intro plays as soon as you press Run
+play(snd_intro, vol=0.6)
+
+# ─── Sprite helpers ───
+def draw_ship(s, x, y):
+    pygame.draw.polygon(s, CYAN,
+        [(x+30,y), (x+60,y+40), (x+40,y+30), (x+20,y+30), (x,y+40)])
+    pygame.draw.circle (s, WHITE, (x+30, y+18), 6)
+    pygame.draw.polygon(s, ORANGE, [(x+25,y+30),(x+35,y+30),(x+30,y+45)])
+    pygame.draw.polygon(s, YELLOW, [(x+27,y+30),(x+33,y+30),(x+30,y+40)])
+
+def draw_laser(s, b):
+    pygame.draw.ellipse(s, ORANGE, (b.x-4, b.y-6, b.width+8, b.height+12))
+    pygame.draw.ellipse(s, YELLOW, b)
+
+def draw_invader(s, e):           # red square-foot alien
+    x, y = e.x, e.y
+    pygame.draw.rect   (s, RED,  (x+10, y+5,  30, 25))         # body
+    pygame.draw.rect   (s, RED,  (x,    y+15, 50, 15))         # arms
+    pygame.draw.rect   (s, RED,  (x+5,  y+30, 8,  10))         # leg
+    pygame.draw.rect   (s, RED,  (x+37, y+30, 8,  10))
+    pygame.draw.rect   (s, WHITE,(x+16, y+12, 6,  6))          # eyes
+    pygame.draw.rect   (s, WHITE,(x+28, y+12, 6,  6))
+
+def draw_saucer(s, e):            # yellow disc alien
+    x, y = e.x, e.y
+    pygame.draw.ellipse(s, YELLOW, (x, y+12, 50, 22))          # disc
+    pygame.draw.ellipse(s, ORANGE, (x+12, y+2, 26, 18))        # dome
+    pygame.draw.circle (s, RED,   (x+25, y+10), 4)             # red light
+    for i in range(5):
+        pygame.draw.circle(s, ORANGE, (x+5+i*10, y+22), 2)     # rim lights
+
+def draw_crab(s, e):              # purple crab alien
+    x, y = e.x, e.y
+    pygame.draw.ellipse(s, PURPLE,(x+5, y+10, 40, 25))         # body
+    pygame.draw.circle (s, WHITE, (x+15, y+18), 4)             # eyes
+    pygame.draw.circle (s, WHITE, (x+35, y+18), 4)
+    pygame.draw.circle (s, (0,0,0),(x+15, y+18), 2)
+    pygame.draw.circle (s, (0,0,0),(x+35, y+18), 2)
+    pygame.draw.line   (s, PURPLE,(x+8, y+8), (x+2, y),   3)   # antennae
+    pygame.draw.line   (s, PURPLE,(x+42,y+8), (x+48,y),   3)
+    for dx in (5, 15, 25, 35, 45):                              # legs
+        pygame.draw.line(s, PURPLE,(x+dx,y+33),(x+dx,y+42), 2)
+
+ALIEN_DRAWERS = [draw_invader, draw_saucer, draw_crab]
+
+# ─── Starfield ───
+stars = [[random.randint(0, WIDTH), random.randint(0, HEIGHT),
+          random.randint(1, 2), random.choice([1, 1, 2, 3])]
+         for _ in range(100)]
+def update_stars():
+    for st in stars:
+        st[1] += st[3]
+        if st[1] > HEIGHT:
+            st[0], st[1] = random.randint(0, WIDTH), 0
+
+def draw_stars(s):
+    for sx, sy, sz, _ in stars:
+        pygame.draw.circle(s, WHITE, (sx, sy), sz)
+
+# ─── Game state ───
+font     = pygame.font.SysFont("Arial", 28)
+big_font = pygame.font.SysFont("Arial", 64, bold=True)
+
+def draw_text(text, x, y, color=WHITE, big=False, centre=False):
+    f = big_font if big else font
+    img = f.render(text, True, color)
+    if centre: x -= img.get_width() // 2
+    screen.blit(img, (x, y))
+
+player = pygame.Rect(370, 500, 60, 40)
+bullets, enemies, kinds = [], [], []
+score, lives, level = 0, 3, 1
+state = "MENU"
+TARGET = 30
+
+def spawn_enemy():
+    enemies.append(pygame.Rect(random.randint(0, WIDTH-50),
+                               random.randint(-300, -50), 50, 40))
+    kinds.append(random.randint(0, 2))
+
+def reset_game():
+    global score, lives, level, state, bullets, enemies, kinds
+    score, lives, level = 0, 3, 1
+    bullets, enemies, kinds = [], [], []
+    player.x, player.y = 370, 500
+    for _ in range(5): spawn_enemy()
+    state = "PLAYING"
+
+for _ in range(5): spawn_enemy()
+
+# ─── Game loop ───
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: running = False
+        if event.type == pygame.KEYDOWN:
+            if state == "MENU" and event.key == pygame.K_SPACE:
+                play(snd_start)            # 🎵 game_start jingle
+                start_music()              # 🎵 game_playing music loops
+                reset_game()
+            elif state == "PLAYING" and event.key == pygame.K_SPACE:
+                bullets.append(pygame.Rect(player.x + 27, player.y, 6, 18))
+                play(snd_fire, vol=0.5)    # 🎵 bullet_fire on every shot
+            elif state in ("GAME_OVER", "WIN") and event.key == pygame.K_r:
+                play(snd_start)
+                start_music()
+                reset_game()
+
+    keys = pygame.key.get_pressed()
+    update_stars()
+    screen.fill(SPACE)
+    draw_stars(screen)
+
+    if state == "MENU":
+        draw_text("GALAXY DEFENDER", WIDTH//2, 180, color=YELLOW, big=True, centre=True)
+        draw_text("Arrow keys to move · SPACE to shoot", WIDTH//2, 280, centre=True)
+        draw_text("First to " + str(TARGET) + " wins!", WIDTH//2, 320, color=CYAN, centre=True)
+        draw_text("Press SPACE to start", WIDTH//2, 400, color=YELLOW, centre=True)
+
+    elif state == "PLAYING":
+        speed = 5 + level
+        if keys[pygame.K_LEFT]  and player.x > 0:           player.x -= speed
+        if keys[pygame.K_RIGHT] and player.x < WIDTH - 60:  player.x += speed
+        if keys[pygame.K_UP]    and player.y > 0:           player.y -= speed
+        if keys[pygame.K_DOWN]  and player.y < HEIGHT - 40: player.y += speed
+
+        for b in bullets[:]:
+            b.y -= 12
+            if b.y < 0: bullets.remove(b)
+
+        enemy_speed = 2 + level
+        for i, e in enumerate(enemies):
+            e.y += enemy_speed
+            if e.y > HEIGHT:
+                e.y = random.randint(-200, -50)
+                e.x = random.randint(0, WIDTH - 50)
+                lives -= 1
+                if lives <= 0:
+                    state = "GAME_OVER"
+                    stop_music()           # 🎵 cut the music
+                    play(snd_over)         # 🎵 game_over sting
+            if player.colliderect(e):
+                state = "GAME_OVER"
+                stop_music()
+                play(snd_over)
+
+        for b in bullets[:]:
+            for i, e in enumerate(enemies):
+                if b.colliderect(e):
+                    if b in bullets: bullets.remove(b)
+                    e.y = random.randint(-200, -50)
+                    e.x = random.randint(0, WIDTH - 50)
+                    kinds[i] = random.randint(0, 2)
+                    score += 1
+                    if score == TARGET:
+                        state = "WIN"
+                        stop_music()
+                    if score % 10 == 0:
+                        level += 1; spawn_enemy()
+
+        draw_ship(screen, player.x, player.y)
+        for b in bullets: draw_laser(screen, b)
+        for i, e in enumerate(enemies): ALIEN_DRAWERS[kinds[i]](screen, e)
+
+        draw_text("Score: " + str(score) + " / " + str(TARGET), 10, 10)
+        draw_text("Lives: " + str(lives), WIDTH - 130, 10, color=RED)
+        draw_text("Level: " + str(level), WIDTH//2 - 50, 10, color=CYAN)
+
+    elif state == "WIN":
+        draw_text("MISSION COMPLETE!", WIDTH//2, 220, color=YELLOW, big=True, centre=True)
+        draw_text("You saved the galaxy.", WIDTH//2, 310, color=CYAN, centre=True)
+        draw_text("Press R to play again", WIDTH//2, 360, centre=True)
+
+    elif state == "GAME_OVER":
+        draw_text("GAME OVER", WIDTH//2, 220, color=RED, big=True, centre=True)
+        draw_text("Final score: " + str(score), WIDTH//2, 310, color=YELLOW, centre=True)
+        draw_text("Press R to try again", WIDTH//2, 360, centre=True)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      </details>
+      <p class="small">
+        🎬 <strong>Marketing tip:</strong> open this in your own Trinket,
+        play a 20-second run, screen-record it (Mac: <kbd>Shift+Cmd+5</kbd>,
+        Windows: <kbd>Win+G</kbd>, or use <a href="https://www.loom.com" target="_blank" rel="noopener">Loom</a>),
+        and drop the recording on your sales page. Nothing converts like
+        watching the actual game in action.
+      </p>
+    </div>
+
+    <!-- 4. Game Design Document ────────────────────────────────── -->
+    <div class="card">
+      <h3>Before you write a single line — fill out a GDD</h3>
+      <p>
+        Professional studios call this a <strong>Game Design Document</strong>
+        (GDD). It's a one-page promise to yourself: <em>here's what I'm
+        building, here's how you win, here's how you lose.</em> Without it,
+        you'll start drawing a turtle and end up with a half-built racing
+        game by lunchtime.
+      </p>
+      <p>The GDD asks you 8 questions:</p>
+      <ol>
+        <li><strong>Title &amp; tagline</strong> — what's it called? One catchy sentence?</li>
+        <li><strong>The pitch</strong> — who's the player, what do they do, why is it fun?</li>
+        <li><strong>Controls</strong> — what does LEFT, RIGHT, SPACE do?</li>
+        <li><strong>Win condition</strong> — what makes the player happy and ends the game?</li>
+        <li><strong>Lose condition</strong> — what ends the game in failure?</li>
+        <li><strong>Colour palette</strong> — pick 3 colours that set the mood.</li>
+        <li><strong>Must / Should / Could</strong> — must-have features vs nice-to-have vs dream features.</li>
+        <li><strong>Closest match</strong> — which lesson's pattern is yours most like?</li>
+      </ol>
+      <p>
+        <a class="dl-btn" href="../19_Game_Design_Document.pdf" target="_blank">📄 Print the GDD template</a>
+        <a class="dl-btn" href="../20_Capstone_Starter.pdf" target="_blank">🛠️ Capstone Starter Pack</a>
+      </p>
+      <p class="small">
+        🖋️ Print it. Fill it in with a pen. Don't skip this — every kid who skips the
+        GDD ends up rewriting their game three times. Every kid who fills it in finishes.
+      </p>
+    </div>
+
+    <!-- 5. Starter skeleton ─────────────────────────────────────── -->
+    <div class="card">
+      <h3>Your starter skeleton (paste this into a new Trinket)</h3>
+      <p>
+        Open a brand-new pygame Trinket. Delete the starter. Paste the code
+        below — it's the SAME 10-stage skeleton as Galaxy Defender, with
+        clearly-marked <code class="inline">TODO</code> blocks to swap your
+        own content in.
+      </p>
+      <details class="collapsible-code">
+        <summary>🛠️ The Capstone Starter skeleton — full file</summary>
+        <div class="preview"># ─── CAPSTONE STARTER · MY GAME ────────────────────────
+# Replace "MY GAME" with your title. Fill in the TODOs.
+
+import pygame
+import random
+
+# 1. SCREEN
+pygame.init()
+…about 80 more lines below — click above to expand…</div>
+<pre><code># ─── CAPSTONE STARTER · MY GAME ────────────────────────
+# Replace "MY GAME" with your title. Fill in the TODOs.
+
+import pygame
+import random
+
+# 1. SCREEN
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("MY GAME")
+clock = pygame.time.Clock()
+
+# 2. COLOURS — TODO: pick your 3
+BG     = (0, 0, 50)      # background
+HERO   = (0, 230, 100)   # player
+FOE    = (255, 0, 0)     # enemy
+WHITE  = (255, 255, 255)
+
+# 3. SPRITE HELPERS — TODO: replace draw_hero / draw_foe with YOUR sprites
+def draw_hero(s, x, y):
+    pygame.draw.rect(s, HERO, (x, y, 50, 50))   # TODO: cartoonify me
+
+def draw_foe(s, e):
+    pygame.draw.rect(s, FOE, e)                  # TODO: cartoonify me
+
+# 4. STATE + DATA
+state  = "MENU"
+player = pygame.Rect(370, 500, 50, 50)
+enemies = [pygame.Rect(random.randint(0, WIDTH-50),
+                       random.randint(-300, 0), 50, 50) for _ in range(5)]
+score, lives = 0, 3
+font     = pygame.font.SysFont("Arial", 28)
+big_font = pygame.font.SysFont("Arial", 64, bold=True)
+
+def draw_text(text, x, y, color=WHITE, big=False):
+    f = big_font if big else font
+    screen.blit(f.render(text, True, color), (x, y))
+
+def reset_game():
+    global score, lives, state
+    score, lives, state = 0, 3, "PLAYING"
+    player.x = 370
+    for e in enemies:
+        e.y, e.x = random.randint(-300, -50), random.randint(0, WIDTH-50)
+
+# 5. GAME LOOP
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: running = False
+        if event.type == pygame.KEYDOWN:
+            if state == "MENU" and event.key == pygame.K_SPACE:
+                state = "PLAYING"
+            if state == "GAME_OVER" and event.key == pygame.K_r:
+                reset_game()
+
+    keys = pygame.key.get_pressed()
+    screen.fill(BG)
+
+    if state == "MENU":
+        draw_text("MY GAME", WIDTH//2 - 140, 220, color=HERO, big=True)
+        draw_text("Press SPACE to start", WIDTH//2 - 130, 320)
+
+    elif state == "PLAYING":
+        # TODO: your movement
+        if keys[pygame.K_LEFT]  and player.x &gt; 0:          player.x -= 5
+        if keys[pygame.K_RIGHT] and player.x &lt; WIDTH - 50: player.x += 5
+
+        for e in enemies:
+            e.y += 3
+            if e.y &gt; HEIGHT:
+                e.y, e.x = random.randint(-200, -50), random.randint(0, WIDTH-50)
+                lives -= 1
+                if lives &lt;= 0: state = "GAME_OVER"
+            if player.colliderect(e):
+                state = "GAME_OVER"
+
+        draw_hero(screen, player.x, player.y)
+        for e in enemies: draw_foe(screen, e)
+        draw_text("Score: " + str(score), 10, 10)
+        draw_text("Lives: " + str(lives), WIDTH - 130, 10)
+
+    elif state == "GAME_OVER":
+        draw_text("GAME OVER", WIDTH//2 - 150, 220, color=FOE, big=True)
+        draw_text("Press R to restart", WIDTH//2 - 110, 320)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      </details>
+      <p class="small">
+        This already runs! Press SPACE, dodge red squares, press R when you die.
+        Your job: swap the colours, write <code class="inline">draw_hero()</code>
+        and <code class="inline">draw_foe()</code> sprites, change the speed, add
+        bullets if your game needs them.
+      </p>
+    </div>
+
+    <!-- 6. 7-day build plan ─────────────────────────────────────── -->
+    <div class="card">
+      <h3>The 7-day build plan</h3>
+      <p>
+        Don't try to build it all at once. Break it down. Each "day" is one short
+        coding session — you could blitz the whole thing in a weekend, or
+        spread it across two weeks.
+      </p>
+      <div class="day-row">
+        <div class="day-num">1</div>
+        <div>
+          <p><strong>Idea + GDD</strong></p>
+          <p>Fill out the Game Design Document. Sketch your hero on paper. Don't write any code yet.</p>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">2</div>
+        <div>
+          <p><strong>Setup + colours + hero on screen (still)</strong></p>
+          <p>Paste the starter skeleton. Pick your colours. Get YOUR hero drawn on screen with arrow-key movement. That's it for today.</p>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">3</div>
+        <div>
+          <p><strong>Enemies / collectibles</strong></p>
+          <p>Add the things the player dodges, shoots, or collects. Use the recycle pattern from Lesson 6.</p>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">4</div>
+        <div>
+          <p><strong>Score &amp; lives</strong></p>
+          <p>Wire collisions into the score and lives counters. Show them on screen.</p>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">5</div>
+        <div>
+          <p><strong>Menu + game-over screen</strong></p>
+          <p>Title screen with "Press SPACE to start". Game over screen with "Press R to play again". Use Lesson 8's state pattern.</p>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">6</div>
+        <div>
+          <p><strong>Polish</strong></p>
+          <p>Better sprites, starfield/clouds/seaweed background, sound effects (optional), animations. Use the Polish Checklist below.</p>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">7</div>
+        <div>
+          <p><strong>Playtest + ship</strong></p>
+          <p>Get a friend or family member to play. Watch them silently. Fix the one thing they couldn't figure out. Share the Trinket link.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Polish checklist ─────────────────────────────────────── -->
+    <div class="card">
+      <h3>The polish checklist</h3>
+      <p>These are the small touches that turn "kid project" into "real game". Tick them off one by one.</p>
+      <ul class="checklist">
+        <li>Title on the menu screen (not "MY GAME" — your real title!)</li>
+        <li>Your name in the corner ("Made by [Your Name]")</li>
+        <li>Custom sprites (not just rectangles)</li>
+        <li>A background pattern (stars, clouds, bubbles, grass)</li>
+        <li>Score visible during play</li>
+        <li>Lives or timer visible during play</li>
+        <li>"You Win!" screen for the win condition</li>
+        <li>"Game Over" screen with the final score</li>
+        <li>R or SPACE restarts the game</li>
+        <li>Difficulty ramps up (enemies speed up every 10 points)</li>
+        <li>Sound effects (optional, but doubles the fun — try <a href="https://sfxr.me" target="_blank" rel="noopener">sfxr.me</a>)</li>
+        <li>A screenshot in a tweet/Discord/family chat</li>
+      </ul>
+    </div>
+
+    <!-- 8. Demo day ─────────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The "Demo Day" script</h3>
+      <p>
+        When you're ready to show the game to someone, run through these three
+        sentences out loud. Every professional indie developer does this same
+        pitch at game festivals.
+      </p>
+      <ol>
+        <li><strong>The hook:</strong> "It's a game where you ___ to ___." <em>(One sentence, no jargon.)</em></li>
+        <li><strong>The coolest feature:</strong> "The thing I'm proudest of is ___." <em>(Show it on screen.)</em></li>
+        <li><strong>The challenge:</strong> "The hardest bug I fixed was ___." <em>(Optional — but kids love hearing this.)</em></li>
+      </ol>
+      <p class="small">
+        🎤 Practise it out loud once before you show anyone. It transforms how confident you sound.
+      </p>
+    </div>
+
+    <!-- 9. What next ────────────────────────────────────────────── -->
+    <div class="card">
+      <h3>You finished. Where do you go next?</h3>
+      <p>
+        You're now <em>through</em> the beginner gate. You don't need NextGen
+        Coders Lab to teach you the next thing — you're ready to learn from
+        the same tools real developers use.
+      </p>
+      <ul>
+        <li><strong><a href="https://www.pygame.org/wiki/about" target="_blank" rel="noopener">Real pygame on your computer</a></strong> — install Python + pygame locally so you escape Trinket's limits. You can load real image files, play any sound, run any size game.</li>
+        <li><strong><a href="https://pygame-zero.readthedocs.io/" target="_blank" rel="noopener">pygame-zero</a></strong> — a friendlier version of pygame that hides the boilerplate. Great for your next 3 games.</li>
+        <li><strong><a href="https://api.arcade.academy/" target="_blank" rel="noopener">arcade</a></strong> — a modern Python game library with built-in physics, particles, and tile maps. The natural next step after pygame.</li>
+        <li><strong><a href="https://itch.io/jam/upcoming" target="_blank" rel="noopener">Enter a game jam</a></strong> — itch.io runs free jams every week. Build a game in 48 hours. Compete with people from around the world.</li>
+        <li><strong><a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></strong> — make a personal portfolio page that hosts ALL your games. Free for life.</li>
+        <li><strong>Try JavaScript with <a href="https://p5js.org/" target="_blank" rel="noopener">p5.js</a></strong> — the same 10-stage framework, but for the web. Your games run in any browser, no installation.</li>
+      </ul>
+    </div>
+
+    <!-- 9.5. Certificate ────────────────────────────────────────── -->
+    <div class="card" style="border-left:6px solid #ef5350; background:linear-gradient(135deg,#fff,#ffeae9); text-align:center;">
+      <h3>📜 Claim your Galaxy Defender Pilot certificate</h3>
+      <p>
+        You shipped a Python game. That puts you ahead of <strong>99 % of kids</strong>
+        your age. Now put it on paper — type your name into the certificate page and
+        save the PDF. Frame it. Pin it on your wall. Show your school. You earned it.
+      </p>
+      <p>
+        <a class="cta" style="background:#ef5350;color:#fff;font-weight:800;padding:14px 26px;border-radius:999px;display:inline-block;text-decoration:none;box-shadow:0 6px 18px rgba(239,83,80,.4);" href="../certificate.html" target="_blank">📜 Get my certificate</a>
+      </p>
+    </div>
+
+    <!-- 10. Final wrap-up ──────────────────────────────────────── -->
+    <div class="card" style="border-left:6px solid #f7d24a; background:linear-gradient(135deg,#fffbeb,#fff5d1);">
+      <h3>🎓 You started this course as a learner. You're finishing as a creator.</h3>
+      <p>
+        Galaxy Defender taught you the framework. The Rocket Ladder. The Game
+        Loop. The Code Recipe. Every lesson stacked on the last.
+      </p>
+      <p>
+        But your capstone — the game YOU designed, the sprites YOU drew, the
+        rules YOU invented — that one's yours forever. Years from now, when
+        you're in a fancy job interview, building an indie hit, or teaching
+        your own kid Python, <strong>that's the game you'll talk about.</strong>
+        Not Galaxy Defender. The one you made.
+      </p>
+      <p style="font-weight:800;font-size:1.1rem;">
+        You're not a Python student anymore. You're a game developer. Now go
+        make something nobody's ever seen before. 🚀
+      </p>
+    </div>
+
+    <!-- 11. Handouts ───────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Capstone handouts</h3>
+      <p>Print these. Fill them in. Pin them on the wall above your desk.</p>
+      <p>
+        <a class="dl-btn" href="../19_Game_Design_Document.pdf" target="_blank">📄 Game Design Document (printable)</a>
+        <a class="dl-btn" href="../20_Capstone_Starter.pdf" target="_blank">🛠️ Capstone Starter Pack</a>
+        <a class="dl-btn" href="../21_Pygame_Project_Path.pdf" target="_blank">🛤️ 10 Pygame Projects (learning path)</a>
+        <a class="dl-btn" href="../18_Sprite_Bonus.pdf" target="_blank">🎨 Sprite Bonus reference</a>
+        <a class="dl-btn" href="../22_Teacher_And_Parent_Guide.pdf" target="_blank">📖 Teacher &amp; Parent Guide</a>
+        <a class="dl-btn" style="background:#ef5350;" href="../certificate.html" target="_blank">📜 Completion Certificate</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>📚 All your Code Libraries</strong> — every mini-game from every lesson, in one place.</p>
+      <p>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 L1 Library</a>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 L2</a>
+        <a class="dl-btn" href="../10_Lesson3_Code_Library.pdf" target="_blank">📄 L3</a>
+        <a class="dl-btn" href="../11_Lesson4_Code_Library.pdf" target="_blank">📄 L4</a>
+        <a class="dl-btn" href="../12_Lesson5_Code_Library.pdf" target="_blank">📄 L5</a>
+        <a class="dl-btn" href="../13_Lesson6_Code_Library.pdf" target="_blank">📄 L6</a>
+        <a class="dl-btn" href="../14_Lesson7_Code_Library.pdf" target="_blank">📄 L7</a>
+        <a class="dl-btn" href="../15_Lesson8_Code_Library.pdf" target="_blank">📄 L8</a>
+        <a class="dl-btn" href="../16_Lesson9_Code_Library.pdf" target="_blank">📄 L9</a>
+        <a class="dl-btn" href="../17_Lesson10_Code_Library.pdf" target="_blank">📄 L10</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong></p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/1_Big_Picture.pdf" target="_blank">📄 Big Picture</a>
+        <a class="dl-btn" href="../assets/handouts/2_Galaxy_Map.pdf" target="_blank">📄 Galaxy Map</a>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/Galaxy_Defender_ALL_Infographics_for_Students.pdf" target="_blank">📄 ALL Infographics</a>
+      </p>
+    </div>
+
+    <!-- 12. Nav ─────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="10-game-loop.html">
+        <span class="label">← Previous</span>
+        Lesson 10 · Game Loop
+      </a>
+      <a href="00-big-picture.html" class="next">
+        <span class="label">🎉 Course complete</span>
+        Back to Lesson 0
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(11);
+    initLessonMenu(11);
+  </script>
+</body>
+</html>

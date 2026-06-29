@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 5 — Bullets · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header ──────────────────────────────────────────── -->
+    <span class="stage-chip body">Stage 5 · BULLETS</span>
+    <h2 class="stage-title">Bullets — your ship can shoot</h2>
+    <p class="stage-sub">
+      Stage 5 is where Galaxy Defender starts feeling like a real game. Press
+      <strong>SPACE</strong> and a tiny yellow rectangle flies up the screen.
+      To make it work, we'll meet one of Python's most powerful tools — the <em>list</em>.
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 4 (Player)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> What is a <code>pygame.Rect</code>?</summary>
+        <p>A rectangle stored as four numbers: <strong>x, y, width, height</strong>. Pygame uses Rects for every "thing" on screen — player, bullet, enemy. Move it by changing <code>x</code> or <code>y</code>.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> How does the player actually move?</summary>
+        <p>Each frame we ask <code>pygame.key.get_pressed()</code> which keys are held, then change <code>player.x</code> by a few pixels. Redraw, repeat. That's all "movement" really is.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-5">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 5 highlighted by arrows." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 5 of 10.</p>
+    </div>
+
+    <!-- 2. The big idea — LISTS ─────────────────────────────────── -->
+    <div class="card">
+      <h3>The big new idea: lists</h3>
+      <p>
+        Up to now, each "thing" in our game has been one variable: one
+        <code class="inline">player</code>, one <code class="inline">screen</code>.
+        But you don't shoot just one bullet — you shoot lots of them. How do we keep
+        track of all of them at once?
+      </p>
+      <p>
+        With a <strong>list</strong>. A list is exactly what it sounds like: a single
+        variable that holds <em>many</em> items in order. You can add items, remove
+        items, and loop through all of them.
+      </p>
+<pre><code>bullets = []        # start with an EMPTY list — no bullets yet
+bullets.append(b)   # add a new bullet to the end of the list
+for b in bullets:   # loop through every bullet
+    b.y -= 10       # move each one up by 10 pixels
+bullets.remove(b)   # take a bullet out of the list</code></pre>
+      <p class="small">
+        🛒 A list is like a shopping basket — you start with an empty basket, you
+        add things in, you can look at every item, and you can take things out.
+      </p>
+    </div>
+
+    <!-- 3. KEYDOWN vs key.get_pressed ──────────────────────────── -->
+    <div class="card">
+      <h3>One shot per press (KEYDOWN)</h3>
+      <p>
+        In Lesson 4 we used <code class="inline">pygame.key.get_pressed()</code>
+        because we wanted the player to keep moving as long as you <em>hold</em>
+        the arrow key.
+      </p>
+      <p>
+        Shooting is different. If we used the same trick for SPACE, a single
+        press would fire 60 bullets a second (one per frame). We want
+        <strong>one bullet per press</strong> — even if you hold SPACE down.
+      </p>
+      <p>
+        For "press only once" we use the <strong>KEYDOWN event</strong> inside
+        the event loop:
+      </p>
+<pre><code>for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+        running = False
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+        bullet = pygame.Rect(player.x + 27, player.y, 6, 15)
+        bullets.append(bullet)</code></pre>
+      <p class="small">
+        💡 Rule of thumb: <strong>held actions</strong> → use <code class="inline">key.get_pressed()</code>.
+        <strong>One-time actions</strong> (shoot, jump, fire) → use <code class="inline">KEYDOWN</code>.
+      </p>
+    </div>
+
+    <!-- 4. Moving and cleaning up ──────────────────────────────── -->
+    <div class="card">
+      <h3>Move them up. Remove them when they leave.</h3>
+      <p>
+        Every frame, we slide each bullet up by changing its <code class="inline">y</code>:
+      </p>
+<pre><code>for b in bullets[:]:
+    b.y -= bullet_speed
+    if b.y &lt; 0:           # left the top of the screen?
+        bullets.remove(b)  # take it out so the list doesn't grow forever</code></pre>
+      <p class="small">
+        Why <code class="inline">bullets[:]</code> instead of just <code class="inline">bullets</code>?
+        Because we're <strong>removing items</strong> while looping through.
+        Modifying a list while you iterate over it confuses Python.
+        <code class="inline">bullets[:]</code> makes a quick copy to loop over, while
+        we change the original. Tiny trick, big bug saver.
+      </p>
+    </div>
+
+    <!-- 5. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The code so far</h3>
+<pre><code># Stages 1–4 already in place...
+import pygame
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender")
+clock = pygame.time.Clock()
+
+YELLOW = (255, 215, 0)
+SPACE  = (0, 0, 50)
+
+player = pygame.Rect(370, 520, 60, 40)
+player_speed = 5
+
+# 🚀 Cartoon ship (we'll properly explain "def" in Lesson 9 — for
+# now, just enjoy your green rectangle becoming a real spaceship.)
+def draw_ship(s, x, y):
+    pygame.draw.polygon(s, (0, 230, 100),
+        [(x+30,y),(x+60,y+40),(x+40,y+30),(x+20,y+30),(x,y+40)])  # hull
+    pygame.draw.circle (s, (100, 200, 255), (x+30, y+18), 6)       # cockpit
+    pygame.draw.polygon(s, (255, 100, 0),
+        [(x+25,y+30),(x+35,y+30),(x+30,y+42)])                     # flame
+
+# Stage 5 — Bullets ✨
+bullets = []                # empty list, ready to fill
+bullet_speed = 10
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            # spawn a new bullet ABOVE the centre of the player
+            bullet = pygame.Rect(player.x + 27, player.y, 6, 15)
+            bullets.append(bullet)
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]  and player.x &gt; 0:
+        player.x -= player_speed
+    if keys[pygame.K_RIGHT] and player.x &lt; WIDTH - 60:
+        player.x += player_speed
+
+    # move every bullet up; remove ones that fly off the screen
+    for b in bullets[:]:
+        b.y -= bullet_speed
+        if b.y &lt; 0:
+            bullets.remove(b)
+
+    screen.fill(SPACE)
+    draw_ship(screen, player.x, player.y)    # 🚀 cartoon ship
+    for b in bullets:
+        pygame.draw.rect(screen, YELLOW, b)
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      <p class="small">
+        Run it. Move with LEFT/RIGHT. Tap SPACE — a tiny yellow streak flies up.
+        Tap SPACE again — another one. Hold SPACE — just one bullet per press,
+        thanks to KEYDOWN. 🎯
+      </p>
+      <p class="small">
+        🎮 <strong>Want to play with more code?</strong> Scroll down to the
+        <a href="#handouts-section">Lesson 5 Code Library (6 bullet games)</a>.
+        Copy any program, paste it into the editor below, and press the green ▶ <strong>Run</strong> button.
+      </p>
+    </div>
+
+    <!-- 6. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/pygame/6dd656d833b0" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 7. Mini-challenges ──────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Mini-challenges</h3>
+      <ul>
+        <li>Make bullets <strong>faster</strong>: change <code class="inline">bullet_speed = 10</code> to <code class="inline">25</code>.</li>
+        <li>Make bullets <strong>bigger</strong>: change <code class="inline">pygame.Rect(player.x + 27, player.y, 6, 15)</code> to <code class="inline">pygame.Rect(player.x + 20, player.y, 20, 30)</code>.</li>
+        <li>Change bullets to <strong>red</strong>: define <code class="inline">RED = (255, 0, 0)</code> and use it where YELLOW is.</li>
+        <li>Print the number of bullets after every SPACE press: <code class="inline">print("Bullets in the air:", len(bullets))</code>.</li>
+      </ul>
+    </div>
+
+    <!-- 8. Handouts ─────────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Lesson 5 Code Library</strong> — 6 brand-new pygame mini-games all about <em>bullets and lists</em>: One Bullet, Press SPACE to Fire, Disappearing Bullets, Bullet Rain, Click to Shoot, Confetti Cannon.</p>
+      <p>
+        <a class="dl-btn" href="../12_Lesson5_Code_Library.pdf" target="_blank">📄 Lesson 5 Code Library (6 bullet games)</a>
+        <a class="dl-btn" href="../18_Sprite_Bonus.pdf" target="_blank">🎨 Sprite Bonus (visual polish)</a>
+        <a class="dl-btn" href="../11_Lesson4_Code_Library.pdf" target="_blank">📄 Lesson 4 Code Library</a>
+        <a class="dl-btn" href="../10_Lesson3_Code_Library.pdf" target="_blank">📄 Lesson 3 Code Library</a>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 Lesson 2 Code Library</a>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Lesson 1 Code Library</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — keep these by your side for the whole course.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/4_Code_Comic.pdf" target="_blank">📄 Code Comic</a>
+        <a class="dl-btn" href="../assets/handouts/5_Pixel_Cheat_Sheet.pdf" target="_blank">📄 Pixel Cheat Sheet</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>Want to try your own idea?</strong> Ask an AI like Claude or ChatGPT
+        something like <em>"Write me a short pygame program where pressing SPACE fires a bullet upwards"</em>,
+        then paste the code into the Trinket above and click <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 9. Nav ──────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="04-player.html">
+        <span class="label">← Previous</span>
+        Lesson 4 · Player
+      </a>
+      <a href="06-enemies.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 6 · Enemies
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(5);
+    initLessonMenu(5);
+  </script>
+</body>
+</html>

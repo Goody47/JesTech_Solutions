@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 8 — Game States · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header ──────────────────────────────────────────── -->
+    <span class="stage-chip end">Stage 8 · GAME STATES</span>
+    <h2 class="stage-title">Game States — start screen, playing, game over</h2>
+    <p class="stage-sub">
+      In Stage 7 you counted hits with a score. But right now your game never
+      <em>ends</em> — aliens just keep coming forever. In Stage 8 we'll teach the
+      game how to behave differently depending on what's happening, using a
+      <strong>state</strong> variable: <em>MENU</em>, <em>PLAYING</em>, and
+      <em>GAME OVER</em>.
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 7 (Score &amp; Font)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> How do we draw text in pygame?</summary>
+        <p>Three steps: <strong>pick a font</strong> (<code>pygame.font.SysFont</code>), <strong>render the text into an image</strong> (<code>font.render</code>), then <strong>blit it onto the screen</strong> (<code>screen.blit</code>).</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> Why do we wrap the score in <code>str()</code> when displaying it?</summary>
+        <p>Because Python won't let you add text + number directly. <code>"Score: " + score</code> would crash. <code>str(score)</code> turns the number into text first, then they can be joined.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-8">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 8 highlighted by arrows." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 8 of 10. Two polish stages to go — your game is almost a real game!</p>
+    </div>
+
+    <!-- 2. What is a state? ────────────────────────────────────── -->
+    <div class="card">
+      <h3>A "state" is just the mood the game is in</h3>
+      <p>
+        Think about your phone. When the screen is <em>locked</em>, swiping doesn't
+        open apps. When it's <em>unlocked</em>, swiping does. Same finger, same
+        screen — different <strong>state</strong>. Games work exactly the same way.
+      </p>
+      <p>
+        Galaxy Defender will have three moods:
+      </p>
+      <ul>
+        <li><strong>MENU</strong> — title screen. "Press SPACE to start."</li>
+        <li><strong>PLAYING</strong> — the normal game you already built.</li>
+        <li><strong>GAME_OVER</strong> — alien touched you. "Press R to try again."</li>
+      </ul>
+      <p class="small">
+        💡 We'll store the current mood in a plain text variable called
+        <code class="inline">state</code>. Then the game loop just asks
+        "what state are we in?" and does the right thing.
+      </p>
+    </div>
+
+    <!-- 3. The state variable + if/elif ────────────────────────── -->
+    <div class="card">
+      <h3>One variable, three behaviours</h3>
+      <p>
+        At the top of the program we set the starting mood:
+      </p>
+<pre><code>state = "MENU"      # the game starts on the title screen</code></pre>
+      <p>
+        Then inside the game loop we use <code class="inline">if</code> /
+        <code class="inline">elif</code> to run different code depending on
+        what <code class="inline">state</code> currently is:
+      </p>
+<pre><code>if state == "MENU":
+    # show the title screen, wait for SPACE
+    ...
+elif state == "PLAYING":
+    # move the player, bullets, enemies, check collisions
+    ...
+elif state == "GAME_OVER":
+    # show "Game Over", wait for R to restart
+    ...</code></pre>
+      <p class="small">
+        🔀 <code class="inline">elif</code> means "else if" — Python checks each
+        line in order and only runs the <strong>first one</strong> that matches.
+        That's why exactly one mood runs per frame, never two.
+      </p>
+    </div>
+
+    <!-- 4. Switching states ───────────────────────────────────── -->
+    <div class="card">
+      <h3>How do we switch moods?</h3>
+      <p>
+        We just <strong>change the variable</strong>. That's it. The next frame
+        the loop sees the new value and runs the new branch.
+      </p>
+<pre><code># in MENU — pressing SPACE starts the game
+if keys[pygame.K_SPACE]:
+    state = "PLAYING"
+
+# in PLAYING — if an enemy touches the player, it's over
+for e in enemies:
+    if player.colliderect(e):
+        state = "GAME_OVER"
+
+# in GAME_OVER — pressing R resets the score and plays again
+if keys[pygame.K_r]:
+    score = 0
+    state = "PLAYING"</code></pre>
+      <p class="small">
+        🔁 Notice we set <code class="inline">score = 0</code> on restart.
+        Without that, your old score would carry over — not exactly a fresh start!
+      </p>
+    </div>
+
+    <!-- 5. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The code so far</h3>
+<pre><code># Stages 1–7 already in place...
+import pygame
+import random
+
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender")
+clock = pygame.time.Clock()
+
+YELLOW = (255, 215, 0)
+RED    = (255, 0, 0)
+WHITE  = (255, 255, 255)
+SPACE  = (0, 0, 50)
+
+# 🎨 Sprite helpers from L5–L7
+def draw_ship(s, x, y):
+    pygame.draw.polygon(s, (0, 230, 100),
+        [(x+30,y),(x+60,y+40),(x+40,y+30),(x+20,y+30),(x,y+40)])
+    pygame.draw.circle (s, (100, 200, 255), (x+30, y+18), 6)
+    pygame.draw.polygon(s, (255, 100, 0), [(x+25,y+30),(x+35,y+30),(x+30,y+42)])
+
+def draw_laser(s, b):
+    pygame.draw.ellipse(s, (255, 100, 0), (b.x-3, b.y-5, b.width+6, b.height+10))
+    pygame.draw.ellipse(s, (255, 220, 0), b)
+
+def draw_alien(s, e):
+    cx, cy = e.x + 25, e.y + 25
+    pygame.draw.ellipse(s, (200, 50, 200), (e.x, e.y+10, 50, 30))
+    pygame.draw.ellipse(s, (200, 50, 200), (e.x+10, e.y, 30, 20))
+    pygame.draw.circle (s, WHITE,          (cx-7, cy-8), 5)
+    pygame.draw.circle (s, WHITE,          (cx+7, cy-8), 5)
+    pygame.draw.circle (s, (0, 0, 0),      (cx-7, cy-8), 2)
+    pygame.draw.circle (s, (0, 0, 0),      (cx+7, cy-8), 2)
+
+# 🌌 Starfield background (new this lesson — generate once, draw every frame)
+stars = [(random.randint(0, WIDTH), random.randint(0, HEIGHT),
+          random.randint(1, 2)) for _ in range(80)]
+def draw_stars(s):
+    for sx, sy, sz in stars:
+        pygame.draw.circle(s, WHITE, (sx, sy), sz)
+
+player = pygame.Rect(370, 520, 60, 40)
+player_speed = 5
+
+bullets = []
+bullet_speed = 10
+
+enemies = []
+enemy_speed = 2
+for i in range(5):
+    e = pygame.Rect(random.randint(0, WIDTH - 50),
+                    random.randint(-300, 0),
+                    50, 50)
+    enemies.append(e)
+
+score = 0
+font     = pygame.font.SysFont("Arial", 32)
+big_font = pygame.font.SysFont("Arial", 64)
+
+# Stage 8 — Game States ✨
+state = "MENU"
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            if state == "PLAYING":
+                bullets.append(pygame.Rect(player.x + 27, player.y, 6, 15))
+
+    keys = pygame.key.get_pressed()
+    screen.fill(SPACE)
+    draw_stars(screen)                        # 🌌 starry background on every screen
+
+    # ── MENU ───────────────────────────────────────────────
+    if state == "MENU":
+        title = big_font.render("GALAXY DEFENDER", True, YELLOW)
+        hint  = font.render("Press SPACE to start", True, WHITE)
+        screen.blit(title, (WIDTH//2 - 260, 220))
+        screen.blit(hint,  (WIDTH//2 - 120, 320))
+        if keys[pygame.K_SPACE]:
+            state = "PLAYING"
+
+    # ── PLAYING ────────────────────────────────────────────
+    elif state == "PLAYING":
+        if keys[pygame.K_LEFT]  and player.x &gt; 0:
+            player.x -= player_speed
+        if keys[pygame.K_RIGHT] and player.x &lt; WIDTH - 60:
+            player.x += player_speed
+
+        for b in bullets[:]:
+            b.y -= bullet_speed
+            if b.y &lt; 0:
+                bullets.remove(b)
+
+        for e in enemies:
+            e.y += enemy_speed
+            if e.y &gt; HEIGHT:
+                e.y = random.randint(-200, -50)
+                e.x = random.randint(0, WIDTH - 50)
+            if player.colliderect(e):         # 💥 alien touched the ship!
+                state = "GAME_OVER"
+
+        for b in bullets[:]:
+            for e in enemies:
+                if b.colliderect(e):
+                    if b in bullets:
+                        bullets.remove(b)
+                    e.y = random.randint(-200, -50)
+                    e.x = random.randint(0, WIDTH - 50)
+                    score += 1
+
+        draw_ship(screen, player.x, player.y)      # 🚀
+        for b in bullets:
+            draw_laser(screen, b)                   # ✨
+        for e in enemies:
+            draw_alien(screen, e)                   # 👾
+
+        score_img = font.render("Score: " + str(score), True, WHITE)
+        screen.blit(score_img, (10, 10))
+
+    # ── GAME OVER ──────────────────────────────────────────
+    elif state == "GAME_OVER":
+        over = big_font.render("GAME OVER", True, RED)
+        final = font.render("Final score: " + str(score), True, WHITE)
+        hint  = font.render("Press R to play again", True, YELLOW)
+        screen.blit(over,  (WIDTH//2 - 180, 200))
+        screen.blit(final, (WIDTH//2 - 110, 290))
+        screen.blit(hint,  (WIDTH//2 - 130, 340))
+        if keys[pygame.K_r]:
+            score = 0
+            bullets.clear()
+            for e in enemies:
+                e.y = random.randint(-300, -50)
+                e.x = random.randint(0, WIDTH - 50)
+            state = "PLAYING"
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      <p class="small">
+        Run it. You start on a title screen. Press SPACE — the game begins.
+        Get hit by an alien — "GAME OVER" appears. Press R — fresh start. You
+        just built a complete arcade loop. 🕹️
+      </p>
+      <p class="small">
+        🎮 <strong>Want to play with more code?</strong> Scroll down to the
+        <a href="#handouts-section">Lesson 8 Code Library (6 game-state mini-games)</a>.
+        Copy any program, paste it into the editor below, and press the green ▶ <strong>Run</strong> button.
+      </p>
+    </div>
+
+    <!-- 6. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/pygame/0d29713da996" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 7. Mini-challenges ──────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Mini-challenges</h3>
+      <ul>
+        <li><strong>Win condition:</strong> add a fourth state <code class="inline">"WIN"</code>. Switch to it when <code class="inline">score &gt;= 20</code> and show "YOU WIN!" in green.</li>
+        <li><strong>3 lives:</strong> add <code class="inline">lives = 3</code>. Only switch to GAME_OVER when <code class="inline">lives</code> hits 0. Subtract one per hit and recycle the alien.</li>
+        <li><strong>Pause button:</strong> add a <code class="inline">"PAUSED"</code> state. Press P during PLAYING to pause, P again to resume.</li>
+        <li><strong>Better title:</strong> change <code class="inline">"GALAXY DEFENDER"</code> on the menu to your own game name.</li>
+        <li><strong>Countdown:</strong> when SPACE is pressed on the menu, show "3… 2… 1…" for one second each before switching to PLAYING. (Hint: use <code class="inline">pygame.time.get_ticks()</code>.)</li>
+      </ul>
+    </div>
+
+    <!-- 8. Handouts ─────────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Lesson 8 Code Library</strong> — 6 brand-new pygame mini-games all about <em>game states, menus, and game-over screens</em>: Two-State Toggle, Menu &amp; Play, Game Over Screen, Pause Button, Win Condition, Three Lives.</p>
+      <p>
+        <a class="dl-btn" href="../15_Lesson8_Code_Library.pdf" target="_blank">📄 Lesson 8 Code Library (6 game-state games)</a>
+        <a class="dl-btn" href="../18_Sprite_Bonus.pdf" target="_blank">🎨 Sprite Bonus (visual polish)</a>
+        <a class="dl-btn" href="../14_Lesson7_Code_Library.pdf" target="_blank">📄 Lesson 7 Code Library</a>
+        <a class="dl-btn" href="../13_Lesson6_Code_Library.pdf" target="_blank">📄 Lesson 6 Code Library</a>
+        <a class="dl-btn" href="../12_Lesson5_Code_Library.pdf" target="_blank">📄 Lesson 5 Code Library</a>
+        <a class="dl-btn" href="../11_Lesson4_Code_Library.pdf" target="_blank">📄 Lesson 4 Code Library</a>
+        <a class="dl-btn" href="../10_Lesson3_Code_Library.pdf" target="_blank">📄 Lesson 3 Code Library</a>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 Lesson 2 Code Library</a>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Lesson 1 Code Library</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — keep these by your side for the whole course.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/handouts/5_Pixel_Cheat_Sheet.pdf" target="_blank">📄 Pixel Cheat Sheet</a>
+        <a class="dl-btn" href="../assets/handouts/4_Code_Comic.pdf" target="_blank">📄 Code Comic</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>Want to try your own idea?</strong> Ask an AI like Claude or ChatGPT
+        something like <em>"Write me a short pygame program that has a MENU state and a PLAYING state I can switch between with SPACE"</em>,
+        then paste the code into the Trinket above and click <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 9. Nav ──────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="07-score-and-font.html">
+        <span class="label">← Previous</span>
+        Lesson 7 · Score &amp; Font
+      </a>
+      <a href="09-helpers.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 9 · Helpers
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(8);
+    initLessonMenu(8);
+  </script>
+</body>
+</html>

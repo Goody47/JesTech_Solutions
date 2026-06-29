@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 2 — Setup Screen · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header ──────────────────────────────────────────── -->
+    <span class="stage-chip setup">Stage 2 · SETUP SCREEN</span>
+    <h2 class="stage-title">Setup the Screen — your game's blank page</h2>
+    <p class="stage-sub">
+      Before anything can move, you need a window for the game to live in. That's what
+      Stage 2 builds: an 800×600 window called <em>Galaxy Defender</em>, plus a clock to
+      keep the game running smoothly.
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 1 (Imports)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> What does <code>import</code> do?</summary>
+        <p>It grabs a <strong>library</strong> — a pre-written toolbox of code — and brings it into your program so you can use it. <code>import pygame</code> means "I want the graphics toolbox."</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> Which library is the GAMES toolbox?</summary>
+        <p><strong>pygame.</strong> It draws shapes, plays sounds, reads the keyboard, and runs game loops.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-2">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 2 highlighted by arrows." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 2 of 10.</p>
+    </div>
+
+    <!-- 2. The big idea ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>What is "setup the screen"?</h3>
+      <p>
+        In Stage 1 you grabbed the <code class="inline">pygame</code> toolbox. Now you're
+        going to <strong>open it and turn it on</strong>. Think of it like unboxing a new
+        TV: you take it out, plug it in, pick the screen size, and stick a name sticker on
+        the front. After this stage, you have a real, working game window — empty for now,
+        but ready for everything we add next.
+      </p>
+
+      <h4 style="margin-bottom:6px;">The four things we do in Stage 2</h4>
+      <ul>
+        <li>
+          <strong><code class="inline">pygame.init()</code></strong> —
+          turn pygame ON. This starts every part of pygame (graphics, sound, fonts) so
+          they're ready to use. <em>Always run this once at the top.</em>
+        </li>
+        <li>
+          <strong><code class="inline">screen = pygame.display.set_mode((800, 600))</code></strong> —
+          open a window that is <strong>800 pixels wide and 600 pixels tall</strong>.
+          The window goes into a variable called <code class="inline">screen</code> so we
+          can draw on it later. (See the Pixel Cheat Sheet for what "pixels" means.)
+        </li>
+        <li>
+          <strong><code class="inline">pygame.display.set_caption("Galaxy Defender")</code></strong> —
+          put a title at the top of the window. This is the name everyone will see.
+        </li>
+        <li>
+          <strong><code class="inline">clock = pygame.time.Clock()</code></strong> —
+          create a <strong>clock</strong>. Later in the game loop, the clock makes sure the
+          game runs at a steady speed (60 frames per second). Without it, games run too
+          fast on fast computers and too slow on old ones.
+        </li>
+      </ul>
+
+      <p>
+        <strong>The big idea:</strong> Stage 2 is the "blank canvas" of your game.
+        Every later stage paints on top of this canvas.
+      </p>
+    </div>
+
+    <!-- 3. Code recipe ──────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The recipe</h3>
+      <ol class="recipe">
+        <li>Start with <code class="inline">import pygame</code> (from Stage 1).</li>
+        <li>Turn pygame on with <code class="inline">pygame.init()</code>.</li>
+        <li>Make a 800×600 window and save it in <code class="inline">screen</code>.</li>
+        <li>Give the window a title: <code class="inline">"Galaxy Defender"</code>.</li>
+        <li>Make a <code class="inline">clock</code> for smooth speed.</li>
+        <li>Run a tiny loop so the window actually stays open (or it would close instantly).</li>
+      </ol>
+      <p class="small">
+        Steps 1–5 are pure Stage 2. Step 6 is a sneak peek at Stage 10 (the Game Loop) —
+        we just need it now so the window doesn't blink and disappear.
+      </p>
+    </div>
+
+    <!-- 4. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The code so far</h3>
+<pre><code># Stage 1 — Imports
+import pygame
+
+# Stage 2 — Setup the Screen
+pygame.init()
+
+WIDTH = 800
+HEIGHT = 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender")
+clock = pygame.time.Clock()
+
+# Tiny loop so we can actually SEE the window
+# (we'll learn this properly in Stage 10)
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    screen.fill((0, 0, 50))   # paint it space-blue so we know it works
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      <p class="small">
+        Run this and you'll see a dark blue window titled <em>Galaxy Defender</em>. Click
+        the close button to end the program. That's it — Stage 2 is done. 🎉
+      </p>
+      <p class="small">
+        🎮 <strong>Want to play with more code?</strong> Scroll down to the
+        <a href="#handouts-section">Code Library (10 mini programs)</a>. Copy any program,
+        paste it into the editor, and press the green ▶ <strong>Run</strong> button.
+      </p>
+    </div>
+
+    <!-- 5. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/pygame/1002b00f93ea" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 6. Mini-challenge ───────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Mini-challenges</h3>
+      <ul>
+        <li>Change the window title from <code class="inline">"Galaxy Defender"</code> to your own name.</li>
+        <li>Change <code class="inline">WIDTH</code> to 400. What happens to the window?</li>
+        <li>Change <code class="inline">screen.fill((0, 0, 50))</code> to <code class="inline">screen.fill((50, 0, 0))</code>. What colour does the window turn?</li>
+      </ul>
+      <p class="small">Remember: colours are (Red, Green, Blue), each 0–255.</p>
+    </div>
+
+    <!-- 7. Handouts ─────────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Lesson 2 Code Library</strong> — 5 brand-new pygame mini-games made just for this stage: Hello Window, Click the Balloon, Spotlight, Colour Switcher, and Smiley Face. Each one comes with challenges to try.</p>
+      <p>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 Lesson 2 Code Library (5 pygame games)</a>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Lesson 1 Code Library</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — keep these by your side for the whole course.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/1_Big_Picture.pdf" target="_blank">📄 Big Picture</a>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/5_Pixel_Cheat_Sheet.pdf" target="_blank">📄 Pixel Cheat Sheet</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>Want to try your own idea?</strong> Ask an AI like Claude or ChatGPT
+        something like <em>"Write me a short pygame program that opens a window with a red circle in the middle"</em>,
+        then paste the code into the Trinket above and click <strong>Run</strong>.
+        Reading other people's code is one of the fastest ways to get better.
+      </p>
+    </div>
+
+    <!-- 8. Nav ──────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="01-imports.html">
+        <span class="label">← Previous</span>
+        Lesson 1 · Imports
+      </a>
+      <a href="03-colours.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 3 · Colours
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(2);
+    initLessonMenu(2);
+  </script>
+</body>
+</html>

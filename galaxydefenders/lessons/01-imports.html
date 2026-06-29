@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 1 — Imports · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <!-- Lesson 1 is a FREE PREVIEW — no unlock required. -->
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header + Rocket Ladder ─────────────────────────── -->
+    <span class="stage-chip import">Stage 1 · IMPORT</span>
+    <h2 class="stage-title">Imports — grab your toolbox</h2>
+    <p class="stage-sub">
+      Every Python game starts by bringing in tools. Today we'll bring in <code class="inline">pygame</code>
+      (for graphics) and <code class="inline">random</code> (for surprises).
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 0 (Big Picture)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> Every Python game is shaped like a rocket. What are the 4 big parts?</summary>
+        <p><strong>Import &middot; Setup &middot; Body &middot; End.</strong> Every game ever made — yours included — fits this template.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> How many stages will we build to make Galaxy Defender?</summary>
+        <p><strong>10 stages</strong> — just like the Rocket Ladder. Each stage adds one new idea on top of the last one.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-1">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 1 highlighted by arrows." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 1 of 10.</p>
+    </div>
+
+    <!-- 2. What is an import? ────────────────────────────────────── -->
+    <div class="card">
+      <h3>What is an "import"?</h3>
+      <p>
+        When you write <code class="inline">import something</code>, you're telling Python:
+        <em>"Go grab that toolbox and bring it here so I can use it."</em>
+        The "toolbox" is called a <strong>library</strong>.
+      </p>
+
+      <h4 style="margin-bottom:6px;">So what's a library?</h4>
+      <p>
+        A library is simply a <strong>collection of pre-written code</strong> that someone else
+        has already created to solve common problems. Instead of writing everything from scratch,
+        you reuse those tools.
+      </p>
+      <p>
+        Think of Python itself as a <strong>basic toolbox</strong> — it knows how to add, print,
+        compare, and loop. Libraries add <strong>extra toolboxes</strong> for specific jobs:
+        one for graphics, one for sound, one for math, one for surprises.
+      </p>
+      <p class="small">
+        🏠 Another way to picture it: imagine you're building a house. Without libraries, you'd
+        make every brick yourself. With libraries, someone has already baked the bricks — you just
+        stack them. That's why one line (<code class="inline">import pygame</code>) can give you
+        thousands of ready-made tools.
+      </p>
+
+      <h4 style="margin-bottom:6px;">The three libraries we'll meet in this course</h4>
+      <ul>
+        <li>
+          <strong>pygame</strong> — the <em>games</em> toolbox. It can draw pictures, play music,
+          detect the keyboard and mouse, handle collisions, display the score, and run game loops.
+          This is what powers Galaxy Defender.
+          <br><code class="inline">import pygame</code>
+        </li>
+        <li>
+          <strong>turtle</strong> — the <em>drawing</em> toolbox. It moves a little "pen" around
+          the screen so you can draw lines, shapes, spirals, even a tiny house. Great for getting
+          comfortable with Python before jumping into pygame.
+          <br><code class="inline">import turtle</code>
+        </li>
+        <li>
+          <strong>random</strong> — the <em>surprises</em> toolbox. It picks random numbers,
+          colours, or items from a list. We use it to make enemies appear in random places so the
+          game feels different every time you play.
+          <br><code class="inline">import random</code>
+        </li>
+      </ul>
+
+      <p>
+        <strong>The big idea:</strong> one line of <code class="inline">import</code> unlocks an
+        entire toolbox of pre-written code. You write a small amount of code, and the library does
+        the heavy lifting behind the scenes.
+      </p>
+    </div>
+
+    <!-- 3. Code recipe ──────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The recipe</h3>
+      <p>Same idea as a baking recipe — short, ordered steps.</p>
+      <ol class="recipe">
+        <li>Open your code editor below.</li>
+        <li>Type <code class="inline">import pygame</code> on the first line.</li>
+        <li>Type <code class="inline">import random</code> on the second line.</li>
+        <li>Click <strong>Run</strong>. If nothing crashes, your boxes are open and ready. 🎉</li>
+      </ol>
+      <p class="small">
+        Look at the <a href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">Code Recipe handout</a> —
+        every lesson follows this same pattern.
+      </p>
+    </div>
+
+    <!-- 4. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The code so far</h3>
+<pre><code># Stage 1 — Imports
+import pygame
+import random
+
+print("Toolbox loaded! Ready for Stage 2.")</code></pre>
+    </div>
+
+    <!-- 5. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/python/fdd673b8077e" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 6. Mini-challenge ───────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Mini-challenge</h3>
+      <p>
+        Can you guess what would happen if you forgot to <code class="inline">import random</code>?
+        Try deleting that line, then try to use <code class="inline">random.randint(1, 10)</code>.
+        Python will give you an <strong>error</strong>. Read it carefully — errors are clues, not scary!
+      </p>
+    </div>
+
+    <!-- 7. Handouts ─────────────────────────────────────────────── -->
+    <div class="card">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Code Library</strong> — ten tiny example programs you can copy straight into the Trinket editor above. Each one shows what a library can do.</p>
+      <p>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Code Library (10 mini programs)</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — keep these by your side for the whole course.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/1_Big_Picture.pdf" target="_blank">📄 Big Picture</a>
+        <a class="dl-btn" href="../assets/handouts/2_Galaxy_Map.pdf" target="_blank">📄 Galaxy Map</a>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>Want to try your own idea?</strong> Ask an AI like Claude or ChatGPT
+        something like <em>"Write me a short Python turtle program that draws a flower"</em>,
+        then paste the code into the Trinket editor above and click <strong>Run</strong>.
+        Reading other people's code is one of the fastest ways to get better.
+      </p>
+    </div>
+
+    <!-- 8. Nav ──────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="00-big-picture.html">
+        <span class="label">← Previous</span>
+        Lesson 0 · Big Picture
+      </a>
+      <a href="02-setup-screen.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 2 · Setup Screen
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(1);
+    initLessonMenu(1);
+  </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 3 — Colours · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header ──────────────────────────────────────────── -->
+    <span class="stage-chip body">Stage 3 · COLOURS</span>
+    <h2 class="stage-title">Colours — give them friendly names</h2>
+    <p class="stage-sub">
+      Computers think in numbers. We think in words. Stage 3 is where we teach the
+      computer that <code class="inline">(255, 0, 0)</code> is just our friend <strong>RED</strong>.
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 2 (Setup Screen)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> What does <code>pygame.init()</code> do?</summary>
+        <p>It turns pygame <strong>ON</strong>. Starts all the parts of pygame (graphics, sound, fonts) so they're ready to use. Always run this once near the top.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> What is the Clock for?</summary>
+        <p><code>clock.tick(60)</code> makes the game run at <strong>60 frames per second</strong> on any computer — smooth on fast laptops, not too slow on old ones.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-3">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 3 highlighted by arrows." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 3 of 10. Welcome to The Body of the rocket. 💪</p>
+    </div>
+
+    <!-- 2. The big idea ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>What are colours, really?</h3>
+      <p>
+        A screen is made of tiny dots called <strong>pixels</strong>. Every pixel can
+        glow in three lights at once: <strong style="color:#d32f2f">Red</strong>,
+        <strong style="color:#2e7d32">Green</strong>, and
+        <strong style="color:#1565c0">Blue</strong>. Mix the three lights at different
+        brightness levels and you get every colour you've ever seen on a screen.
+      </p>
+      <p>
+        In pygame, a colour is just three numbers: <code class="inline">(red, green, blue)</code>.
+        Each number is from <strong>0 (off)</strong> to <strong>255 (full brightness)</strong>.
+        So:
+      </p>
+      <ul>
+        <li><code class="inline">(0, 0, 0)</code> — all lights off → <strong>black</strong></li>
+        <li><code class="inline">(255, 255, 255)</code> — all lights on full → <strong>white</strong></li>
+        <li><code class="inline">(255, 0, 0)</code> — only red → <strong>pure red</strong></li>
+        <li><code class="inline">(0, 255, 0)</code> — only green → <strong>pure green</strong></li>
+        <li><code class="inline">(255, 215, 0)</code> — red and a lot of green → <strong>gold/yellow</strong></li>
+        <li><code class="inline">(0, 0, 50)</code> — a tiny bit of blue → <strong>deep space-blue</strong></li>
+      </ul>
+      <p class="small">
+        🎨 Try opening the <a href="https://www.google.com/search?q=color+picker" target="_blank" rel="noopener">Google colour picker</a>
+        and copy the "RGB" values it shows. You can use those numbers directly in pygame.
+      </p>
+    </div>
+
+    <!-- 3. Why named colours ────────────────────────────────────── -->
+    <div class="card">
+      <h3>So why give them names?</h3>
+      <p>
+        Imagine writing a whole game and seeing this everywhere:
+      </p>
+<pre><code>pygame.draw.rect(screen, (255, 215, 0), player)
+pygame.draw.rect(screen, (255, 215, 0), bullet)
+screen.fill((0, 0, 50))</code></pre>
+      <p>
+        What does <code class="inline">(255, 215, 0)</code> mean again? You'd forget in 10 minutes.
+      </p>
+      <p>
+        Instead, we store each colour in a <strong>variable</strong> with a clear name:
+      </p>
+<pre><code>YELLOW = (255, 215, 0)
+SPACE  = (0, 0, 50)
+
+pygame.draw.rect(screen, YELLOW, player)
+pygame.draw.rect(screen, YELLOW, bullet)
+screen.fill(SPACE)</code></pre>
+      <p>
+        Same code, but <strong>readable</strong>. Anyone who looks at it (you, next month,
+        or your friend) instantly knows what's going on. Programmers do this for almost
+        everything — it's one of the most important habits you'll learn.
+      </p>
+      <p class="small">
+        ✨ <strong>Style tip:</strong> colours that never change are written in
+        <code class="inline">ALL_CAPS</code>. That's how other coders know "don't change
+        this — it's a constant."
+      </p>
+    </div>
+
+    <!-- 4. Code recipe ──────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The recipe</h3>
+      <ol class="recipe">
+        <li>After your imports and screen setup, add a section called <code class="inline"># COLOURS</code>.</li>
+        <li>Pick a name (in ALL_CAPS) and a (R, G, B) value for each colour you'll use.</li>
+        <li>Save each pair into a variable: <code class="inline">RED = (255, 0, 0)</code>.</li>
+        <li>Anywhere you'd type the numbers, type the name instead.</li>
+        <li>Run the game — if a colour needs tweaking, change ONE place and it updates everywhere.</li>
+      </ol>
+    </div>
+
+    <!-- 5. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The code so far</h3>
+<pre><code># Stage 1 — Imports
+import pygame
+
+# Stage 2 — Setup the Screen
+pygame.init()
+WIDTH = 800
+HEIGHT = 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender")
+clock = pygame.time.Clock()
+
+# Stage 3 — Colours (R, G, B) ✨
+BLACK  = (0, 0, 0)
+WHITE  = (255, 255, 255)
+RED    = (255, 0, 0)
+GREEN  = (0, 255, 0)
+YELLOW = (255, 215, 0)
+SPACE  = (0, 0, 50)
+
+# Tiny test loop — paint the screen SPACE blue and a YELLOW square
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    screen.fill(SPACE)
+    pygame.draw.rect(screen, YELLOW, (350, 250, 100, 100))
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      <p class="small">
+        Run this and you'll see a deep space-blue window with a glowing yellow square
+        in the middle. Notice how the code <em>reads</em> like a sentence: "fill the
+        screen SPACE, draw a YELLOW rectangle." That's the whole point of Stage 3. 🎉
+      </p>
+      <p class="small">
+        🎮 <strong>Want to play with more code?</strong> Scroll down to the
+        <a href="#handouts-section">Lesson 3 Code Library (5 colour games)</a>.
+        Copy any program, paste it into the editor below, and press the green ▶ <strong>Run</strong> button.
+      </p>
+    </div>
+
+    <!-- 6. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/pygame/fdd58add81c4" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 7. Mini-challenge ───────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Mini-challenges</h3>
+      <ul>
+        <li>Add a new colour called <code class="inline">PINK = (255, 105, 180)</code> and use it for the square.</li>
+        <li>Change <code class="inline">SPACE</code> to <code class="inline">(50, 0, 0)</code> — what mood does the game have now?</li>
+        <li>Add <code class="inline">PURPLE</code> and draw a second rectangle next to the first.</li>
+        <li>Why is writing <code class="inline">YELLOW</code> nicer than writing <code class="inline">(255, 215, 0)</code> over and over? Can you say it in your own words?</li>
+      </ul>
+    </div>
+
+    <!-- 8. Handouts ─────────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Lesson 3 Code Library</strong> — 5 brand-new pygame mini-games all about colour: Palette Test Card, Rainbow Stripes, Traffic Light, RGB Mixer, Random Sky.</p>
+      <p>
+        <a class="dl-btn" href="../10_Lesson3_Code_Library.pdf" target="_blank">📄 Lesson 3 Code Library (5 colour games)</a>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 Lesson 2 Code Library</a>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Lesson 1 Code Library</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — keep these by your side for the whole course.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/5_Pixel_Cheat_Sheet.pdf" target="_blank">📄 Pixel Cheat Sheet</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>Want to try your own idea?</strong> Ask an AI like Claude or ChatGPT
+        something like <em>"Write me a short pygame program that draws a rainbow"</em>,
+        then paste the code into the Trinket above and click <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 9. Nav ──────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="02-setup-screen.html">
+        <span class="label">← Previous</span>
+        Lesson 2 · Setup Screen
+      </a>
+      <a href="04-player.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 4 · Player
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(3);
+    initLessonMenu(3);
+  </script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+/* NextGen Coders Lab — Galaxy Defender course
+   Palette pulled from the infographics:
+   space-blue #1f3b5b, red #ef5350, orange #f5a623,
+   green #4caf6e, purple #8e5fb3, yellow #f7d24a */
+
+:root {
+  --space:      #0e1a2e;
+  --space-2:    #1f3b5b;
+  --paper:      #f3f6fb;
+  --ink:        #16243a;
+  --muted:      #6b7c93;
+  --red:        #ef5350;
+  --orange:     #f5a623;
+  --green:      #4caf6e;
+  --purple:     #8e5fb3;
+  --yellow:     #f7d24a;
+  --radius:     14px;
+  --shadow:     0 6px 24px rgba(14,26,46,.08);
+  --shadow-lg:  0 18px 48px rgba(14,26,46,.18);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.55;
+}
+
+a { color: var(--space-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ────────────────────────────── */
+.site-header {
+  background: var(--space);
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow);
+}
+.site-header .brand {
+  font-weight: 800;
+  letter-spacing: .5px;
+  font-size: 1.05rem;
+}
+.site-header .brand .dot { color: var(--yellow); }
+.site-header nav a,
+.site-header nav .lesson-menu > summary {
+  color: #cfe2ff;
+  margin-left: 18px;
+  font-weight: 600;
+  font-size: .95rem;
+}
+.site-header nav a:hover { color: #fff; text-decoration: none; }
+
+/* ── Lesson dropdown in the header ────────────────── */
+.lesson-menu {
+  position: relative;
+  display: inline-block;
+}
+.lesson-menu > summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  display: inline-block;
+}
+.lesson-menu > summary::-webkit-details-marker { display: none; }
+.lesson-menu > summary::after { content: " ▾"; }
+.lesson-menu[open] > summary { color: #fff; }
+
+.lesson-menu ul {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  min-width: 250px;
+  z-index: 200;
+}
+.lesson-menu li { margin: 0; }
+.lesson-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: .9rem;
+  margin: 0;                    /* override the .site-header nav a margin */
+  text-decoration: none;
+}
+.lesson-menu li a:hover { background: var(--paper); color: var(--space); }
+.lesson-menu li a.current {
+  background: var(--space-2);
+  color: #fff;
+}
+.lesson-menu li a .num-prefix {
+  display: inline-block;
+  width: 22px;
+  text-align: right;
+  color: var(--muted);
+  font-weight: 800;
+}
+.lesson-menu li a.current .num-prefix { color: var(--yellow); }
+.lesson-menu li a .label { flex: 1; }
+.lesson-menu li a .tick,
+.lesson-menu li a .free-tag,
+.lesson-menu li a .lock {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+.lesson-menu li a .tick {
+  background: var(--green);
+  color: #fff;
+}
+.lesson-menu li a .free-tag {
+  background: var(--yellow);
+  color: var(--space);
+}
+.lesson-menu li a .lock {
+  background: transparent;
+  font-size: .85rem;
+  padding: 0;
+  color: var(--muted);
+}
+
+/* ── Roadmap tick when a lesson is done ───────────── */
+.roadmap a.done {
+  background: linear-gradient(135deg, #4caf6e 0%, #3d9659 100%);
+  color: #fff;
+  border-top-color: var(--yellow);
+}
+.roadmap a.done .num { color: #fff; }
+.roadmap a.done .tick {
+  display: block;
+  margin-top: 4px;
+  color: var(--yellow);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+/* ── Hero ──────────────────────────────── */
+.hero {
+  background: radial-gradient(ellipse at top, #1f3b5b 0%, #0e1a2e 70%);
+  color: #fff;
+  padding: 64px 24px 80px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  margin: 0 0 12px;
+  letter-spacing: -.5px;
+}
+.hero p.lead {
+  font-size: 1.15rem;
+  color: #cfe2ff;
+  max-width: 680px;
+  margin: 0 auto 28px;
+}
+.hero .cta {
+  display: inline-block;
+  background: var(--yellow);
+  color: #16243a;
+  font-weight: 800;
+  padding: 14px 26px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-lg);
+  transition: transform .15s;
+}
+.hero .cta:hover { transform: translateY(-2px); text-decoration: none; }
+.hero .cta.secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #cfe2ff;
+  margin-left: 8px;
+}
+
+/* ── Containers ────────────────────────── */
+.wrap { max-width: 980px; margin: 0 auto; padding: 32px 24px; }
+.wrap.narrow { max-width: 760px; }
+
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+/* ── Stage chip + meta ─────────────────── */
+.stage-chip {
+  display: inline-block;
+  background: var(--space-2);
+  color: #fff;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: .85rem;
+  letter-spacing: .5px;
+}
+.stage-chip.import   { background: var(--red); }
+.stage-chip.setup    { background: var(--orange); color: #16243a;}
+.stage-chip.body     { background: var(--green); }
+.stage-chip.end      { background: var(--purple); }
+
+h2.stage-title {
+  font-size: 2rem;
+  margin: 8px 0 6px;
+}
+.stage-sub {
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+/* ── Infographic ───────────────────────── */
+.infographic {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 18px auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+.infographic.small { max-width: 460px; }
+.caption {
+  text-align: center;
+  color: var(--muted);
+  font-size: .9rem;
+  margin: -6px 0 24px;
+}
+
+/* ── Rocket Ladder stage marker ─────────────────────
+   Overlays a pulsing yellow arrow on each side of the
+   Rocket Ladder image, pointing at the current stage.   */
+.rocket-marker {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 18px auto;
+}
+.rocket-marker img {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+.rocket-marker .marker {
+  position: absolute;
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--yellow);
+  text-shadow:
+    0 0 6px rgba(0, 0, 0, .55),
+    0 0 14px rgba(247, 210, 74, .65);
+  pointer-events: none;
+  transform: translateY(-50%);
+  animation: rocket-marker-pulse 1.4s ease-in-out infinite;
+}
+.rocket-marker .marker.left  { left: -6px; }
+.rocket-marker .marker.right { right: -6px; }
+
+@keyframes rocket-marker-pulse {
+  0%, 100% { transform: translateY(-50%) scale(1);    opacity: .85; }
+  50%      { transform: translateY(-50%) scale(1.25); opacity: 1;   }
+}
+
+/* Per-stage vertical position. Measured precisely against the
+   regenerated 3_Rocket_Ladder.png (620×1020 canvas, body Y range
+   195→825 px, ten 63 px rows). Step = 6.18% between stages. */
+.rocket-marker.stage-1  .marker { top: 22.21%; }
+.rocket-marker.stage-2  .marker { top: 28.38%; }
+.rocket-marker.stage-3  .marker { top: 34.56%; }
+.rocket-marker.stage-4  .marker { top: 40.74%; }
+.rocket-marker.stage-5  .marker { top: 46.91%; }
+.rocket-marker.stage-6  .marker { top: 53.09%; }
+.rocket-marker.stage-7  .marker { top: 59.26%; }
+.rocket-marker.stage-8  .marker { top: 65.44%; }
+.rocket-marker.stage-9  .marker { top: 71.62%; }
+.rocket-marker.stage-10 .marker { top: 77.79%; }
+
+/* ── Recipe steps ──────────────────────── */
+.recipe { counter-reset: step; padding: 0; list-style: none; }
+.recipe li {
+  position: relative;
+  padding: 14px 16px 14px 60px;
+  background: #fff;
+  border-left: 6px solid var(--green);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+}
+.recipe li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  width: 32px; height: 32px;
+  background: var(--green);
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+}
+
+/* ── Code blocks ───────────────────────── */
+pre, code {
+  font-family: 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
+}
+pre {
+  background: #0e1a2e;
+  color: #cfe2ff;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: .95rem;
+}
+code.inline {
+  background: #eef2f9;
+  color: #16243a;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ── Trinket embed ─────────────────────── */
+.trinket-box {
+  background: #fff;
+  border: 2px dashed var(--space-2);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 24px 0;
+  text-align: center;
+}
+.trinket-box .label {
+  display: inline-block;
+  background: var(--space-2);
+  color: #fff;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: .8rem;
+  letter-spacing: .5px;
+  margin-bottom: 12px;
+}
+.trinket-box iframe {
+  width: 100%;
+  height: 480px;
+  border: 0;
+  border-radius: 8px;
+}
+.trinket-box .placeholder-note {
+  color: var(--muted);
+  font-size: .9rem;
+  margin-top: 8px;
+}
+
+/* ── Challenge ─────────────────────────── */
+.challenge {
+  background: linear-gradient(135deg, #fff7d6, #ffeaa0);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 24px 0;
+  border-left: 6px solid var(--yellow);
+}
+.challenge h3 { margin-top: 0; color: #8a6a00; }
+
+/* ── Nav (next/prev) ───────────────────── */
+.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 36px;
+}
+.lesson-nav a {
+  flex: 1;
+  background: #fff;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-weight: 700;
+  color: var(--ink);
+}
+.lesson-nav a:hover { background: var(--paper); text-decoration: none; }
+.lesson-nav .next { text-align: right; }
+.lesson-nav .label {
+  display: block;
+  font-size: .75rem;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ── Footer ────────────────────────────── */
+.site-footer {
+  background: var(--space);
+  color: #cfe2ff;
+  text-align: center;
+  padding: 28px 24px;
+  margin-top: 60px;
+  font-size: .9rem;
+}
+
+/* ── Unlock page ──────────────────────── */
+.unlock-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at top, #1f3b5b 0%, #0e1a2e 70%);
+  padding: 24px;
+}
+.unlock-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+.unlock-card h1 { margin-top: 0; }
+.unlock-card input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e1e8f2;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin: 12px 0;
+}
+.unlock-card input:focus { border-color: var(--space-2); outline: none; }
+.unlock-card button {
+  width: 100%;
+  background: var(--space-2);
+  color: #fff;
+  border: 0;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.unlock-card button:hover { background: var(--space); }
+.unlock-card .error {
+  color: var(--red);
+  font-weight: 700;
+  margin-top: 10px;
+  min-height: 1.4em;
+}
+
+/* ── Roadmap (Lesson 0) ───────────────── */
+.roadmap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.roadmap a {
+  background: #fff;
+  padding: 14px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  font-weight: 700;
+  color: var(--ink);
+  border-top: 5px solid var(--green);
+}
+.roadmap a:hover { transform: translateY(-2px); text-decoration: none; }
+.roadmap a .num {
+  display: block;
+  font-size: 1.6rem;
+  color: var(--space-2);
+}
+.roadmap a.locked { opacity: .55; cursor: not-allowed; }
+.roadmap a.capstone {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #fff7d6, #ffeaa0);
+  border-top: 5px solid var(--yellow);
+  font-size: 1rem;
+  padding: 18px;
+}
+.roadmap a.capstone .num {
+  display: inline-block;
+  background: var(--yellow);
+  color: var(--space);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
+.roadmap a.capstone:hover { background: linear-gradient(135deg, #fff2c0, #ffd970); }
+
+/* ── Quick Recap (spaced-review quizzes) ─── */
+.quick-recap {
+  background: linear-gradient(135deg, #eef6ff, #e1ecff);
+  border-left: 6px solid var(--space-2);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.quick-recap h3 {
+  margin: 0 0 6px;
+  color: var(--space-2);
+  font-size: 1.1rem;
+}
+.quick-recap > p { margin: 0 0 12px; color: var(--muted); font-size: .9rem; }
+.quick-recap details {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-left: 3px solid var(--green);
+}
+.quick-recap details[open] { border-left-color: var(--yellow); }
+.quick-recap summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--ink);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.quick-recap summary::-webkit-details-marker { display: none; }
+.quick-recap summary::before {
+  content: "▶";
+  display: inline-block;
+  font-size: .8rem;
+  color: var(--space-2);
+  transition: transform .15s;
+}
+.quick-recap details[open] summary::before { transform: rotate(90deg); }
+.quick-recap details > p,
+.quick-recap details > div {
+  margin: 8px 0 2px 16px;
+  color: var(--ink);
+  font-size: .95rem;
+  line-height: 1.5;
+}
+
+/* ── Collapsible long code blocks (Lesson 11) ── */
+details.collapsible-code {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid #e1e8f2;
+  margin: 16px 0;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+details.collapsible-code > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 18px;
+  background: var(--space-2);
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+details.collapsible-code > summary::-webkit-details-marker { display: none; }
+details.collapsible-code > summary::after {
+  content: "⌄ Click to show full code";
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--yellow);
+  background: rgba(255,255,255,.12);
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+details.collapsible-code[open] > summary::after {
+  content: "⌃ Click to hide";
+}
+details.collapsible-code .preview {
+  padding: 14px 18px;
+  font-family: 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
+  font-size: .85rem;
+  background: #f7faff;
+  color: var(--muted);
+  border-top: 1px solid #e1e8f2;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+}
+details.collapsible-code pre {
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ── Utility ───────────────────────────── */
+.center { text-align: center; }
+.small { font-size: .9rem; color: var(--muted); }
+.dl-btn {
+  display: inline-block;
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 999px;
+  margin-top: 8px;
+}
+.dl-btn:hover { background: #3d9659; text-decoration: none; }
+
+/* ── Print stylesheet ──────────────────────────────
+   Teachers / parents print lesson pages as handouts.
+   Hides nav, footer, embeds, buttons — keeps the
+   lesson body, headings, code, and infographics.    */
+@media print {
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .site-header,
+  .site-footer,
+  .lesson-nav,
+  .trinket-box,
+  .lesson-menu,
+  .quick-recap details summary::before,
+  details.collapsible-code > summary::after,
+  iframe,
+  video,
+  .cta,
+  .dl-btn,
+  .lesson-menu ul {
+    display: none !important;
+  }
+  /* Open every details block so all content prints */
+  details:not(.collapsible-code) > summary { font-weight: 700; cursor: default; }
+  details[open] > * { display: revert; }
+  details:not([open]) > *:not(summary) { display: revert !important; }
+  .wrap { max-width: 100%; padding: 0; }
+  .card,
+  .quick-recap,
+  .challenge {
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+    background: #fff !important;
+  }
+  pre, code { background: #f4f4f4 !important; color: #000 !important; }
+  .infographic, .rocket-marker img { max-width: 90%; page-break-inside: avoid; }
+  a { color: #000 !important; text-decoration: none !important; }
+  /* Print one-line page header on every printed page */
+  @page { margin: 16mm 14mm 18mm 14mm; }
+  body::after {
+    content: "NextGen Coders Lab · Galaxy Defender · printable handout · nextgencoders@jestechsolutions.co.uk";
+    position: fixed;
+    bottom: 6mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 8pt;
+    color: #888;
+  }
+}

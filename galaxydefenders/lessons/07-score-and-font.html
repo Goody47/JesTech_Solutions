@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 7 — Score &amp; Font · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header ──────────────────────────────────────────── -->
+    <span class="stage-chip end">Stage 7 · SCORE &amp; FONT</span>
+    <h2 class="stage-title">Score &amp; Font — keep score, show it on screen</h2>
+    <p class="stage-sub">
+      In Stage 6 you made bullets vanish enemies. Cool — but how many did you zap?
+      In Stage 7 we'll count the hits with a <strong>score</strong> variable, then
+      use <strong>pygame fonts</strong> to draw that number right on the screen.
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 6 (Enemies)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> How do we create 5 enemies in one go?</summary>
+        <p>A <code>for</code> loop: <code>for i in range(5): enemies.append(pygame.Rect(...))</code>. Change 5 to 50 and you have 50 enemies — same code.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> Why do we "recycle" enemies instead of removing them?</summary>
+        <p>Treadmill pattern. When an alien hits the bottom, we just send it back to the top at a new random spot. The list stays the same size but the action never stops.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-7">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 7 highlighted by arrows." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 7 of 10. Welcome to the END of the rocket — the polish stages!</p>
+    </div>
+
+    <!-- 2. The score variable ──────────────────────────────────── -->
+    <div class="card">
+      <h3>A score is just a number that grows</h3>
+      <p>
+        A "score" sounds fancy, but it's just a variable that starts at
+        <code class="inline">0</code> and gets <code class="inline">+ 1</code>
+        every time something good happens (like a bullet hitting an alien).
+      </p>
+<pre><code>score = 0           # start of the game
+
+# ...later, inside the collision check...
+score += 1          # short for: score = score + 1</code></pre>
+      <p class="small">
+        💡 <code class="inline">+=</code> is called <strong>plus-equals</strong>.
+        It's how Python programmers say "add this to what's already there."
+        You'll use it everywhere in games — for score, lives, ammo, levels.
+      </p>
+    </div>
+
+    <!-- 3. pygame.font ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>Drawing text with pygame.font</h3>
+      <p>
+        pygame can't just <em>print</em> text on the screen like the Python
+        console — it has to <strong>draw</strong> it like a picture. That takes
+        three steps:
+      </p>
+      <ol class="recipe">
+        <li><strong>Pick a font and size.</strong> <code class="inline">font = pygame.font.SysFont("Arial", 32)</code></li>
+        <li><strong>Render the text into an image.</strong> <code class="inline">text_img = font.render("Score: 5", True, WHITE)</code></li>
+        <li><strong>Blit (paste) that image onto the screen.</strong> <code class="inline">screen.blit(text_img, (10, 10))</code></li>
+      </ol>
+      <p class="small">
+        🖼️ <code class="inline">.blit()</code> is pygame's word for "paste this image
+        at these coordinates." The <code class="inline">True</code> in
+        <code class="inline">.render()</code> turns on smoothing so the letters
+        look nice and not pixelated.
+      </p>
+    </div>
+
+    <!-- 4. Putting score + font together ───────────────────────── -->
+    <div class="card">
+      <h3>Showing a live score</h3>
+      <p>
+        Here's the trick: we make the font <strong>once</strong> at the top
+        (fonts are slow to create), but we re-render the text <strong>every
+        frame</strong> because the number keeps changing.
+      </p>
+<pre><code>WHITE = (255, 255, 255)
+font  = pygame.font.SysFont("Arial", 32)   # do this ONCE, near the top
+
+# ...inside the game loop, after screen.fill(SPACE)...
+score_img = font.render("Score: " + str(score), True, WHITE)
+screen.blit(score_img, (10, 10))           # top-left corner</code></pre>
+      <p class="small">
+        🔢 <code class="inline">str(score)</code> turns the number into text so
+        we can glue it onto <code class="inline">"Score: "</code> with
+        <code class="inline">+</code>. If you forget <code class="inline">str()</code>,
+        Python will yell "can't add str + int" — that's its way of saying
+        "words and numbers don't mix."
+      </p>
+    </div>
+
+    <!-- 5. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The code so far</h3>
+<pre><code># Stages 1–6 already in place...
+import pygame
+import random
+
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender")
+clock = pygame.time.Clock()
+
+YELLOW = (255, 215, 0)
+RED    = (255, 0, 0)
+WHITE  = (255, 255, 255)
+SPACE  = (0, 0, 50)
+
+# 🚀 Cartoon ship + ✨ fiery laser (from L5 + L6)
+def draw_ship(s, x, y):
+    pygame.draw.polygon(s, (0, 230, 100),
+        [(x+30,y),(x+60,y+40),(x+40,y+30),(x+20,y+30),(x,y+40)])
+    pygame.draw.circle (s, (100, 200, 255), (x+30, y+18), 6)
+    pygame.draw.polygon(s, (255, 100, 0), [(x+25,y+30),(x+35,y+30),(x+30,y+42)])
+
+def draw_laser(s, b):
+    pygame.draw.ellipse(s, (255, 100, 0), (b.x-3, b.y-5, b.width+6, b.height+10))
+    pygame.draw.ellipse(s, (255, 220, 0), b)
+
+# 👾 Cartoon alien (new this lesson!)
+def draw_alien(s, e):
+    cx, cy = e.x + 25, e.y + 25
+    pygame.draw.ellipse(s, (200, 50, 200), (e.x, e.y+10, 50, 30))     # body dome
+    pygame.draw.ellipse(s, (200, 50, 200), (e.x+10, e.y, 30, 20))     # head
+    pygame.draw.circle (s, WHITE,          (cx-7, cy-8), 5)            # eye whites
+    pygame.draw.circle (s, WHITE,          (cx+7, cy-8), 5)
+    pygame.draw.circle (s, (0, 0, 0),      (cx-7, cy-8), 2)            # pupils
+    pygame.draw.circle (s, (0, 0, 0),      (cx+7, cy-8), 2)
+
+player = pygame.Rect(370, 520, 60, 40)
+player_speed = 5
+
+bullets = []
+bullet_speed = 10
+
+enemies = []
+enemy_speed = 2
+for i in range(5):
+    e = pygame.Rect(random.randint(0, WIDTH - 50),
+                    random.randint(-300, 0),
+                    50, 50)
+    enemies.append(e)
+
+# Stage 7 — Score &amp; Font ✨
+score = 0
+font  = pygame.font.SysFont("Arial", 32)
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            bullets.append(pygame.Rect(player.x + 27, player.y, 6, 15))
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]  and player.x &gt; 0:
+        player.x -= player_speed
+    if keys[pygame.K_RIGHT] and player.x &lt; WIDTH - 60:
+        player.x += player_speed
+
+    # move bullets
+    for b in bullets[:]:
+        b.y -= bullet_speed
+        if b.y &lt; 0:
+            bullets.remove(b)
+
+    # move + recycle enemies
+    for e in enemies:
+        e.y += enemy_speed
+        if e.y &gt; HEIGHT:
+            e.y = random.randint(-200, -50)
+            e.x = random.randint(0, WIDTH - 50)
+
+    # collisions — now they count!
+    for b in bullets[:]:
+        for e in enemies:
+            if b.colliderect(e):
+                if b in bullets:
+                    bullets.remove(b)
+                e.y = random.randint(-200, -50)
+                e.x = random.randint(0, WIDTH - 50)
+                score += 1                            # 🎯 +1 per hit
+
+    # draw everything
+    screen.fill(SPACE)
+    draw_ship(screen, player.x, player.y)    # 🚀
+    for b in bullets:
+        draw_laser(screen, b)                 # ✨
+    for e in enemies:
+        draw_alien(screen, e)                 # 👾
+
+    # draw the score on top
+    score_img = font.render("Score: " + str(score), True, WHITE)
+    screen.blit(score_img, (10, 10))
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      <p class="small">
+        Run it. Top-left of the screen now shows <em>Score: 0</em>, and every
+        time you zap an alien the number ticks up. You just built a real,
+        scoring arcade game. 🏆
+      </p>
+      <p class="small">
+        🎮 <strong>Want to play with more code?</strong> Scroll down to the
+        <a href="#handouts-section">Lesson 7 Code Library (6 score &amp; font games)</a>.
+        Copy any program, paste it into the editor below, and press the green ▶ <strong>Run</strong> button.
+      </p>
+    </div>
+
+    <!-- 6. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/pygame/9fbaa969c8cf" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 7. Mini-challenges ──────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Mini-challenges</h3>
+      <ul>
+        <li><strong>Bigger score:</strong> change <code class="inline">SysFont("Arial", 32)</code> to <code class="inline">SysFont("Arial", 64)</code> for a giant scoreboard.</li>
+        <li><strong>Change colour:</strong> swap <code class="inline">WHITE</code> for <code class="inline">YELLOW</code> in the <code class="inline">font.render(...)</code> line.</li>
+        <li><strong>+10 per hit:</strong> change <code class="inline">score += 1</code> to <code class="inline">score += 10</code>.</li>
+        <li><strong>Top-right instead:</strong> change the blit position from <code class="inline">(10, 10)</code> to <code class="inline">(WIDTH - 180, 10)</code>.</li>
+        <li><strong>Show a high score too:</strong> add a second variable <code class="inline">high = 0</code> and update it with <code class="inline">if score &gt; high: high = score</code>. Render it on a second line.</li>
+      </ul>
+    </div>
+
+    <!-- 8. Handouts ─────────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Lesson 7 Code Library</strong> — 6 brand-new pygame mini-games all about <em>scoring, fonts, and on-screen text</em>: Click Counter, Score on Hit, Big Bold Number, Two-Line Scoreboard, Colour-Changing Score, High Score Tracker.</p>
+      <p>
+        <a class="dl-btn" href="../14_Lesson7_Code_Library.pdf" target="_blank">📄 Lesson 7 Code Library (6 score &amp; font games)</a>
+        <a class="dl-btn" href="../18_Sprite_Bonus.pdf" target="_blank">🎨 Sprite Bonus (visual polish)</a>
+        <a class="dl-btn" href="../13_Lesson6_Code_Library.pdf" target="_blank">📄 Lesson 6 Code Library</a>
+        <a class="dl-btn" href="../12_Lesson5_Code_Library.pdf" target="_blank">📄 Lesson 5 Code Library</a>
+        <a class="dl-btn" href="../11_Lesson4_Code_Library.pdf" target="_blank">📄 Lesson 4 Code Library</a>
+        <a class="dl-btn" href="../10_Lesson3_Code_Library.pdf" target="_blank">📄 Lesson 3 Code Library</a>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 Lesson 2 Code Library</a>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Lesson 1 Code Library</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — keep these by your side for the whole course.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/handouts/5_Pixel_Cheat_Sheet.pdf" target="_blank">📄 Pixel Cheat Sheet</a>
+        <a class="dl-btn" href="../assets/handouts/4_Code_Comic.pdf" target="_blank">📄 Code Comic</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>Want to try your own idea?</strong> Ask an AI like Claude or ChatGPT
+        something like <em>"Write me a short pygame program that shows a score in the top-left corner using pygame.font"</em>,
+        then paste the code into the Trinket above and click <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 9. Nav ──────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="06-enemies.html">
+        <span class="label">← Previous</span>
+        Lesson 6 · Enemies
+      </a>
+      <a href="08-game-states.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 8 · Game States
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(7);
+    initLessonMenu(7);
+  </script>
+</body>
+</html>

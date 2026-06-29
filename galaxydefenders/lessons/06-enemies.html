@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 6 — Enemies · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header ──────────────────────────────────────────── -->
+    <span class="stage-chip body">Stage 6 · ENEMIES</span>
+    <h2 class="stage-title">Enemies — meet the aliens</h2>
+    <p class="stage-sub">
+      In Stage 5 you started shooting bullets. In Stage 6 you finally have something
+      to shoot AT: five red aliens that fall from random spots above the screen.
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 5 (Bullets)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> What's a <strong>list</strong> in Python?</summary>
+        <p>One variable that holds many items in order. Like a shopping basket — you can add items, remove items, and loop through them. <code>bullets = []</code> starts an empty one.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> Why do we use <code>bullets[:]</code> when removing items in a loop?</summary>
+        <p>It makes a quick <strong>copy</strong> to loop over so we can safely <code>.remove()</code> from the original list. Without the copy, Python gets confused mid-loop.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-6">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 6 highlighted by arrows." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 6 of 10. The Body of the rocket is almost done!</p>
+    </div>
+
+    <!-- 2. Loop to create many ─────────────────────────────────── -->
+    <div class="card">
+      <h3>One loop, five enemies</h3>
+      <p>
+        We could write five separate <code class="inline">pygame.Rect(...)</code>
+        lines, but that's boring — and it would be 100 lines if we ever wanted 100
+        aliens. Instead we use a <code class="inline">for</code> loop to build the
+        list <strong>once</strong>, and then change the number whenever we want more.
+      </p>
+<pre><code>enemies = []
+enemy_speed = 2
+
+for i in range(5):                                # five times...
+    e = pygame.Rect(random.randint(0, WIDTH - 50),     # random x across the top
+                    random.randint(-300, 0),           # random y ABOVE the screen
+                    50, 50)                            # 50×50 alien
+    enemies.append(e)                             # add it to the list</code></pre>
+      <p class="small">
+        🎲 <code class="inline">random.randint(a, b)</code> gives a random whole number
+        from <code class="inline">a</code> up to <code class="inline">b</code>. Negative
+        y values mean the enemy starts <em>above</em> the visible window — so they slide
+        down and look like they're coming from space.
+      </p>
+    </div>
+
+    <!-- 3. Recycle, don't remove ──────────────────────────────── -->
+    <div class="card">
+      <h3>Recycle, don't throw away</h3>
+      <p>
+        With bullets we <em>removed</em> them when they flew off the screen.
+        With enemies we do something cleverer: when one reaches the bottom, we
+        <strong>send it back to the top</strong> at a new random spot. The list
+        always has exactly 5 enemies, but they keep coming forever — much smoother
+        than spawning new objects every second.
+      </p>
+<pre><code>for e in enemies:
+    e.y += enemy_speed
+    if e.y &gt; HEIGHT:                          # reached the bottom?
+        e.y = random.randint(-200, -50)        # send it back up
+        e.x = random.randint(0, WIDTH - 50)    # at a new random x</code></pre>
+      <p class="small">
+        💡 Think of it like a treadmill: the same five aliens loop forever. Recycling
+        is one of the most-used tricks in game programming.
+      </p>
+    </div>
+
+    <!-- 4. Sneak peek: colliderect ─────────────────────────────── -->
+    <div class="card">
+      <h3>Sneak peek: bullets versus enemies</h3>
+      <p>
+        Now that we have bullets AND enemies on the screen, we can ask pygame the
+        most important question in any shooter: <em>"did anything hit anything?"</em>
+        Every Rect has a built-in helper called <code class="inline">.colliderect()</code>
+        that returns <code class="inline">True</code> if two rectangles overlap.
+      </p>
+<pre><code>for b in bullets[:]:
+    for e in enemies:
+        if b.colliderect(e):       # did this bullet touch this enemy?
+            bullets.remove(b)
+            e.y = random.randint(-200, -50)   # recycle the alien
+            e.x = random.randint(0, WIDTH - 50)
+            score += 1</code></pre>
+      <p class="small">
+        We'll formally add <code class="inline">score</code> in Lesson 7. For now,
+        just notice the pattern: <em>for each bullet, check every enemy.</em>
+      </p>
+    </div>
+
+    <!-- 5. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The code so far</h3>
+<pre><code># Stages 1–5 already in place...
+import pygame
+import random
+
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender")
+clock = pygame.time.Clock()
+
+YELLOW = (255, 215, 0)
+RED    = (255, 0, 0)
+SPACE  = (0, 0, 50)
+
+# 🚀 Cartoon ship (from Lesson 5)
+def draw_ship(s, x, y):
+    pygame.draw.polygon(s, (0, 230, 100),
+        [(x+30,y),(x+60,y+40),(x+40,y+30),(x+20,y+30),(x,y+40)])
+    pygame.draw.circle (s, (100, 200, 255), (x+30, y+18), 6)
+    pygame.draw.polygon(s, (255, 100, 0), [(x+25,y+30),(x+35,y+30),(x+30,y+42)])
+
+# ✨ Fiery laser (new this lesson!)
+def draw_laser(s, b):
+    pygame.draw.ellipse(s, (255, 100, 0), (b.x-3, b.y-5, b.width+6, b.height+10))  # glow
+    pygame.draw.ellipse(s, (255, 220, 0), b)                                       # core
+
+player = pygame.Rect(370, 520, 60, 40)
+player_speed = 5
+
+bullets = []
+bullet_speed = 10
+
+# Stage 6 — Enemies ✨
+enemies = []
+enemy_speed = 2
+for i in range(5):
+    e = pygame.Rect(random.randint(0, WIDTH - 50),
+                    random.randint(-300, 0),
+                    50, 50)
+    enemies.append(e)
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            bullets.append(pygame.Rect(player.x + 27, player.y, 6, 15))
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]  and player.x &gt; 0:
+        player.x -= player_speed
+    if keys[pygame.K_RIGHT] and player.x &lt; WIDTH - 60:
+        player.x += player_speed
+
+    # move bullets
+    for b in bullets[:]:
+        b.y -= bullet_speed
+        if b.y &lt; 0:
+            bullets.remove(b)
+
+    # move + recycle enemies
+    for e in enemies:
+        e.y += enemy_speed
+        if e.y &gt; HEIGHT:
+            e.y = random.randint(-200, -50)
+            e.x = random.randint(0, WIDTH - 50)
+
+    # collisions (sneak peek of Lesson 7)
+    for b in bullets[:]:
+        for e in enemies:
+            if b.colliderect(e):
+                if b in bullets:
+                    bullets.remove(b)
+                e.y = random.randint(-200, -50)
+                e.x = random.randint(0, WIDTH - 50)
+
+    screen.fill(SPACE)
+    draw_ship(screen, player.x, player.y)     # 🚀 cartoon ship
+    for b in bullets:
+        draw_laser(screen, b)                  # ✨ fiery laser
+    for e in enemies:
+        pygame.draw.rect(screen, RED, e)       # plain red squares (we cartoon them in L7)
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      <p class="small">
+        Run it. Five red aliens drift down from random spots. Move LEFT/RIGHT, hit
+        SPACE to shoot, and watch the aliens disappear and reappear at the top when
+        you hit them. You just built the heart of a real shooter. 👾
+      </p>
+      <p class="small">
+        🎮 <strong>Want to play with more code?</strong> Scroll down to the
+        <a href="#handouts-section">Lesson 6 Code Library (6 enemy games)</a>.
+        Copy any program, paste it into the editor below, and press the green ▶ <strong>Run</strong> button.
+      </p>
+    </div>
+
+    <!-- 6. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/pygame/38e01734eca2" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 7. Mini-challenges ──────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Mini-challenges</h3>
+      <ul>
+        <li><strong>More aliens:</strong> change <code class="inline">range(5)</code> to <code class="inline">range(15)</code>.</li>
+        <li><strong>Faster aliens:</strong> change <code class="inline">enemy_speed = 2</code> to <code class="inline">8</code>.</li>
+        <li><strong>Tinier aliens:</strong> change the <code class="inline">50, 50</code> at the end of the Rect to <code class="inline">20, 20</code>. (Don't forget to update <code class="inline">WIDTH - 50</code> to <code class="inline">WIDTH - 20</code>.)</li>
+        <li>Make alien colour change every time it's hit. Hint: store a colour in a list parallel to <code class="inline">enemies</code>, then pick a random one in the collision block.</li>
+      </ul>
+    </div>
+
+    <!-- 8. Handouts ─────────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Lesson 6 Code Library</strong> — 6 brand-new pygame mini-games all about <em>enemies, spawning, recycling, and collisions</em>: One Falling Enemy, Recycle the Enemy, Five Enemies, Asteroid Field, Touch Detector, Mini Defender.</p>
+      <p>
+        <a class="dl-btn" href="../13_Lesson6_Code_Library.pdf" target="_blank">📄 Lesson 6 Code Library (6 enemy games)</a>
+        <a class="dl-btn" href="../18_Sprite_Bonus.pdf" target="_blank">🎨 Sprite Bonus (visual polish)</a>
+        <a class="dl-btn" href="../12_Lesson5_Code_Library.pdf" target="_blank">📄 Lesson 5 Code Library</a>
+        <a class="dl-btn" href="../11_Lesson4_Code_Library.pdf" target="_blank">📄 Lesson 4 Code Library</a>
+        <a class="dl-btn" href="../10_Lesson3_Code_Library.pdf" target="_blank">📄 Lesson 3 Code Library</a>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 Lesson 2 Code Library</a>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Lesson 1 Code Library</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — keep these by your side for the whole course.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/4_Code_Comic.pdf" target="_blank">📄 Code Comic</a>
+        <a class="dl-btn" href="../assets/handouts/5_Pixel_Cheat_Sheet.pdf" target="_blank">📄 Pixel Cheat Sheet</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>Want to try your own idea?</strong> Ask an AI like Claude or ChatGPT
+        something like <em>"Write me a short pygame program where 10 aliens fall from the top of the screen"</em>,
+        then paste the code into the Trinket above and click <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 9. Nav ──────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="05-bullets.html">
+        <span class="label">← Previous</span>
+        Lesson 5 · Bullets
+      </a>
+      <a href="07-score-and-font.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 7 · Score &amp; Font
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(6);
+    initLessonMenu(6);
+  </script>
+</body>
+</html>

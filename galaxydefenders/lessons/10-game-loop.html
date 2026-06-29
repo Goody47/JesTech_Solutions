@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson 10 — Game Loop · Galaxy Defender</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Code&display=swap" rel="stylesheet" />
+  <script src="../js/unlock.js"></script>
+  <script>requireUnlock("../unlock.html");</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span> · Galaxy Defender</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <details class="lesson-menu">
+        <summary>Lessons</summary>
+        <ul>
+          <li><a href="00-big-picture.html"     data-lesson="0"><span class="num-prefix">0</span><span class="label">Big Picture</span></a></li>
+          <li><a href="01-imports.html"         data-lesson="1"><span class="num-prefix">1</span><span class="label">Imports</span></a></li>
+          <li><a href="02-setup-screen.html"    data-lesson="2"><span class="num-prefix">2</span><span class="label">Setup Screen</span></a></li>
+          <li><a href="03-colours.html"         data-lesson="3"><span class="num-prefix">3</span><span class="label">Colours</span></a></li>
+          <li><a href="04-player.html"          data-lesson="4"><span class="num-prefix">4</span><span class="label">Player</span></a></li>
+          <li><a href="05-bullets.html"         data-lesson="5"><span class="num-prefix">5</span><span class="label">Bullets</span></a></li>
+          <li><a href="06-enemies.html"         data-lesson="6"><span class="num-prefix">6</span><span class="label">Enemies</span></a></li>
+          <li><a href="07-score-and-font.html"  data-lesson="7"><span class="num-prefix">7</span><span class="label">Score &amp; Font</span></a></li>
+          <li><a href="08-game-states.html"     data-lesson="8"><span class="num-prefix">8</span><span class="label">Game States</span></a></li>
+          <li><a href="09-helpers.html"         data-lesson="9"><span class="num-prefix">9</span><span class="label">Helpers</span></a></li>
+          <li><a href="10-game-loop.html"       data-lesson="10"><span class="num-prefix">10</span><span class="label">Game Loop</span></a></li>
+          <li><a href="11-design-your-game.html" data-lesson="11"><span class="num-prefix">11</span><span class="label">Design YOUR Game 🏆</span></a></li>
+        </ul>
+      </details>
+      <a href="#" onclick="clearUnlock();return false;">Sign out</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1. Stage header ──────────────────────────────────────────── -->
+    <span class="stage-chip end">Stage 10 · GAME LOOP</span>
+    <h2 class="stage-title">The Game Loop — your game's heartbeat 💓</h2>
+    <p class="stage-sub">
+      You've reached the last stage. The Game Loop is the invisible rhythm under
+      every video game ever made — a tiny piece of code that repeats <strong>60
+      times every second</strong>, reading your keys, moving stuff, checking hits,
+      drawing the new frame. Once you see it, you'll spot it in every game you play.
+    </p>
+
+    <div class="quick-recap">
+      <h3>🧠 Quick Recap (30 seconds)</h3>
+      <p>Before we dive in — can you remember from <strong>Lesson 9 (Helpers)</strong>?</p>
+      <details>
+        <summary><strong>Q1.</strong> What's a helper function?</summary>
+        <p>A small named block of code you write <strong>once</strong> with <code>def</code> and call by name as many times as you like. Like a recipe: write it once, use it forever.</p>
+      </details>
+      <details>
+        <summary><strong>Q2.</strong> What does the <code>global</code> keyword do?</summary>
+        <p>It tells Python: <em>"when I change this variable inside the function, change the MAIN one outside — don't make a brand-new one trapped in here."</em> Crucial for things like <code>score</code> and <code>lives</code>.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Where we are on the rocket</h3>
+      <div class="rocket-marker stage-10">
+        <img src="../assets/infographics/3_Rocket_Ladder.png" alt="Rocket Ladder infographic — Stage 10 highlighted by arrows (final stage)." />
+        <span class="marker left">▶</span>
+        <span class="marker right">◀</span>
+      </div>
+      <p class="caption">You're on Stage 10 of 10. 🎉 The top of the rocket!</p>
+    </div>
+
+    <!-- 2. The heartbeat ───────────────────────────────────────── -->
+    <div class="card">
+      <h3>What IS a game loop?</h3>
+      <p>
+        Think of your heart. It doesn't beat once and stop — it beats over and
+        over, all day, every day, doing the same job (push blood, rest, push,
+        rest). A game does the same thing: the screen redraws over and over,
+        doing the same job each frame.
+      </p>
+      <p>
+        In Python it looks like this:
+      </p>
+<pre><code>running = True
+while running:        # repeat this block FOREVER until running becomes False
+    ...               # do everything for one frame here
+    clock.tick(60)    # then wait so we run at exactly 60 frames per second</code></pre>
+      <p class="small">
+        💡 60 frames per second is the magic number. Below 30, motion looks jerky.
+        Above 60 doesn't help much on most screens. <code class="inline">clock.tick(60)</code>
+        does the maths so we hit 60 exactly, even on slow computers.
+      </p>
+    </div>
+
+    <!-- 3. The six phases ───────────────────────────────────────── -->
+    <div class="card">
+      <h3>The six things every frame does</h3>
+      <p>
+        Inside the loop, the work splits into the same six phases every frame.
+        Every stage you've built so far slots into one of these phases:
+      </p>
+      <ol class="recipe">
+        <li><strong>EVENTS</strong> — has the player clicked the close button? Pressed SPACE? Moved the mouse? (Stage 5)</li>
+        <li><strong>KEYS</strong> — which arrows are being <em>held</em> right now? (Stage 4)</li>
+        <li><strong>UPDATE</strong> — move bullets up, slide enemies down, change positions. (Stages 5–6)</li>
+        <li><strong>COLLISIONS</strong> — did a bullet hit an enemy? Did an enemy reach the player? (Stages 6–8)</li>
+        <li><strong>DRAW</strong> — paint the background, the player, the bullets, the enemies, the score. (Stages 2–7)</li>
+        <li><strong>FLIP + TICK</strong> — show the new frame on the screen and wait so we run at 60 fps.</li>
+      </ol>
+      <p class="small">
+        🎯 The order matters. If you draw <em>before</em> updating, you'll always
+        be one frame behind. If you flip <em>before</em> drawing, you'll see a blank screen.
+      </p>
+    </div>
+
+    <!-- 4. The two magic lines ──────────────────────────────────── -->
+    <div class="card">
+      <h3>The two magic lines at the end</h3>
+<pre><code>pygame.display.flip()    # "I'm done drawing — show the new frame now."
+clock.tick(60)           # "Wait long enough so we run at 60 FPS."</code></pre>
+      <p>
+        Without <code class="inline">flip()</code>, all your drawing happens on
+        an invisible buffer — the player never sees it. Without
+        <code class="inline">clock.tick(60)</code>, your game might run at 5000
+        FPS on a fast laptop (and look like a teleport) or 12 FPS on a slow one
+        (and look like a slideshow).
+      </p>
+    </div>
+
+    <!-- 5. Code example ─────────────────────────────────────────── -->
+    <div class="card">
+      <h3>The COMPLETE Galaxy Defender 🚀</h3>
+      <p>
+        This is it. All 10 stages assembled. Read it slowly — every line maps to
+        one of the stages you built. You wrote this!
+      </p>
+<pre><code># ─── Stage 1: imports ──────────────────────────────────
+import pygame
+import random
+
+# ─── Stage 2: setup the screen ─────────────────────────
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Galaxy Defender")
+clock = pygame.time.Clock()
+
+# ─── Stage 3: colours ──────────────────────────────────
+YELLOW, RED, WHITE, SPACE = (255,215,0), (255,0,0), (255,255,255), (0,0,50)
+
+# ─── Stage 4: player ───────────────────────────────────
+player = pygame.Rect(370, 520, 60, 40)
+player_speed = 5
+
+# ─── Stage 5: bullets ──────────────────────────────────
+bullets = []
+bullet_speed = 10
+
+# ─── Stage 6: enemies ──────────────────────────────────
+enemies = []
+enemy_speed = 2
+for i in range(5):
+    enemies.append(pygame.Rect(random.randint(0, WIDTH - 50),
+                               random.randint(-300, 0), 50, 50))
+
+# ─── Stage 7: score + font ─────────────────────────────
+score, lives = 0, 3
+font     = pygame.font.SysFont("Arial", 32)
+big_font = pygame.font.SysFont("Arial", 72)
+
+# ─── Stage 8: game states ──────────────────────────────
+state = "MENU"
+
+# ─── Stage 9: helpers (text + cartoon sprites) ─────────
+def draw_text(text, x, y, color=WHITE, big=False):
+    f = big_font if big else font
+    screen.blit(f.render(text, True, color), (x, y))
+
+def draw_ship(x, y):
+    pygame.draw.polygon(screen, (0, 230, 100),
+        [(x+30,y),(x+60,y+40),(x+40,y+30),(x+20,y+30),(x,y+40)])
+    pygame.draw.circle (screen, (100, 200, 255), (x+30, y+18), 6)
+    pygame.draw.polygon(screen, (255, 100, 0), [(x+25,y+30),(x+35,y+30),(x+30,y+42)])
+
+def draw_laser(b):
+    pygame.draw.ellipse(screen, (255, 100, 0), (b.x-3, b.y-5, b.width+6, b.height+10))
+    pygame.draw.ellipse(screen, (255, 220, 0), b)
+
+def draw_alien(e):
+    cx, cy = e.x + 25, e.y + 25
+    pygame.draw.ellipse(screen, (200, 50, 200), (e.x, e.y+10, 50, 30))
+    pygame.draw.ellipse(screen, (200, 50, 200), (e.x+10, e.y, 30, 20))
+    pygame.draw.circle (screen, WHITE,          (cx-7, cy-8), 5)
+    pygame.draw.circle (screen, WHITE,          (cx+7, cy-8), 5)
+    pygame.draw.circle (screen, (0, 0, 0),      (cx-7, cy-8), 2)
+    pygame.draw.circle (screen, (0, 0, 0),      (cx+7, cy-8), 2)
+
+stars = [(random.randint(0, WIDTH), random.randint(0, HEIGHT),
+          random.randint(1, 2)) for _ in range(80)]
+def draw_stars():
+    for sx, sy, sz in stars:
+        pygame.draw.circle(screen, WHITE, (sx, sy), sz)
+
+def reset_game():
+    global score, lives, bullets
+    score, lives, bullets = 0, 3, []
+    player.x = 370
+    for e in enemies:
+        e.y = random.randint(-300, -50)
+        e.x = random.randint(0, WIDTH - 50)
+
+# ─── Stage 10: the GAME LOOP ───────────────────────────
+running = True
+while running:
+    # 1. EVENTS
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if state == "MENU" and event.key == pygame.K_SPACE:
+                state = "PLAYING"
+            elif state == "PLAYING" and event.key == pygame.K_SPACE:
+                bullets.append(pygame.Rect(player.x + 27, player.y, 6, 15))
+            elif state == "GAME_OVER" and event.key == pygame.K_r:
+                reset_game()
+                state = "PLAYING"
+
+    keys = pygame.key.get_pressed()
+    screen.fill(SPACE)
+    draw_stars()                              # 🌌 starry background
+
+    if state == "MENU":
+        draw_text("GALAXY DEFENDER", WIDTH//2 - 260, 220, color=YELLOW, big=True)
+        draw_text("Press SPACE to start", WIDTH//2 - 120, 320)
+
+    elif state == "PLAYING":
+        # 2. KEYS
+        if keys[pygame.K_LEFT]  and player.x &gt; 0:           player.x -= player_speed
+        if keys[pygame.K_RIGHT] and player.x &lt; WIDTH - 60:  player.x += player_speed
+
+        # 3. UPDATE
+        for b in bullets[:]:
+            b.y -= bullet_speed
+            if b.y &lt; 0: bullets.remove(b)
+        for e in enemies:
+            e.y += enemy_speed
+            if e.y &gt; HEIGHT:
+                e.y = random.randint(-200, -50); e.x = random.randint(0, WIDTH - 50)
+                lives -= 1
+                if lives &lt;= 0: state = "GAME_OVER"
+
+        # 4. COLLISIONS
+        for b in bullets[:]:
+            for e in enemies:
+                if b.colliderect(e):
+                    if b in bullets: bullets.remove(b)
+                    e.y = random.randint(-200, -50); e.x = random.randint(0, WIDTH - 50)
+                    score += 1
+
+        # 5. DRAW
+        draw_ship(player.x, player.y)            # 🚀
+        for b in bullets: draw_laser(b)           # ✨
+        for e in enemies: draw_alien(e)           # 👾
+        draw_text("Score: " + str(score), 10, 10)
+        draw_text("Lives: " + str(lives), WIDTH - 130, 10)
+
+    elif state == "GAME_OVER":
+        draw_text("GAME OVER", WIDTH//2 - 180, 200, color=RED, big=True)
+        draw_text("Final score: " + str(score), WIDTH//2 - 110, 300)
+        draw_text("Press R to play again",      WIDTH//2 - 130, 350, color=YELLOW)
+
+    # 6. FLIP + TICK
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</code></pre>
+      <p class="small">
+        Run it. You have a title screen, a working space shooter, score, lives,
+        and a game-over screen. <strong>You built a real game.</strong> 🏆
+      </p>
+      <p class="small">
+        🎮 <strong>Want to play with more code?</strong> Scroll down to the
+        <a href="#handouts-section">Lesson 10 Code Library (6 game-loop programs)</a>.
+        Copy any program, paste it into the editor below, and press the green ▶ <strong>Run</strong> button.
+      </p>
+    </div>
+
+    <!-- 6. Trinket embed ────────────────────────────────────────── -->
+    <div class="trinket-box">
+      <span class="label">Try it yourself</span>
+      <h3 style="margin:6px 0 12px;">Type the code into this in-browser editor and press Run</h3>
+
+      <iframe src="https://trinket.io/embed/pygame/e695a04109e6" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+      <p class="placeholder-note">
+        Type the code above into the editor, then click ▶ <strong>Run</strong>.
+      </p>
+    </div>
+
+    <!-- 7. Mini-challenges ──────────────────────────────────────── -->
+    <div class="challenge">
+      <h3>🏆 Final challenges — make it YOUR game</h3>
+      <ul>
+        <li><strong>Speed it up.</strong> Try <code class="inline">clock.tick(120)</code>. Now <code class="inline">clock.tick(15)</code>. Feel the difference.</li>
+        <li><strong>WIN screen.</strong> Add a fourth state <code class="inline">"WIN"</code> that triggers when <code class="inline">score &gt;= 30</code>. Show "YOU SAVED THE GALAXY!" in green.</li>
+        <li><strong>Theme swap.</strong> Change the colours, the title, the alien shape (try circles instead of rectangles). Make it look NOTHING like the original.</li>
+        <li><strong>Difficulty.</strong> Speed up enemies by 1 every 10 points (<code class="inline">if score % 10 == 0: enemy_speed += 1</code>).</li>
+        <li><strong>Take a screenshot</strong> of your finished game and share it. You earned it. 📸</li>
+      </ul>
+    </div>
+
+    <!-- 8. Wrap-up card ────────────────────────────────────────── -->
+    <div class="card" style="border-left:6px solid #f7d24a;">
+      <h3>🎓 You finished Galaxy Defender</h3>
+      <p>
+        Look back at the Rocket Ladder. Stage 1 was just <code class="inline">import pygame</code>.
+        Stage 10 is a complete, polished, playable arcade game with menus, score,
+        lives, collisions, and a 60-frames-per-second heartbeat. <strong>You wrote
+        every line.</strong>
+      </p>
+      <p>
+        The big skills you now own — for life:
+      </p>
+      <ul>
+        <li>Variables, lists, loops, conditions, functions</li>
+        <li>Reading keyboard input, drawing shapes and text</li>
+        <li>Game states, collision detection, animation</li>
+        <li>Refactoring repeated code into helpers</li>
+        <li>Debugging when something doesn't work the first time</li>
+      </ul>
+      <p>
+        These are the same building blocks behind <em>every</em> 2D game you've
+        ever loved. Now go remix it — make a maze game, a racing game, a
+        platformer. The rocket framework works for all of them. 🚀
+      </p>
+    </div>
+
+    <!-- 9. Handouts ─────────────────────────────────────────────── -->
+    <div class="card" id="handouts-section">
+      <h3>Handouts for this lesson</h3>
+      <p>Print these, keep them open in another tab, or download them to your computer.</p>
+
+      <p style="margin-bottom:6px;"><strong>📚 Lesson 10 Code Library</strong> — 6 final pygame programs about <em>the game loop, FPS, and the full Galaxy Defender</em>: Heartbeat, One Square Animation, The Six Phases, FPS Demo, Two Loops One Window, The Complete Galaxy Defender.</p>
+      <p>
+        <a class="dl-btn" href="../17_Lesson10_Code_Library.pdf" target="_blank">📄 Lesson 10 Code Library (6 game-loop programs)</a>
+        <a class="dl-btn" href="../18_Sprite_Bonus.pdf" target="_blank">🎨 Sprite Bonus (visual polish)</a>
+        <a class="dl-btn" href="../16_Lesson9_Code_Library.pdf" target="_blank">📄 Lesson 9 Code Library</a>
+        <a class="dl-btn" href="../15_Lesson8_Code_Library.pdf" target="_blank">📄 Lesson 8 Code Library</a>
+        <a class="dl-btn" href="../14_Lesson7_Code_Library.pdf" target="_blank">📄 Lesson 7 Code Library</a>
+        <a class="dl-btn" href="../13_Lesson6_Code_Library.pdf" target="_blank">📄 Lesson 6 Code Library</a>
+        <a class="dl-btn" href="../12_Lesson5_Code_Library.pdf" target="_blank">📄 Lesson 5 Code Library</a>
+        <a class="dl-btn" href="../11_Lesson4_Code_Library.pdf" target="_blank">📄 Lesson 4 Code Library</a>
+        <a class="dl-btn" href="../10_Lesson3_Code_Library.pdf" target="_blank">📄 Lesson 3 Code Library</a>
+        <a class="dl-btn" href="../9_Lesson2_Code_Library.pdf" target="_blank">📄 Lesson 2 Code Library</a>
+        <a class="dl-btn" href="../8_Code_Library.pdf" target="_blank">📄 Lesson 1 Code Library</a>
+      </p>
+
+      <p style="margin-top:18px;margin-bottom:6px;"><strong>🗺️ The big-picture handouts</strong> — frame them, you earned it.</p>
+      <p>
+        <a class="dl-btn" href="../assets/handouts/1_Big_Picture.pdf" target="_blank">📄 Big Picture</a>
+        <a class="dl-btn" href="../assets/handouts/2_Galaxy_Map.pdf" target="_blank">📄 Galaxy Map</a>
+        <a class="dl-btn" href="../assets/handouts/3_Rocket_Ladder.pdf" target="_blank">📄 Rocket Ladder</a>
+        <a class="dl-btn" href="../assets/handouts/7_Code_Recipe.pdf" target="_blank">📄 Code Recipe</a>
+        <a class="dl-btn" href="../assets/handouts/Galaxy_Defender_ALL_Infographics_for_Students.pdf" target="_blank">📄 ALL Infographics (one PDF)</a>
+        <a class="dl-btn" href="../assets/infographics/turtle_code_parts_breakdown.png" target="_blank">🖼️ 6 Parts of a Turtle Program</a>
+      </p>
+
+      <p class="small" style="margin-top:16px;">
+        🤖 <strong>What next?</strong> Ask an AI like Claude or ChatGPT
+        for a brand-new game idea using the same framework — <em>"Give me a
+        simple pygame maze game I can build using imports, screen setup, player,
+        and a game loop"</em>. Paste the code into the Trinket above and remix away.
+      </p>
+    </div>
+
+    <!-- 10. Nav ─────────────────────────────────────────────────── -->
+    <div class="lesson-nav">
+      <a href="09-helpers.html">
+        <span class="label">← Previous</span>
+        Lesson 9 · Helpers
+      </a>
+      <a href="11-design-your-game.html" class="next">
+        <span class="label">Next →</span>
+        Lesson 11 · Design YOUR Game 🏆
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026
+  </footer>
+
+  <script>
+    markLessonComplete(10);
+    initLessonMenu(10);
+  </script>
+</body>
+</html>

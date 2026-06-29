@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Galaxy Defender Pilot Certificate · NextGen Coders Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --space:   #0e1a2e;
+      --space-2: #1f3b5b;
+      --gold:    #d4af37;
+      --gold-2:  #f7d24a;
+      --paper:   #fffaf0;
+      --ink:     #16243a;
+      --muted:   #6b7c93;
+      --green:   #4caf6e;
+      --red:     #ef5350;
+      --purple:  #8e5fb3;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: #0e1a2e;
+      font-family: 'Nunito', system-ui, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .controls {
+      max-width: 1100px;
+      margin: 0 auto 22px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 24px rgba(0,0,0,.18);
+    }
+    .controls label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .controls input {
+      padding: 10px 14px;
+      border: 2px solid #e1e8f2;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      width: 240px;
+    }
+    .controls input:focus { border-color: var(--space-2); outline: none; }
+    .controls button {
+      background: var(--space-2);
+      color: #fff;
+      border: 0;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .controls button:hover { background: var(--space); }
+    .controls .tip {
+      width: 100%;
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+      margin-top: 4px;
+    }
+
+    /* ── The certificate itself ── */
+    .certificate {
+      max-width: 1100px;
+      margin: 0 auto;
+      aspect-ratio: 4 / 3;
+      background: var(--paper);
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0,0,0,.45);
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 60px 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Decorative borders */
+    .certificate::before,
+    .certificate::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+    .certificate::before {
+      inset: 14px;
+      border: 6px solid var(--space-2);
+      border-radius: 4px;
+    }
+    .certificate::after {
+      inset: 28px;
+      border: 1.5px solid var(--gold);
+      border-radius: 2px;
+    }
+
+    /* Corner stars */
+    .corner {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      color: var(--gold);
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .corner.tl { top: 36px; left: 36px; }
+    .corner.tr { top: 36px; right: 36px; }
+    .corner.bl { bottom: 36px; left: 36px; }
+    .corner.br { bottom: 36px; right: 36px; }
+
+    .brand {
+      font-size: .9rem;
+      letter-spacing: 4px;
+      color: var(--space-2);
+      font-weight: 800;
+      margin-top: 6px;
+    }
+    .brand .dot { color: var(--gold-2); }
+
+    .title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 4.4vw, 3.4rem);
+      font-weight: 800;
+      color: var(--space);
+      margin: 18px 0 6px;
+      letter-spacing: 1px;
+      line-height: 1.1;
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 0 0 24px;
+      font-style: italic;
+    }
+
+    .presented {
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 0;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .name {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 5.4vw, 4rem);
+      color: var(--gold);                         /* gold name reads as elegant */
+      text-shadow:
+        0 1px 0 #b08c1f,                          /* subtle deep-gold drop */
+        0 0 12px rgba(212, 175, 55, .25);         /* soft glow */
+      margin: 8px 0 14px;
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 12px;
+      min-width: 60%;
+      letter-spacing: 1.5px;
+    }
+
+    .body {
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.5;
+      max-width: 720px;
+      margin: 0 0 18px;
+    }
+    .body strong { color: var(--space); }
+
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      width: 100%;
+      max-width: 720px;
+      margin: 4px 0 22px;
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    .skills span {
+      background: #fff;
+      border: 1px solid #e1e8f2;
+      border-radius: 999px;
+      padding: 5px 8px;
+      text-align: center;
+      letter-spacing: .5px;
+    }
+
+    .feet {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 720px;
+      margin-top: auto;
+    }
+    .foot {
+      text-align: center;
+      flex: 1;
+    }
+    .foot .line {
+      border-top: 2px solid var(--space-2);
+      width: 80%;
+      margin: 0 auto 6px;
+    }
+    .foot .label {
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .foot .value {
+      font-weight: 700;
+      color: var(--space);
+      font-size: 1rem;
+    }
+
+    .seal {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, var(--gold-2), var(--gold));
+      box-shadow: 0 4px 14px rgba(0,0,0,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--space);
+      font-weight: 800;
+      font-size: 1.6rem;
+      border: 4px solid #fff;
+    }
+
+    /* ── Print styles ── */
+    @media print {
+      @page { size: A4 landscape; margin: 0; }
+      body { padding: 0; background: #fff; }
+      .controls { display: none; }
+      .certificate {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        max-width: 100%;
+        height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="controls">
+    <label>
+      Your name (as it should appear)
+      <input id="nameInput" type="text" placeholder="e.g. Aisha Bello" maxlength="40" />
+    </label>
+    <label>
+      Date
+      <input id="dateInput" type="text" placeholder="auto-filled" />
+    </label>
+    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <div class="tip">💡 Tip: in the print dialog, choose <strong>"Save as PDF"</strong> as the destination, then keep that file forever.</div>
+  </div>
+
+  <div class="certificate" id="cert">
+    <span class="corner tl">✦</span>
+    <span class="corner tr">✦</span>
+    <span class="corner bl">✦</span>
+    <span class="corner br">✦</span>
+
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span></div>
+
+    <h1 class="title">Galaxy Defender Pilot</h1>
+    <p class="subtitle">Certificate of Completion · Python &amp; Pygame</p>
+
+    <p class="presented">This certifies that</p>
+    <div class="name" id="nameDisplay">Your Name Here</div>
+
+    <p class="body">
+      has successfully completed all <strong>10 stages of Galaxy Defender</strong>
+      and the <strong>Capstone Game Design Challenge</strong>, building a complete
+      arcade-style game in Python and shipping an original creation of their own.
+    </p>
+
+    <div class="skills">
+      <span>Variables</span><span>Loops</span><span>Lists</span><span>Functions</span><span>Game Loop</span>
+      <span>Collisions</span><span>Game States</span><span>Helpers</span><span>Sprites</span><span>Debugging</span>
+    </div>
+
+    <div class="feet">
+      <div class="foot">
+        <div class="line"></div>
+        <div class="label">Issued</div>
+        <div class="value" id="dateDisplay">—</div>
+      </div>
+      <div class="foot">
+        <div class="line"></div>
+        <div class="label">Director, NextGen Coders Lab</div>
+        <div class="value">Goodness Wariboko</div>
+      </div>
+    </div>
+
+    <div class="seal">🚀</div>
+  </div>
+
+  <p style="text-align:center;color:#cfe2ff;margin:24px 0;font-size:.95rem;">
+    Issued by NextGen Coders Lab · <a href="mailto:nextgencoders@jestechsolutions.co.uk" style="color:#f7d24a;">nextgencoders@jestechsolutions.co.uk</a><br/>
+    <a href="lessons/00-big-picture.html" style="color:#cfe2ff;">Back to course</a>
+  </p>
+
+  <script>
+    // Auto-fill today's date (formatted nicely)
+    const dateInput   = document.getElementById('dateInput');
+    const dateDisplay = document.getElementById('dateDisplay');
+    const nameInput   = document.getElementById('nameInput');
+    const nameDisplay = document.getElementById('nameDisplay');
+
+    function todayPretty() {
+      const d = new Date();
+      const months = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+      return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    }
+
+    dateInput.value   = todayPretty();
+    dateDisplay.textContent = dateInput.value;
+
+    nameInput.addEventListener('input', () => {
+      nameDisplay.textContent = nameInput.value || 'Your Name Here';
+    });
+    dateInput.addEventListener('input', () => {
+      dateDisplay.textContent = dateInput.value || '—';
+    });
+
+    // Restore saved name from previous visit if any
+    try {
+      const saved = localStorage.getItem('ngc_cert_name');
+      if (saved) { nameInput.value = saved; nameDisplay.textContent = saved; }
+    } catch (e) {}
+    nameInput.addEventListener('blur', () => {
+      try { localStorage.setItem('ngc_cert_name', nameInput.value); } catch (e) {}
+    });
+  </script>
+</body>
+</html>
