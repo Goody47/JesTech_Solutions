@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <base href="/galaxydefenders/" />
+  <title>Unlock the Galaxy — NextGen Coders Lab</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="unlock-wrap">
+    <div class="unlock-card">
+      <h1>🚀 Unlock the Galaxy</h1>
+      <p class="small">Enter the access password from your purchase email.</p>
+      <form onsubmit="tryUnlock(event)">
+        <input id="pw" type="password" autocomplete="off" autofocus placeholder="Access password" />
+        <button type="submit">Launch</button>
+        <div id="err" class="error"></div>
+      </form>
+      <p class="small" style="margin-top:18px;">
+        Don't have a password yet? <a href="index.html">Get access here</a>.
+      </p>
+    </div>
+  </div>
+  <script src="js/unlock.js"></script>
+</body>
+</html>

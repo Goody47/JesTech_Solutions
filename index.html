@@ -1,1990 +1,252 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="JesTech Solutions — affordable automation for service businesses. Capture leads 24/7, automate admin, and grow without hiring." />
-<title>JesTech Solutions — Automation that pays for itself</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Tells the browser all relative paths live under /galaxydefenders/.
+       Required because Vercel serves the page at /galaxydefenders (no trailing slash). -->
+  <base href="/galaxydefenders/" />
+  <title>Galaxy Defender — NextGen Coders Lab</title>
+  <meta name="description" content="A self-paced Python coding course for ages 7–16. Build a real arcade game in 11 lessons — right in your browser." />
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Social share preview (Open Graph + Twitter Card) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Galaxy Defender — NextGen Coders Lab" />
+  <meta property="og:description" content="Build your own arcade game in Python. Ages 7–16 · 11 lessons · runs in the browser." />
+  <meta property="og:image" content="og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Galaxy Defender — NextGen Coders Lab" />
+  <meta name="twitter:description" content="Build your own arcade game in Python. Ages 7–16 · 11 lessons · browser-based." />
+  <meta name="twitter:image" content="og-image.png" />
 
-<style>
-  :root {
-    --bg: #050817;              /* deep midnight navy */
-    --bg-2: #0A0E24;             /* slightly raised */
-    --bg-card: rgba(20, 28, 56, 0.55);   /* glass-morphic card */
-    --bg-card-solid: #0E1430;
-    --ink: #EAEEFC;              /* near-white text */
-    --ink-soft: #B4BCE0;
-    --ink-mute: #7682AE;
-    --line: rgba(255, 255, 255, 0.08);
-    --line-strong: rgba(255, 255, 255, 0.15);
-    --gold: #E0C26B;             /* brand gold, brighter for dark bg */
-    --gold-deep: #F3E4B0;        /* heading color: pale luxurious gold-cream */
-    --gold-soft: rgba(224, 194, 107, 0.14);
-    --accent: #4DD0FF;           /* electric blue */
-    --accent-ink: #FFFFFF;
-    --accent-soft: rgba(77, 208, 255, 0.16);
-    --neon: #00F5D4;             /* cyan neon highlight */
-    --coral: #FF6A3D;
-    --coral-soft: rgba(255, 106, 61, 0.16);
-    --green: #2BE07A;
-    --dark: #03050F;
-    --dark-soft: #080C1E;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-    background-color: var(--bg);
-    /* Layered: electric blue glow top-left, cyan glow bottom-right, gold glow upper-right, circuit SVG grid, fine dot lattice */
-    background-image:
-      radial-gradient(ellipse 900px 600px at 12% -10%, rgba(77, 208, 255, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 720px 520px at 90% 8%, rgba(224, 194, 107, 0.10) 0%, transparent 55%),
-      radial-gradient(ellipse 1100px 700px at 50% 110%, rgba(0, 245, 212, 0.10) 0%, transparent 60%),
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%234dd0ff' stroke-width='0.5' opacity='0.10'><path d='M0 20 L30 20 L30 0'/><path d='M50 0 L50 30 L80 30'/><path d='M0 60 L20 60 L20 80'/><path d='M40 80 L40 50 L80 50'/><circle cx='30' cy='20' r='1.6' fill='%234dd0ff' stroke='none' opacity='0.8'/><circle cx='50' cy='30' r='1.6' fill='%2300f5d4' stroke='none' opacity='0.6'/><circle cx='20' cy='60' r='1.6' fill='%234dd0ff' stroke='none' opacity='0.6'/><circle cx='40' cy='50' r='1.6' fill='%2300f5d4' stroke='none' opacity='0.7'/></g></svg>"),
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='1' cy='1' r='1' fill='%234dd0ff' opacity='0.08'/></svg>");
-    background-attachment: fixed, fixed, fixed, fixed, fixed;
-    background-size: auto, auto, auto, 320px 320px, 32px 32px;
-    color: var(--ink);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-  /* Faint horizontal scanlines for cinematic SaaS feel */
-  body::before {
-    content: "";
-    position: fixed; inset: 0;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 3px,
-      rgba(255,255,255,0.012) 3px,
-      rgba(255,255,255,0.012) 4px
-    );
-    z-index: 1;
-  }
-  body > * { position: relative; z-index: 2; }
-
-  h1, h2, h3, h4 {
-    font-family: 'Space Grotesk', system-ui, sans-serif;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    font-weight: 600;
-  }
-
-  a { color: inherit; text-decoration: none; }
-  img { display: block; max-width: 100%; }
-
-  .container {
-    width: 100%;
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  /* ============= NAV ============= */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(5, 8, 23, 0.65);
-    backdrop-filter: saturate(180%) blur(14px);
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
-    border-bottom: 1px solid transparent;
-    transition: border-color .2s ease, background .2s ease;
-  }
-  .nav.scrolled {
-    border-bottom-color: var(--line);
-    background: rgba(5, 8, 23, 0.85);
-    box-shadow: 0 4px 24px -8px rgba(77, 208, 255, 0.12);
-  }
-  .nav-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 72px;
-  }
-  .logo {
-    display: flex; align-items: center; gap: 12px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 19px;
-    letter-spacing: -0.01em;
-    color: var(--gold-deep);
-    transition: transform .2s ease;
-  }
-  .logo:hover { transform: translateY(-1px); }
-  .logo img {
-    width: 44px; height: 44px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 12px rgba(224, 194, 107, 0.35));
-    transition: filter .2s ease;
-  }
-  .logo:hover img {
-    filter: drop-shadow(0 0 18px rgba(224, 194, 107, 0.55));
-  }
-  .logo-text {
-    display: flex; flex-direction: column;
-    line-height: 1;
-    gap: 3px;
-  }
-  .logo-text .main {
-    font-weight: 700;
-    color: var(--gold-deep);
-    letter-spacing: -0.01em;
-  }
-  .logo-text .sub {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    color: var(--ink-mute);
-    text-transform: uppercase;
-  }
-  .nav-links {
-    display: flex; gap: 36px; align-items: center;
-  }
-  .nav-links a {
-    font-size: 15px;
-    color: var(--ink-soft);
-    font-weight: 500;
-    transition: color .15s ease;
-  }
-  .nav-links a:hover { color: var(--accent); text-shadow: 0 0 12px rgba(77, 208, 255, 0.5); }
-  .nav-cta {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 18px;
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--ink);
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    font-weight: 500;
-    font-size: 14px;
-    transition: transform .15s ease, background .15s ease, border-color .15s ease;
-  }
-  .nav-cta:hover { background: rgba(77, 208, 255, 0.12); border-color: var(--accent); color: #fff; transform: translateY(-1px); }
-  .nav-cta-primary {
-    background: linear-gradient(135deg, var(--coral), #FF8C5A);
-    color: #fff;
-    border-color: transparent;
-    box-shadow: 0 0 0 1px rgba(255, 106, 61, 0.3), 0 8px 24px -6px rgba(255, 106, 61, 0.5);
-  }
-  .nav-cta-primary:hover {
-    background: linear-gradient(135deg, var(--accent), var(--neon));
-    color: #03050F;
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.4), 0 8px 28px -6px rgba(77, 208, 255, 0.6);
-  }
-  .nav-actions { display: flex; gap: 10px; align-items: center; }
-  .menu-btn {
-    display: none;
-    border: 1px solid var(--line-strong);
-    background: rgba(255,255,255,0.04);
-    color: var(--ink);
-    padding: 8px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: inherit;
-    align-items: center;
-    gap: 8px;
-  }
-
-  @media (max-width: 1080px) {
-    .nav-cta.desktop-only { display: none; }
-  }
-  @media (max-width: 880px) {
-    .nav-links { display: none; }
-    .menu-btn { display: inline-flex; }
-    .nav-cta.desktop { display: none; }
-  }
-
-  /* Mobile drawer */
-  .mobile-menu {
-    display: none;
-    background: rgba(10, 14, 36, 0.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-top: 1px solid var(--line);
-    padding: 16px 24px 24px;
-  }
-  .mobile-menu.open { display: block; }
-  .mobile-menu a {
-    display: block;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .mobile-menu a:last-of-type { border-bottom: none; }
-  .mobile-menu .nav-cta {
-    width: 100%;
-    margin-top: 16px;
-    justify-content: center;
-  }
-
-  /* ============= BUTTONS ============= */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 22px;
-    border-radius: 999px;
-    font-weight: 500;
-    font-size: 15px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    font-family: inherit;
-    transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
-    white-space: nowrap;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--neon) 100%);
-    color: #03050F;
-    font-weight: 600;
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.3), 0 12px 32px -8px rgba(77, 208, 255, 0.5);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 0 1px rgba(0, 245, 212, 0.4), 0 14px 38px -8px rgba(0, 245, 212, 0.65);
-  }
-  .btn-coral {
-    background: linear-gradient(135deg, var(--coral) 0%, #FF8C5A 100%);
-    color: #fff;
-    box-shadow: 0 0 0 1px rgba(255, 106, 61, 0.3), 0 12px 32px -8px rgba(255, 106, 61, 0.45);
-  }
-  .btn-coral:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(255, 106, 61, 0.5), 0 14px 38px -8px rgba(255, 106, 61, 0.6); }
-  .btn-ghost { background: rgba(255,255,255,0.04); color: var(--ink); border-color: var(--line-strong); }
-  .btn-ghost:hover { background: rgba(77, 208, 255, 0.1); border-color: var(--accent); color: #fff; }
-  .btn-light { background: rgba(255,255,255,0.06); color: var(--ink); border-color: var(--line-strong); }
-  .btn-light:hover { border-color: var(--accent); transform: translateY(-2px); background: rgba(77, 208, 255, 0.08); }
-
-  .arrow { transition: transform .15s ease; }
-  .btn:hover .arrow { transform: translate(3px, -3px); }
-
-  /* ============= HERO ============= */
-  .hero {
-    padding: 80px 0 100px;
-    position: relative;
-  }
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center; gap: 10px;
-    padding: 8px 14px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink-soft);
-    margin-bottom: 28px;
-    backdrop-filter: blur(8px);
-  }
-  .pulse {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 0 0 rgba(17,160,107,.6);
-    animation: pulse 1.8s infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(17,160,107,.5); }
-    70% { box-shadow: 0 0 0 12px rgba(17,160,107,0); }
-    100% { box-shadow: 0 0 0 0 rgba(17,160,107,0); }
-  }
-
-  .hero h1 {
-    font-size: clamp(40px, 7vw, 88px);
-    max-width: 22ch;
-    margin-bottom: 24px;
-    color: #FFFFFF;
-    text-shadow: 0 0 60px rgba(77, 208, 255, 0.18);
-  }
-  .hero h1 .accent {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--neon) 60%, var(--gold) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-style: italic;
-    font-weight: 500;
-  }
-  .hero-sub {
-    font-size: clamp(17px, 2vw, 20px);
-    color: var(--ink-soft);
-    max-width: 56ch;
-    margin-bottom: 36px;
-  }
-  .hero-ctas {
-    display: flex; flex-wrap: wrap; gap: 14px;
-    margin-bottom: 56px;
-  }
-
-  .hero-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    padding-top: 40px;
-    border-top: 1px solid var(--line);
-  }
-  .stat-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(32px, 4vw, 48px);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    background: linear-gradient(180deg, #FFFFFF 0%, var(--ink-soft) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .stat-num .small { font-size: 0.6em; color: var(--ink-mute); -webkit-text-fill-color: var(--ink-mute); }
-  .stat-lbl {
-    font-size: 13px;
-    color: var(--ink-mute);
-    line-height: 1.4;
-  }
-
-  @media (max-width: 720px) {
-    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
-  }
-
-  /* Floating decorative chip */
-  .hero-chip {
-    position: absolute;
-    background: rgba(20, 28, 56, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--line-strong);
-    border-radius: 16px;
-    padding: 14px 18px;
-    display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 12px 32px -12px rgba(77, 208, 255, 0.25);
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .hero-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
-  .hero-chip.c1 { top: 18%; right: 4%; }
-  .hero-chip.c2 { bottom: 28%; right: 12%; transform: rotate(2deg); }
-  @media (max-width: 980px) { .hero-chip { display: none; } }
-
-  /* ============= MARQUEE / LOGOS ============= */
-  .strip {
-    padding: 36px 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    background: var(--bg);
-  }
-  .strip-row {
-    display: flex; align-items: center; gap: 40px;
-    flex-wrap: wrap; justify-content: space-between;
-  }
-  .strip-label {
-    font-size: 13px;
-    color: var(--ink-mute);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-  .strip-tags { display: flex; gap: 14px; flex-wrap: wrap; }
-  .tag {
-    padding: 8px 16px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink-soft);
-  }
-
-  /* ============= SECTION SHARED ============= */
-  section { padding: 100px 0; }
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 20px;
-    text-shadow: 0 0 14px rgba(77, 208, 255, 0.35);
-  }
-  .eyebrow::before {
-    content: "";
-    width: 24px; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent));
-  }
-  .section-title {
-    font-size: clamp(34px, 5vw, 60px);
-    max-width: 22ch;
-    margin-bottom: 20px;
-    color: #FFFFFF;
-  }
-  .problem .section-title,
-  .testi .section-title { color: #FFFFFF; }
-  .section-sub { color: var(--ink-soft); }
-  .section-sub {
-    font-size: clamp(16px, 1.6vw, 19px);
-    color: var(--ink-soft);
-    max-width: 60ch;
-  }
-  .section-head {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 40px;
-    align-items: end;
-    margin-bottom: 60px;
-  }
-  @media (max-width: 880px) {
-    .section-head { grid-template-columns: 1fr; }
-  }
-
-  /* ============= PROBLEM ============= */
-  .problem {
-    background: linear-gradient(180deg, var(--dark) 0%, var(--dark-soft) 100%);
-    color: var(--ink);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    position: relative;
-  }
-  .problem::before {
-    content: "";
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 600px 400px at 80% 20%, rgba(255, 106, 61, 0.06) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .problem > * { position: relative; }
-  .problem .eyebrow { color: var(--coral); text-shadow: 0 0 14px rgba(255, 106, 61, 0.35); }
-  .problem .eyebrow::before { background: linear-gradient(90deg, transparent, var(--coral)); }
-  .problem .section-sub { color: var(--ink-soft); }
-  .problem-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-  .pain {
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 28px;
-    background: rgba(255, 255, 255, 0.025);
-    backdrop-filter: blur(8px);
-    transition: transform .2s ease, border-color .2s ease, background .2s ease;
-  }
-  .pain:hover {
-    transform: translateY(-4px);
-    border-color: var(--coral);
-    background: rgba(255, 106, 61, 0.06);
-    box-shadow: 0 0 0 1px rgba(255, 106, 61, 0.3), 0 16px 40px -20px rgba(255, 106, 61, 0.3);
-  }
-  .pain-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    color: var(--coral);
-    margin-bottom: 24px;
-    font-weight: 500;
-  }
-  .pain h3 {
-    font-size: 22px;
-    margin-bottom: 12px;
-    line-height: 1.2;
-    color: #FFFFFF;
-  }
-  .pain p {
-    font-size: 15px;
-    color: var(--ink-soft);
-  }
-  @media (max-width: 980px) { .problem-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 540px) { .problem-grid { grid-template-columns: 1fr; } }
-
-  /* ============= SERVICES ============= */
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .svc {
-    background: linear-gradient(160deg, rgba(20, 28, 56, 0.5) 0%, rgba(10, 14, 36, 0.35) 100%);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    padding: 30px;
-    position: relative;
-    overflow: hidden;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  .svc::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
-    opacity: 0.6;
-  }
-  .svc:hover {
-    transform: translateY(-6px);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.25), 0 32px 60px -30px rgba(77, 208, 255, 0.4);
-  }
-  .svc-num {
-    position: absolute;
-    top: 24px; right: 24px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
-  }
-  .svc-icon {
-    width: 52px; height: 52px;
-    border-radius: 14px;
-    display: grid; place-items: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-  .svc h3 {
-    font-size: 21px;
-    margin-bottom: 12px;
-    color: #FFFFFF;
-    line-height: 1.15;
-    padding-right: 28px;
-  }
-  .svc p { font-size: 14px; color: var(--ink-soft); margin-bottom: 18px; line-height: 1.5; }
-  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; margin-top: auto; }
-  .svc-tag {
-    font-size: 11.5px;
-    padding: 5px 11px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--ink-soft);
-    font-weight: 500;
-  }
-  .svc.featured {
-    background: linear-gradient(160deg, rgba(224, 194, 107, 0.10) 0%, rgba(20, 28, 56, 0.6) 60%);
-    border-color: var(--gold);
-    box-shadow: 0 0 0 1px rgba(224, 194, 107, 0.2), 0 24px 60px -30px rgba(224, 194, 107, 0.35);
-  }
-  .svc.featured::after {
-    content: "Premium";
-    position: absolute;
-    top: 24px; left: 24px;
-    background: linear-gradient(135deg, var(--gold), #B7993D);
-    color: #03050F;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 4px 10px;
-    border-radius: 999px;
-    box-shadow: 0 0 12px rgba(224, 194, 107, 0.4);
-  }
-  .svc.featured h3 { padding-top: 28px; }
-
-  .svc-c-gold .svc-icon { background: rgba(224, 194, 107, 0.15); color: var(--gold); box-shadow: 0 0 16px rgba(224, 194, 107, 0.2); }
-  .svc-c-coral .svc-icon { background: rgba(255, 106, 61, 0.15); color: var(--coral); box-shadow: 0 0 16px rgba(255, 106, 61, 0.25); }
-  .svc-c-green .svc-icon { background: rgba(43, 224, 122, 0.12); color: var(--green); box-shadow: 0 0 16px rgba(43, 224, 122, 0.25); }
-  .svc-c-blue .svc-icon { background: rgba(77, 208, 255, 0.14); color: var(--accent); box-shadow: 0 0 16px rgba(77, 208, 255, 0.3); }
-  .svc-c-plum .svc-icon { background: rgba(0, 245, 212, 0.12); color: var(--neon); box-shadow: 0 0 16px rgba(0, 245, 212, 0.3); }
-
-  @media (max-width: 980px) {
-    .services-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 600px) {
-    .services-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ============= PROCESS ============= */
-  .process { background: transparent; position: relative; }
-  .process::before {
-    content: "";
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 700px 500px at 50% 50%, rgba(77, 208, 255, 0.06) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .process > * { position: relative; }
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    position: relative;
-  }
-  .step {
-    background: linear-gradient(160deg, rgba(20, 28, 56, 0.55) 0%, rgba(10, 14, 36, 0.4) 100%);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    padding: 36px 32px;
-    position: relative;
-    transition: border-color .2s ease, box-shadow .2s ease;
-  }
-  .step:hover {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.2), 0 24px 56px -28px rgba(77, 208, 255, 0.35);
-  }
-  .step-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 20px;
-    display: flex; align-items: center; gap: 14px;
-    text-shadow: 0 0 14px rgba(77, 208, 255, 0.35);
-  }
-  .step-num::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-    opacity: 0.4;
-  }
-  .step h3 { font-size: 26px; margin-bottom: 12px; color: #FFFFFF; }
-  .step p { font-size: 15px; color: var(--ink-soft); }
-  .step-mini {
-    margin-top: 24px;
-    display: flex; gap: 8px; flex-wrap: wrap;
-  }
-  .step-mini span {
-    font-size: 12px;
-    padding: 6px 12px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--line);
-    color: var(--ink-soft);
-    border-radius: 999px;
-    font-weight: 500;
-  }
-  @media (max-width: 880px) {
-    .process-steps { grid-template-columns: 1fr; }
-  }
-
-  /* ============= PRICING ============= */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-  .plan {
-    background: linear-gradient(160deg, rgba(20, 28, 56, 0.55) 0%, rgba(10, 14, 36, 0.4) 100%);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    padding: 40px;
-    position: relative;
-    transition: border-color .2s ease, box-shadow .2s ease;
-  }
-  .plan:hover {
-    border-color: var(--line-strong);
-  }
-  .plan.featured {
-    background: linear-gradient(160deg, rgba(77, 208, 255, 0.10) 0%, rgba(20, 28, 56, 0.6) 60%);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.2), 0 32px 70px -30px rgba(77, 208, 255, 0.4);
-    color: var(--ink);
-  }
-  .plan-tag {
-    display: inline-block;
-    padding: 6px 12px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    border: 1px solid rgba(77, 208, 255, 0.2);
-  }
-  .plan.featured .plan-tag {
-    background: linear-gradient(135deg, var(--coral), #FF8C5A);
-    color: #fff;
-    border-color: transparent;
-  }
-  .plan h3 { font-size: 32px; margin-bottom: 12px; color: #FFFFFF; }
-  .plan.featured h3 { color: #FFFFFF; }
-  .plan-desc {
-    font-size: 15px;
-    color: var(--ink-soft);
-    margin-bottom: 28px;
-    min-height: 48px;
-  }
-  .plan-features {
-    list-style: none;
-    margin-bottom: 32px;
-  }
-  .plan-features li {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line);
-    display: flex; align-items: flex-start; gap: 12px;
-    font-size: 15px;
-    color: var(--ink-soft);
-  }
-  .check {
-    flex-shrink: 0;
-    width: 20px; height: 20px;
-    background: var(--green);
-    color: #03050F;
-    border-radius: 50%;
-    display: grid; place-items: center;
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 1px;
-    box-shadow: 0 0 10px rgba(43, 224, 122, 0.4);
-  }
-  .plan .btn { width: 100%; justify-content: center; }
-  .pricing-note {
-    margin-top: 32px;
-    padding: 24px;
-    background: rgba(20, 28, 56, 0.4);
-    backdrop-filter: blur(8px);
-    border: 1px dashed var(--line-strong);
-    border-radius: 18px;
-    display: flex; align-items: center; gap: 16px;
-    font-size: 15px;
-    color: var(--ink-soft);
-  }
-  .pricing-note strong { color: var(--ink); }
-  @media (max-width: 760px) {
-    .pricing-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ============= TESTIMONIALS ============= */
-  .testi {
-    background: linear-gradient(180deg, var(--dark-soft) 0%, var(--dark) 100%);
-    color: var(--ink);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    position: relative;
-  }
-  .testi::before {
-    content: "";
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 800px 500px at 20% 80%, rgba(0, 245, 212, 0.06) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .testi > * { position: relative; }
-  .testi .eyebrow { color: var(--neon); text-shadow: 0 0 14px rgba(0, 245, 212, 0.4); }
-  .testi .eyebrow::before { background: linear-gradient(90deg, transparent, var(--neon)); }
-  .testi-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .quote {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(8px);
-    border-radius: 22px;
-    padding: 32px;
-    border: 1px solid var(--line);
-    transition: border-color .2s ease, transform .2s ease;
-  }
-  .quote:hover {
-    border-color: var(--line-strong);
-    transform: translateY(-3px);
-  }
-  .stars { color: #FFB940; font-size: 16px; margin-bottom: 18px; letter-spacing: 2px; }
-  .quote p {
-    font-size: 17px;
-    line-height: 1.5;
-    margin-bottom: 24px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 400;
-    color: var(--ink);
-  }
-  .quote-by { display: flex; align-items: center; gap: 12px; }
-  .avatar {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--neon));
-    display: grid; place-items: center;
-    font-weight: 700;
-    color: #03050F;
-    font-size: 16px;
-    box-shadow: 0 0 16px rgba(77, 208, 255, 0.3);
-  }
-  .quote-name {
-    font-weight: 600;
-    font-size: 15px;
-    color: var(--ink);
-  }
-  .quote-role {
-    font-size: 13px;
-    color: var(--ink-mute);
-  }
-  @media (max-width: 880px) {
-    .testi-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ============= FAQ ============= */
-  .faq-list {
-    border-top: 1px solid var(--line);
-  }
-  .faq-item {
-    border-bottom: 1px solid var(--line);
-  }
-  .faq-q {
-    width: 100%;
-    background: none;
-    border: none;
-    padding: 28px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 24px;
-    cursor: pointer;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(18px, 2vw, 22px);
-    font-weight: 500;
-    text-align: left;
-    color: #FFFFFF;
-    letter-spacing: -0.01em;
-  }
-  .faq-q:hover { color: var(--accent); text-shadow: 0 0 14px rgba(77, 208, 255, 0.35); }
-  .faq-icon {
-    flex-shrink: 0;
-    width: 36px; height: 36px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--line-strong);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    font-size: 20px;
-    line-height: 1;
-    color: var(--ink-soft);
-    transition: transform .3s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
-  }
-  .faq-item.open .faq-icon {
-    transform: rotate(45deg);
-    background: var(--accent);
-    color: #03050F;
-    box-shadow: 0 0 14px rgba(77, 208, 255, 0.5);
-  }
-  .faq-a {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .35s ease, padding .35s ease;
-  }
-  .faq-a-inner {
-    padding-bottom: 28px;
-    font-size: 16px;
-    color: var(--ink-soft);
-    max-width: 75ch;
-  }
-  .faq-item.open .faq-a {
-    max-height: 320px;
-  }
-
-  /* ============= CTA ============= */
-  .final-cta {
-    padding: 60px 0;
-  }
-  .cta-card {
-    background: linear-gradient(135deg, var(--dark-soft) 0%, var(--dark) 100%);
-    color: var(--ink);
-    border-radius: 32px;
-    padding: clamp(40px, 6vw, 80px);
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--line-strong);
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.1), 0 60px 120px -40px rgba(0, 0, 0, 0.7);
-  }
-  .cta-card::before {
-    content: "";
-    position: absolute;
-    top: -160px; right: -100px;
-    width: 460px; height: 460px;
-    background: radial-gradient(circle at center, var(--accent) 0%, transparent 65%);
-    opacity: .35;
-    pointer-events: none;
-    filter: blur(20px);
-  }
-  .cta-card::after {
-    content: "";
-    position: absolute;
-    bottom: -180px; left: -100px;
-    width: 420px; height: 420px;
-    background: radial-gradient(circle at center, var(--neon) 0%, transparent 65%);
-    opacity: .25;
-    pointer-events: none;
-    filter: blur(20px);
-  }
-  .cta-inner { position: relative; z-index: 1; max-width: 760px; }
-  .cta-card h2 {
-    font-size: clamp(36px, 5vw, 64px);
-    margin-bottom: 20px;
-    color: #FFFFFF;
-  }
-  .cta-card .lead {
-    font-size: clamp(17px, 1.8vw, 19px);
-    color: var(--ink-soft);
-    margin-bottom: 36px;
-    max-width: 56ch;
-  }
-  .cta-ctas { display: flex; flex-wrap: wrap; gap: 14px; }
-  .cta-ctas .btn-ghost { color: #fff; border-color: var(--line-strong); }
-  .cta-ctas .btn-ghost:hover { background: rgba(77, 208, 255, 0.1); color: #fff; border-color: var(--accent); }
-
-  /* ============= FOOTER ============= */
-  footer {
-    padding: 80px 0 40px;
-    background: linear-gradient(180deg, transparent 0%, var(--dark-soft) 100%);
-    border-top: 1px solid var(--line);
-    position: relative;
-  }
-  footer::before {
-    content: "";
-    position: absolute; top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 60%; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.5;
-  }
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 60px;
-  }
-  .foot-brand { max-width: 360px; }
-  .foot-brand .logo { margin-bottom: 20px; }
-  .foot-brand p { color: var(--ink-soft); font-size: 15px; margin-bottom: 20px; }
-  .socials { display: flex; gap: 10px; }
-  .social {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--line-strong);
-    display: grid; place-items: center;
-    color: var(--ink-soft);
-    transition: background .15s ease, color .15s ease, transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-  }
-  .social:hover {
-    background: var(--accent);
-    color: #03050F;
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 0 16px rgba(77, 208, 255, 0.4);
-  }
-  .foot-col h4 {
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-mute);
-    margin-bottom: 18px;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .foot-col ul { list-style: none; }
-  .foot-col li { margin-bottom: 10px; }
-  .foot-col a {
-    font-size: 15px;
-    color: var(--ink-soft);
-    transition: color .15s ease;
-  }
-  .foot-col a:hover { color: var(--ink); }
-
-  .foot-bottom {
-    padding-top: 30px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    font-size: 14px;
-    color: var(--ink-mute);
-  }
-  @media (max-width: 880px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .foot-brand { grid-column: span 2; }
-  }
-  @media (max-width: 540px) {
-    .footer-grid { grid-template-columns: 1fr; }
-    .foot-brand { grid-column: span 1; }
-  }
-
-  /* ============= ANIMATIONS ============= */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity .8s ease, transform .8s ease;
-  }
-  .reveal.in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ============= ANALYSIS MODAL ============= */
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(3, 5, 15, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 100;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    transition: opacity .2s ease;
-  }
-  .modal-backdrop.open { display: flex; opacity: 1; }
-  .modal {
-    background: linear-gradient(160deg, rgba(20, 28, 56, 0.95) 0%, rgba(10, 14, 36, 0.95) 100%);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    max-width: 520px;
-    width: 100%;
-    padding: 40px;
-    position: relative;
-    border: 1px solid var(--line-strong);
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.12), 0 60px 120px -30px rgba(0,0,0,.7);
-    transform: translateY(20px) scale(.98);
-    transition: transform .25s ease;
-    color: var(--ink);
-  }
-  .modal::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.6;
-  }
-  .modal-backdrop.open .modal {
-    transform: translateY(0) scale(1);
-  }
-  .modal-close {
-    position: absolute;
-    top: 18px; right: 18px;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--line-strong);
-    color: var(--ink-soft);
-    display: grid; place-items: center;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background .15s ease, color .15s ease;
-  }
-  .modal-close:hover { background: var(--coral); color: #fff; border-color: transparent; }
-  .modal-eyebrow {
-    display: inline-flex;
-    align-items: center; gap: 8px;
-    padding: 6px 12px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    border: 1px solid rgba(77, 208, 255, 0.25);
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .modal h2 {
-    font-size: 26px;
-    color: #FFFFFF;
-    margin-bottom: 10px;
-    line-height: 1.2;
-  }
-  .modal p { font-size: 15px; color: var(--ink-soft); margin-bottom: 24px; }
-  .modal-form { display: flex; flex-direction: column; gap: 12px; }
-  .url-field {
-    display: flex;
-    align-items: center;
-    padding: 4px 6px 4px 16px;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    transition: border-color .15s ease, box-shadow .15s ease;
-  }
-  .url-field:focus-within {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(77, 208, 255, 0.12);
-  }
-  .url-field .protocol {
-    color: var(--ink-mute);
-    font-size: 15px;
-    margin-right: 6px;
-    user-select: none;
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-  }
-  .url-field input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 12px 4px;
-    font-family: inherit;
-    font-size: 15px;
-    color: var(--ink);
-    min-width: 0;
-  }
-  .url-field input::placeholder { color: var(--ink-mute); }
-  .url-field button {
-    flex-shrink: 0;
-    padding: 11px 20px;
-    background: linear-gradient(135deg, var(--accent), var(--neon));
-    color: #03050F;
-    border: none;
-    border-radius: 999px;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform .15s ease, box-shadow .15s ease;
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.3), 0 8px 24px -6px rgba(77, 208, 255, 0.5);
-  }
-  .url-field button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 0 0 1px rgba(0, 245, 212, 0.4), 0 10px 28px -6px rgba(0, 245, 212, 0.6);
-  }
-  .modal-foot {
-    margin-top: 18px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    font-size: 13px;
-    color: var(--ink-mute);
-  }
-  .modal-foot .checkmark {
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: var(--green);
-    color: #03050F;
-    display: grid; place-items: center;
-    font-size: 10px;
-    flex-shrink: 0;
-    box-shadow: 0 0 8px rgba(43, 224, 122, 0.4);
-  }
-  .modal-error {
-    font-size: 13px;
-    color: var(--coral);
-    margin-top: 8px;
-    display: none;
-  }
-  .modal-error.show { display: block; }
-
-  /* Floating WhatsApp */
-  .wa-float {
-    position: fixed;
-    bottom: 24px; right: 24px;
-    z-index: 60;
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: #25D366;
-    display: grid; place-items: center;
-    color: #fff;
-    box-shadow: 0 12px 32px -8px rgba(37,211,102,.6);
-    transition: transform .15s ease;
-  }
-  .wa-float:hover { transform: scale(1.08); }
-  .wa-float svg { width: 28px; height: 28px; }
-
-  /* Hero illustration */
-  .hero-visual {
-    margin-top: 60px;
-    background: linear-gradient(180deg, rgba(20, 28, 56, 0.6) 0%, rgba(10, 14, 36, 0.4) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--line-strong);
-    border-radius: 24px;
-    padding: 28px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    align-items: center;
-    box-shadow: 0 0 0 1px rgba(77, 208, 255, 0.08), 0 40px 80px -30px rgba(0, 0, 0, 0.6),
-                inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-  @media (max-width: 760px) { .hero-visual { grid-template-columns: 1fr; } }
-  .chat-mock {
-    background: rgba(5, 8, 23, 0.5);
-    border-radius: 18px;
-    padding: 20px;
-    border: 1px solid var(--line);
-  }
-  .chat-header {
-    display: flex; align-items: center; gap: 10px;
-    padding-bottom: 14px;
-    margin-bottom: 14px;
-    border-bottom: 1px solid var(--line);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .chat-header .av {
-    width: 30px; height: 30px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--neon));
-    color: #03050F;
-    display: grid; place-items: center;
-    font-size: 12px; font-weight: 700;
-    box-shadow: 0 0 12px rgba(77, 208, 255, 0.45);
-  }
-  .msg {
-    padding: 10px 14px;
-    border-radius: 16px;
-    font-size: 14px;
-    max-width: 80%;
-    margin-bottom: 10px;
-    line-height: 1.4;
-  }
-  .msg.them {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--line);
-    color: var(--ink-soft);
-    border-bottom-left-radius: 4px;
-  }
-  .msg.us {
-    background: linear-gradient(135deg, var(--accent), #2BACEB);
-    color: #03050F;
-    font-weight: 500;
-    margin-left: auto;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 4px 16px -4px rgba(77, 208, 255, 0.35);
-  }
-  .msg.tag-time {
-    font-size: 11px; color: var(--ink-mute);
-    text-align: center; max-width: 100%; padding: 4px;
-    background: none;
-  }
-  .chat-typing {
-    display: inline-flex; gap: 4px; padding: 12px 16px;
-    background: rgba(255,255,255,0.05); border: 1px solid var(--line);
-    border-radius: 16px; border-bottom-left-radius: 4px;
-  }
-  .chat-typing span {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--ink-mute);
-    animation: typing 1.4s infinite;
-  }
-  .chat-typing span:nth-child(2) { animation-delay: .2s; }
-  .chat-typing span:nth-child(3) { animation-delay: .4s; }
-  @keyframes typing {
-    0%, 60%, 100% { transform: translateY(0); opacity: .4; }
-    30% { transform: translateY(-6px); opacity: 1; }
-  }
-
-  .dash-mock {
-    background: rgba(5, 8, 23, 0.5);
-    border-radius: 18px;
-    padding: 24px;
-    border: 1px solid var(--line);
-  }
-  .dash-title {
-    font-size: 13px; color: var(--ink-mute);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 14px; font-weight: 600;
-  }
-  .dash-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .dash-row:last-child { border-bottom: none; }
-  .dash-row .label { font-size: 14px; color: var(--ink-soft); }
-  .dash-row .val {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    color: var(--ink);
-  }
-  .dash-row .val .up { color: var(--green); font-size: 12px; margin-left: 6px; }
-  .bar-wrap {
-    margin-top: 14px;
-    display: grid; grid-template-columns: repeat(7, 1fr);
-    gap: 4px; height: 60px; align-items: end;
-  }
-  .bar {
-    background: linear-gradient(180deg, var(--accent), rgba(77, 208, 255, 0.3));
-    border-radius: 4px 4px 0 0;
-    opacity: .9;
-    box-shadow: 0 0 8px rgba(77, 208, 255, 0.3);
-  }
-
-</style>
+  <link rel="icon" type="image/png" href="og-image.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-<!-- ================== NAV ================== -->
-<header class="nav" id="nav">
-  <div class="container nav-row">
-    <a href="#top" class="logo" aria-label="JesTech Solutions home">
-      <img src="/jestech-logo.png" alt="JesTech Solutions logo" />
-      <span class="logo-text">
-        <span class="main">JesTech</span>
-        <span class="sub">Solutions</span>
-      </span>
-    </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#services">Services</a>
-      <a href="/academy">Academy</a>
-      <a href="#process">How it works</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact">Contact</a>
+  <header class="site-header">
+    <div class="brand">NextGen Coders Lab<span class="dot">.</span></div>
+    <nav>
+      <a href="#what">What you'll build</a>
+      <a href="#stages">The 10 stages</a>
+      <a href="#access">Get access</a>
     </nav>
-    <div class="nav-actions">
-      <a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener" class="nav-cta desktop">Book a Free Call</a>
-      <button type="button" class="nav-cta nav-cta-primary desktop desktop-only" data-open-analysis>
-        Get a Free AI Analysis Now
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="arrow"><path d="M7 17L17 7M7 7h10v10"/></svg>
-      </button>
-    </div>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Toggle menu">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      Menu
-    </button>
-  </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#services">Services</a>
-    <a href="/academy">Academy</a>
-    <a href="#process">How it works</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-    <a href="#contact">Contact</a>
-    <a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener" class="nav-cta">Book a Free Call</a>
-    <button type="button" class="nav-cta nav-cta-primary" data-open-analysis style="border:none; cursor:pointer; font-family: inherit;">Get a Free AI Analysis Now</button>
-  </div>
-</header>
+  </header>
 
-<!-- ================== HERO ================== -->
-<section class="hero" id="top">
-  <div class="container">
-    <span class="hero-eyebrow"><span class="pulse"></span> Now booking May–June 2026 setups</span>
-    <h1 class="reveal">
-      Automation that <span class="accent">pays for itself</span>—<br/>
-      streamline operations, <span class="accent">reclaim your time</span>.
-    </h1>
-    <p class="hero-sub reveal">
-      Affordable, simple systems that capture every lead, answer customers 24/7, and
-      take admin off your plate—so you can stop chasing missed calls and start growing.
+  <section class="hero">
+    <h1>Build your own space game in 10 stages 🚀</h1>
+    <p class="lead">
+      Galaxy Defender is a Python coding course for ages 7–16.
+      Stack 10 simple stages and launch a real game you can share with your friends — all in your web browser, nothing to install.
     </p>
-    <div class="hero-ctas reveal">
-      <a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener" class="btn btn-coral">
-        Book a free demo
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="arrow"><path d="M7 17L17 7M7 7h10v10"/></svg>
-      </a>
-      <a href="#services" class="btn btn-ghost">See what we automate</a>
-    </div>
+    <a href="#demo" class="cta">🎮 Watch your future game</a>
+    <a href="lessons/00-big-picture.html" class="cta secondary">🎁 Try Lessons 0 + 1 free</a>
+    <a href="#access" class="cta secondary">Get full access</a>
+    <a href="unlock.html" class="cta secondary">🔑 Enter password</a>
+  </section>
 
-    <div class="hero-stats reveal">
-      <div>
-        <div class="stat-num">24/7</div>
-        <div class="stat-lbl">Always-on customer capture<br/>across WhatsApp, DMs &amp; web</div>
-      </div>
-      <div>
-        <div class="stat-num">~5<span class="small">min</span></div>
-        <div class="stat-lbl">Average first-response time<br/>vs. 12hrs without automation</div>
-      </div>
-      <div>
-        <div class="stat-num">3<span class="small">x</span></div>
-        <div class="stat-lbl">More bookings retained from<br/>after-hours enquiries</div>
-      </div>
-      <div>
-        <div class="stat-num">£0</div>
-        <div class="stat-lbl">Strict monthly contracts—pay monthly<br/>setup, cancel anytime after</div>
-      </div>
-    </div>
+  <!-- ── For Parents / Teachers block ────────────────── -->
+  <div class="wrap narrow" id="parents">
+    <div class="card">
+      <h2 class="center" style="margin-top:0;">For parents &amp; teachers 👋</h2>
+      <p>
+        Galaxy Defender is a self-paced Python course designed for kids
+        <strong>ages 7–16</strong>. No prior coding experience required —
+        every concept is taught inside the game your child wants to build.
+      </p>
+      <p class="small" style="background:#eef6ff;padding:10px 14px;border-radius:8px;border-left:4px solid var(--space-2);">
+        💡 <strong>About ages 7–9:</strong> the youngest readers will get the most out
+        of the course when an adult sits with them for the first 2–3 lessons (to read
+        the explanations aloud and help with typing). From Lesson 3 onwards most
+        confident readers can self-pace with light check-ins.
+      </p>
 
-    <!-- Hero visual: chat + dashboard -->
-    <div class="hero-visual reveal">
-      <div class="chat-mock">
-        <div class="chat-header">
-          <div class="av">JT</div>
-          <div>
-            JesTech Assistant
-            <div style="font-size:11px; color: var(--green); font-weight: 500;">● Online · Replies in seconds</div>
-          </div>
-        </div>
-        <div class="msg tag-time">Sunday · 11:43 PM</div>
-        <div class="msg them">Hi, do you have any slots tomorrow morning?</div>
-        <div class="msg us">Hey! Yes — we've got 9:00, 10:30 and 11:45 available. Want me to lock one in?</div>
-        <div class="msg them">10:30 please 🙏</div>
-        <div class="msg us">Booked ✅ Confirmation sent to your phone. See you tomorrow!</div>
-        <div class="chat-typing" aria-hidden="true"><span></span><span></span><span></span></div>
-      </div>
-      <div class="dash-mock">
-        <div class="dash-title">This week so far</div>
-        <div class="dash-row"><span class="label">New leads captured</span><span class="val">47<span class="up">↑ 28%</span></span></div>
-        <div class="dash-row"><span class="label">Bookings confirmed</span><span class="val">31<span class="up">↑ 19%</span></span></div>
-        <div class="dash-row"><span class="label">Avg. response time</span><span class="val">4m 12s</span></div>
-        <div class="dash-row"><span class="label">Admin hours saved</span><span class="val">11.5<span class="up">↑</span></span></div>
-        <div class="bar-wrap" aria-hidden="true">
-          <div class="bar" style="height: 40%;"></div>
-          <div class="bar" style="height: 65%;"></div>
-          <div class="bar" style="height: 55%;"></div>
-          <div class="bar" style="height: 80%;"></div>
-          <div class="bar" style="height: 72%;"></div>
-          <div class="bar" style="height: 90%;"></div>
-          <div class="bar" style="height: 100%; background: var(--coral);"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+      <h3 style="margin-top:18px;">Who this course is perfect for</h3>
+      <ul>
+        <li><strong>Parents</strong> who want a screen-time activity they're proud of — something to <em>do with</em> your kid on a Saturday morning instead of watching them scroll.</li>
+        <li><strong>Homeschool families</strong> looking for a complete, structured computing project for 6–8 weeks of the term.</li>
+        <li><strong>Classroom teachers</strong> running an after-school coding club or a weekly tech lesson — fully self-contained, printable handouts included.</li>
+        <li><strong>Nannies &amp; au pairs</strong> who want an enriching activity that holds attention without screens going passive.</li>
+        <li><strong>Holiday clubs &amp; summer camps</strong> — works as a 5-day intensive or spread across the holiday.</li>
+        <li><strong>Solo kids</strong> with a laptop and curiosity. Many 10–14-year-olds binge the whole course in a couple of weekends.</li>
+      </ul>
 
-<!-- ================== PROBLEM ================== -->
-<section class="problem" id="problem">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">The problem</span>
-        <h2 class="section-title">Running a busy business shouldn't mean running yourself into the ground.</h2>
-      </div>
-      <p class="section-sub">
-        Most small businesses lose revenue not because demand is low — but because the same
-        bottlenecks repeat every single day. We've heard them all.
+      <h3 style="margin-top:18px;">Practical details</h3>
+      <ul>
+        <li><strong>Time commitment:</strong> 1–2 hours per week, 11 lessons total. Whole course completable in 6–8 weeks; binge-able in a few weekends.</li>
+        <li><strong>No installs:</strong> everything runs in the browser via Trinket. Works on any laptop (Windows, Mac, Chromebook, Linux).</li>
+        <li><strong>Printable:</strong> every lesson + Code Library prints cleanly so teachers can hand them out (use the Teacher Guide below).</li>
+        <li><strong>Safe environment:</strong> no chat, no in-game purchases, no accounts collecting your child's data. Just a coding editor and a password gate.</li>
+        <li><strong>Real skills:</strong> variables, loops, lists, functions, game loops, debugging — the same building blocks behind every 2D game and most web/mobile apps.</li>
+        <li><strong>Stuck?</strong> Email me directly at <a href="mailto:nextgencoders@jestechsolutions.co.uk"><strong>nextgencoders@jestechsolutions.co.uk</strong></a> — I reply within 24 hours.</li>
+      </ul>
+
+      <p style="margin-top:18px;text-align:center;">
+        <a class="dl-btn" href="22_Teacher_And_Parent_Guide.pdf" target="_blank">📖 Download the Teacher &amp; Homeschool Parent's Guide</a>
       </p>
     </div>
-
-    <div class="problem-grid">
-      <div class="pain reveal">
-        <div class="pain-num">01 · Missed</div>
-        <h3>Calls during the rush.</h3>
-        <p>Every unanswered call is a paying customer choosing a competitor before you've even seen the missed-call notification.</p>
-      </div>
-      <div class="pain reveal">
-        <div class="pain-num">02 · Repeated</div>
-        <h3>The same answers, daily.</h3>
-        <p>"What are your hours?" "Do you do X?" Your team types the same reply 30 times a day instead of doing real work.</p>
-      </div>
-      <div class="pain reveal">
-        <div class="pain-num">03 · Lost</div>
-        <h3>Bookings after hours.</h3>
-        <p>Enquiries roll in at 11pm. By morning, they've gone cold or booked elsewhere. After-hours is when most decisions get made.</p>
-      </div>
-      <div class="pain reveal">
-        <div class="pain-num">04 · Buried</div>
-        <h3>Drowning in admin.</h3>
-        <p>Follow-ups, reminders, reviews, invoices, posting on socials — by the time it's done, the day is gone.</p>
-      </div>
-    </div>
   </div>
-</section>
 
-<!-- ================== SERVICES ================== -->
-<section id="services">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">What we offer · The complete map</span>
-        <h2 class="section-title">Give your business an unfair AI advantage—without the complexity.</h2>
-      </div>
-      <p class="section-sub">
-        From AI chat to inbound calls, video consultations to internal ops — every part of the
-        customer journey, automated. Mix and match: start with one, layer in more as you scale.
+  <!-- ── Playable demo: "this is what your kid will build" ── -->
+  <div class="wrap" id="demo">
+    <div class="card" style="border-left:6px solid #f7d24a;">
+      <h2 class="center" style="margin-top:0;">🎮 This is what your kid will build</h2>
+      <p class="center">
+        Press SPACE inside the game window, then use the <strong>arrow keys</strong>
+        to fly your cyan starship and <strong>SPACE</strong> to shoot. Survive long
+        enough to score 30 hits and you win. Every part of this game is built
+        across the 10 stages of the course.
+      </p>
+      <p class="center small" style="background:#fff7d6;padding:10px 14px;border-radius:8px;display:inline-block;width:auto;">
+        💻 <strong>Best on a laptop or desktop.</strong> The in-browser coding editor uses your keyboard, so phones and tablets aren't recommended.
+      </p>
+
+      <!-- ── 30-sec gameplay clip (autoplays muted on page load) ── -->
+      <video
+        src="assets/videos/game_play.mp4?v=2"
+        poster="og-image.png"
+        controls
+        autoplay
+        muted
+        loop
+        playsinline
+        style="width:100%;border-radius:10px;background:#0e1a2e;display:block;margin-bottom:14px;">
+        Sorry, your browser can't play this video. Try the live demo below instead 👇
+      </video>
+
+      <p class="center small" style="margin:-6px 0 16px;">
+        🎬 <strong>Watch the clip</strong>, then <strong>play it live below</strong> — same game, in your browser.
+      </p>
+
+      <iframe src="https://trinket.io/embed/pygame/8bcbfcb4a31d" width="100%" height="500" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen style="border-radius:8px;"></iframe>
+
+      <p class="center small" style="margin-top:14px;">
+        Like what you see? <a href="lessons/00-big-picture.html"><strong>Start Lessons 0 + 1 free</strong></a>,
+        or <a href="#access">grab full access</a>.
       </p>
     </div>
+  </div>
 
-    <div class="services-grid">
-      <article class="svc svc-c-gold reveal">
-        <span class="svc-num">01</span>
-        <div class="svc-icon" aria-hidden="true">💬</div>
-        <h3>Customer Service Automation</h3>
-        <p>AI chat agents on your website and social platforms that handle FAQs, capture leads, and log everything into your CRM automatically.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Website + social AI chat</span>
-          <span class="svc-tag">FAQ handling</span>
-          <span class="svc-tag">Email confirmations</span>
-          <span class="svc-tag">CRM logging</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-coral reveal">
-        <span class="svc-num">02</span>
-        <div class="svc-icon" aria-hidden="true">📅</div>
-        <h3>Booking &amp; Appointment Automation</h3>
-        <p>Customers book themselves in through chat. Connected to Google Calendar, Calendly, or whatever you use. Reminders, reschedules, cancellations — all handled.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Direct chat booking</span>
-          <span class="svc-tag">Calendar sync</span>
-          <span class="svc-tag">Auto reminders</span>
-          <span class="svc-tag">Reschedule + cancel</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-green reveal">
-        <span class="svc-num">03</span>
-        <div class="svc-icon" aria-hidden="true">🌱</div>
-        <h3>Lead Nurturing &amp; Follow-Up</h3>
-        <p>Sequences that follow up with leads who didn't convert, score them by interest, and alert you the moment someone's ready to buy.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Email + WhatsApp sequences</span>
-          <span class="svc-tag">Lead scoring</span>
-          <span class="svc-tag">Cold-lead re-engagement</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-blue reveal">
-        <span class="svc-num">04</span>
-        <div class="svc-icon" aria-hidden="true">📞</div>
-        <h3>Inbound Call Handling</h3>
-        <p>AI answers the phone when you can't — understands what the caller wants, captures their details, and sends you an instant summary plus a scheduled callback.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">24/7 AI receptionist</span>
-          <span class="svc-tag">Intent detection</span>
-          <span class="svc-tag">Instant summaries</span>
-          <span class="svc-tag">Auto callbacks</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-plum reveal">
-        <span class="svc-num">05</span>
-        <div class="svc-icon" aria-hidden="true">📲</div>
-        <h3>Outbound Voice Calls</h3>
-        <p>AI calls leads at scheduled times to follow up, confirm appointments, or run qualification before a human takes over. Works 24/7, never forgets.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Scheduled follow-ups</span>
-          <span class="svc-tag">Appointment confirms</span>
-          <span class="svc-tag">Lead qualification</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-coral reveal">
-        <span class="svc-num">06</span>
-        <div class="svc-icon" aria-hidden="true">📱</div>
-        <h3>Social Media Automation</h3>
-        <p>Auto-responds to DMs and comments on Instagram, Facebook, and TikTok. Captures leads and routes conversations to the right person or flow.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Instagram + FB + TikTok DMs</span>
-          <span class="svc-tag">Comment capture</span>
-          <span class="svc-tag">Smart routing</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-gold reveal">
-        <span class="svc-num">07</span>
-        <div class="svc-icon" aria-hidden="true">⚙️</div>
-        <h3>Internal Business Automation</h3>
-        <p>Connects the tools you already use to automate invoicing reminders, staff notifications, reports, and a daily owner summary delivered to your inbox.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Gmail + Sheets + Notion + Slack</span>
-          <span class="svc-tag">Daily summaries</span>
-          <span class="svc-tag">Report generation</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-green reveal">
-        <span class="svc-num">08</span>
-        <div class="svc-icon" aria-hidden="true">🛒</div>
-        <h3>E-commerce Customer Service</h3>
-        <p>Handles order enquiries, returns, and refund requests on autopilot. Recommends products. Recovers abandoned carts with timely follow-ups.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Order status</span>
-          <span class="svc-tag">Returns + refunds</span>
-          <span class="svc-tag">Product recommendations</span>
-          <span class="svc-tag">Abandoned cart</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-blue reveal">
-        <span class="svc-num">09</span>
-        <div class="svc-icon" aria-hidden="true">⭐</div>
-        <h3>Reputation &amp; Review Automation</h3>
-        <p>After each completed service, automatically asks for a Google or Trustpilot review, follows up if they don't respond, and flags negative reviews to you instantly.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Google + Trustpilot</span>
-          <span class="svc-tag">Follow-up nudges</span>
-          <span class="svc-tag">Negative-review alerts</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-plum featured reveal">
-        <span class="svc-num">10</span>
-        <div class="svc-icon" aria-hidden="true">🎥</div>
-        <h3>AI Video Consultations</h3>
-        <p>An AI video avatar runs initial consultations, qualifies clients before they reach a human, and handles routine appointments end-to-end — so your team only takes high-value calls.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">AI video avatar</span>
-          <span class="svc-tag">Client qualification</span>
-          <span class="svc-tag">Routine bookings</span>
-        </div>
-      </article>
-
-      <article class="svc svc-c-gold reveal">
-        <span class="svc-num">11</span>
-        <div class="svc-icon" aria-hidden="true">🎓</div>
-        <h3>AI Training &amp; Consultations</h3>
-        <p>For entrepreneurs and teams who want to run their own AI systems. Hands-on training across customer service, lead capture, booking workflows, and integrations.</p>
-        <div class="svc-tags">
-          <span class="svc-tag">Hands-on training</span>
-          <span class="svc-tag">CRM + Workspace setup</span>
-          <span class="svc-tag">Templates + workflows</span>
-        </div>
-      </article>
-    </div>
-
-    <div style="text-align: center; margin-top: 56px;" class="reveal">
-      <a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener" class="btn btn-coral">
-        Get a custom quote
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="arrow"><path d="M7 17L17 7M7 7h10v10"/></svg>
-      </a>
+  <div class="wrap" id="what">
+    <div class="card">
+      <h2 class="center" style="margin-top:0;">Every Python game is a rocket</h2>
+      <p class="center small">Once you know the 4 parts, you can build any game.</p>
+      <img src="assets/infographics/1_Big_Picture.png" alt="Build-a-Game Rocket: every Python game has 4 big parts — Import, Setup, Body, End." class="infographic" />
+      <p class="caption">From <em>The Big Picture</em> handout</p>
     </div>
   </div>
-</section>
 
-<!-- ================== PROCESS ================== -->
-<section class="process" id="process">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">How it works</span>
-        <h2 class="section-title">Three simple steps from "drowning" to "running itself."</h2>
+  <div class="wrap" id="stages">
+    <div class="card">
+      <h2 class="center" style="margin-top:0;">10 planets, 1 mission</h2>
+      <p class="center small">A galaxy map of every part of the code you'll write.</p>
+      <img src="assets/infographics/2_Galaxy_Map.png" alt="Galaxy Map of Code: 10 planets — Imports, Setup, Colours, Player, Bullets, Enemies, Score, Game States, Helpers, Game Loop." class="infographic" />
+    </div>
+  </div>
+
+  <div class="wrap narrow" id="access">
+    <div class="card center">
+      <h2 style="margin-top:0;">Get your access password</h2>
+      <p>
+        Buy once, get lifetime access to all <strong>11 lessons</strong>, every Code Library PDF,
+        the printable certificate, the Teacher &amp; Parent Guide, and every future update.
+      </p>
+      <p>
+        After checkout you'll get your <strong>access password by email</strong> — paste it on the
+        next screen and you're in. No accounts, no subscriptions, no logging back in.
+      </p>
+      <p class="small" style="background:#fff7d6;padding:10px 14px;border-radius:8px;display:inline-block;width:auto;">
+        💸 <strong>30-day money-back guarantee.</strong> If your child isn't building a real game by Lesson 5, email us for a full refund — no questions asked.
+      </p>
+      <!-- 🔧 REPLACE THIS href WITH YOUR REAL GUMROAD PRODUCT URL ONCE LIVE 🔧 -->
+      <a href="https://gumroad.com" target="_blank" rel="noopener" class="cta">🚀 Get full access</a>
+      <a href="unlock.html" class="cta secondary">🔑 I already have a password</a>
+    </div>
+
+    <div class="card">
+      <h2 class="center" style="margin-top:0;">Everything inside the course</h2>
+      <p class="center small" style="margin-bottom:18px;">More than just a tutorial — a complete, polished, kid-friendly game-dev bootcamp.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:14px;margin-top:8px;">
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--space-2);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">🎓</p>
+          <h4 style="margin:6px 0;">11 self-paced lessons</h4>
+          <p class="small">10 stages of Galaxy Defender + a CAPSTONE where your kid designs their OWN original game.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--green);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">🎮</p>
+          <h4 style="margin:6px 0;">In-browser Python editor</h4>
+          <p class="small">Every lesson embeds a live Trinket editor. Zero setup, runs on any laptop or Chromebook.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--yellow);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">📚</p>
+          <h4 style="margin:6px 0;">70+ remix mini-games</h4>
+          <p class="small">10 Code Library PDFs — 5–6 bonus mini-games per stage. Hundreds of "what happens if I change this?" challenges.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--red);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">🖼️</p>
+          <h4 style="margin:6px 0;">8 printable infographics</h4>
+          <p class="small">Big Picture, Galaxy Map, Rocket Ladder, Code Comic, Pixel Cheat Sheet, Code Superheroes, Code Recipe, and the 6 Parts breakdown.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--purple);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">👾</p>
+          <h4 style="margin:6px 0;">Cartoon sprites &amp; sound</h4>
+          <p class="small">Galaxy Defender ships with cartoon spaceships, fiery lasers, three alien types, a starfield background, and arcade sound effects.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--orange);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">🏆</p>
+          <h4 style="margin:6px 0;">A capstone they'll brag about</h4>
+          <p class="small">Game Design Document + Capstone Starter Pack + 7-day build plan. Your kid ships an ORIGINAL game and screen-records it.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--space-2);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">📊</p>
+          <h4 style="margin:6px 0;">Progress tracking</h4>
+          <p class="small">A live roadmap with green ✓ ticks shows exactly where they are. Resume across browser sessions.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--green);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">🎁</p>
+          <h4 style="margin:6px 0;">Lessons 0 + 1 free</h4>
+          <p class="small">Try the first two lessons before you buy. If it's not the right fit, no money changes hands.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--yellow);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">🚀</p>
+          <h4 style="margin:6px 0;">Real coding skills for life</h4>
+          <p class="small">Variables, lists, loops, conditions, functions, collision detection, game states, the game loop — every skill behind every 2D game ever.</p>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:18px;border-top:5px solid var(--red);box-shadow:var(--shadow);">
+          <p style="font-size:1.8rem;margin:0;">📜</p>
+          <h4 style="margin:6px 0;">Personalised completion certificate</h4>
+          <p class="small">Finish the capstone and unlock a printable "Galaxy Defender Pilot" certificate with your child's name on it. Frame-worthy. Parent-shareable.</p>
+        </div>
       </div>
-      <p class="section-sub">
-        No 90-day discovery phase. No 200-page audits. We listen, build, then hand you a
-        system that already works on day one.
+
+      <p class="center" style="margin-top:24px;font-size:1.1rem;">
+        <strong>Total:</strong> 11 lessons · 13 PDF handouts · 70+ mini-games · 8 infographics · 1 finished arcade game · 1 capstone they design themselves.
+      </p>
+      <p class="center small">
+        🤖 Bonus: every lesson teaches kids how to ask an AI for new code ideas and remix them — the skill no school is teaching yet.
       </p>
     </div>
-
-    <div class="process-steps">
-      <div class="step reveal">
-        <div class="step-num">Step 01</div>
-        <h3>Understand your business</h3>
-        <p>A friendly call to learn how you currently handle leads, bookings, and customer questions — and where you're bleeding time or money.</p>
-        <div class="step-mini">
-          <span>Discovery call</span>
-          <span>Pain-point mapping</span>
-          <span>Free</span>
-        </div>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">Step 02</div>
-        <h3>Build &amp; set up your system</h3>
-        <p>We design, connect, and customise everything around your tools and tone of voice. You don't lift a finger — you just review and approve.</p>
-        <div class="step-mini">
-          <span>Custom design</span>
-          <span>Integrations</span>
-          <span>Training included</span>
-        </div>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">Step 03</div>
-        <h3>Save time. Win more bookings.</h3>
-        <p>Watch your response times drop, missed leads disappear, and admin hours melt away. We keep optimising so results keep climbing.</p>
-        <div class="step-mini">
-          <span>Faster replies</span>
-          <span>More bookings</span>
-          <span>Less admin</span>
-        </div>
-      </div>
-    </div>
   </div>
-</section>
 
-<!-- ================== PRICING ================== -->
-<section id="pricing">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">Pricing</span>
-        <h2 class="section-title">Two flexible ways to work with us. No strict contracts. Ever.</h2>
-      </div>
-      <p class="section-sub">
-        Final pricing is always custom-quoted based on what your business actually needs. These
-        are the two structures most clients pick from.
-      </p>
-    </div>
+  <footer class="site-footer">
+    NextGen Coders Lab · Galaxy Defender course · © 2026<br/>
+    Questions? <a href="mailto:nextgencoders@jestechsolutions.co.uk" style="color:#f7d24a;"><strong>nextgencoders@jestechsolutions.co.uk</strong></a> · we reply within 24 hours
+  </footer>
 
-    <div class="pricing-grid">
-      <div class="plan reveal">
-        <span class="plan-tag">Most flexible</span>
-        <h3>Setup + Monthly</h3>
-        <p class="plan-desc">Low one-time setup, then a simple monthly plan that keeps everything running, monitored, and improving.</p>
-        <ul class="plan-features">
-          <li><span class="check">✓</span> Low upfront cost — easier to start</li>
-          <li><span class="check">✓</span> Ongoing support &amp; monitoring</li>
-          <li><span class="check">✓</span> Monthly optimisation included</li>
-          <li><span class="check">✓</span> Cancel anytime, no lock-in</li>
-        </ul>
-        <a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener" class="btn btn-light">Get a custom quote</a>
-      </div>
-
-      <div class="plan featured reveal">
-        <span class="plan-tag">Best value</span>
-        <h3>One-time + Training</h3>
-        <p class="plan-desc">Pay once, own it forever. We build the system and train your staff to run it independently going forward.</p>
-        <ul class="plan-features">
-          <li><span class="check">✓</span> Single one-time payment</li>
-          <li><span class="check">✓</span> Full staff training included</li>
-          <li><span class="check">✓</span> All assets &amp; access handed over</li>
-          <li><span class="check">✓</span> Optional support retainer available</li>
-        </ul>
-        <a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener" class="btn btn-coral">Get a custom quote</a>
-      </div>
-    </div>
-
-    <div class="pricing-note reveal">
-      <div style="font-size: 22px;">💬</div>
-      <div>
-        <strong>Not sure which fits?</strong> Tell us about your business on a free 15-min call and we'll
-        recommend the simplest, most affordable path — even if it isn't with us.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================== TESTIMONIALS ================== -->
-<section class="testi">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">Real results</span>
-        <h2 class="section-title">Owners who got their evenings back.</h2>
-      </div>
-      <p class="section-sub" style="color: rgba(245,241,234,.7);">
-        Small businesses across hospitality, beauty, fitness, and trades — using systems built by JesTech.
-      </p>
-    </div>
-
-    <div class="testi-grid">
-      <div class="quote reveal">
-        <div class="stars">★★★★★</div>
-        <p>"Before JesTech I was missing 5+ enquiries a night. Now I wake up to confirmed bookings already on my calendar. It's wild."</p>
-        <div class="quote-by">
-          <div class="avatar">AO</div>
-          <div>
-            <div class="quote-name">Amara O.</div>
-            <div class="quote-role">Owner · Salon, Manchester</div>
-          </div>
-        </div>
-      </div>
-      <div class="quote reveal">
-        <div class="stars">★★★★★</div>
-        <p>"Simple, affordable, no jargon. They built our WhatsApp + booking flow in a week and we've not looked back."</p>
-        <div class="quote-by">
-          <div class="avatar">RK</div>
-          <div>
-            <div class="quote-name">Ravi K.</div>
-            <div class="quote-role">Director · Plumbing &amp; Heating, London</div>
-          </div>
-        </div>
-      </div>
-      <div class="quote reveal">
-        <div class="stars">★★★★★</div>
-        <p>"My admin time dropped from 2 hours a day to about 20 minutes. That alone paid for the setup in the first month."</p>
-        <div class="quote-by">
-          <div class="avatar">LM</div>
-          <div>
-            <div class="quote-name">Lisa M.</div>
-            <div class="quote-role">Founder · Boutique Studio, Birmingham</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================== FAQ ================== -->
-<section id="faq">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">FAQ</span>
-        <h2 class="section-title">Quick answers to the questions we hear most.</h2>
-      </div>
-      <p class="section-sub">
-        Still wondering? Drop us a WhatsApp — we usually reply within minutes
-        (yes, automated, with a human just behind it).
-      </p>
-    </div>
-
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-q">How long does setup actually take? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-inner">
-          Most setups go live within 5–10 working days. We've shipped urgent builds in 48 hours when the project is well-scoped. You'll get a clear timeline on your free discovery call.
-        </div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Do I need to be technical or already have tools? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-inner">
-          No. We work with what you already have — WhatsApp, Instagram, your email, Calendly, a spreadsheet — and only suggest new tools if they're free or low-cost. Zero technical setup required from you.
-        </div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">What if I just want one part — like the WhatsApp bot? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-inner">
-          Totally fine. Most clients start with one service (usually 24/7 capture or booking automation) and layer in more once they see results. No bundle pressure.
-        </div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Is this just a chatbot? Will it feel robotic? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-inner">
-          Our flows are written in your tone of voice and handle off-script messages gracefully. When the AI doesn't know something, it routes the chat to you (or notes it for review) instead of guessing.
-        </div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">How is this different from agencies charging £5k+ per month? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-inner">
-          We're built specifically for small and growing businesses — affordable, simple, and focused. No bloated retainers, no jargon, no agency overhead. You pay for outcomes, not slide decks.
-        </div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">What happens if I want to cancel? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-inner">
-          You can cancel any time. Monthly plans stop at the end of the cycle. If you're on a one-time + training plan, the system is yours to keep — no hostage situation.
-        </div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================== FINAL CTA ================== -->
-<section class="final-cta" id="contact">
-  <div class="container">
-    <div class="cta-card reveal">
-      <div class="cta-inner">
-        <h2>Ready to stop chasing leads and start catching them?</h2>
-        <p class="lead">Book a free 15-minute call. We'll map your biggest leak and show you exactly what we'd automate first — no obligation, no slide deck, just a clear plan.</p>
-        <div class="cta-ctas">
-          <a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener" class="btn btn-primary">
-            Book a free call
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="arrow"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </a>
-          <a href="https://wa.me/447304372973" target="_blank" rel="noopener" class="btn btn-ghost">
-            WhatsApp us instead
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================== FOOTER ================== -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="foot-brand">
-        <a href="#top" class="logo" aria-label="JesTech Solutions home">
-          <img src="/jestech-logo.png" alt="JesTech Solutions logo" />
-          <span class="logo-text">
-            <span class="main">JesTech</span>
-            <span class="sub">Solutions</span>
-          </span>
-        </a>
-        <p>Affordable, simple automation built for <strong>growing</strong> businesses.</p>
-        <div class="socials">
-          <a href="https://instagram.com/jestechsolutions" target="_blank" rel="noopener" class="social" aria-label="Instagram">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
-          <a href="https://wa.me/447304372973" target="_blank" rel="noopener" class="social" aria-label="WhatsApp">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          </a>
-          <a href="mailto:info@jestechsolutions.co.uk" class="social" aria-label="Email">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="foot-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="#services">Services</a></li>
-          <li><a href="/academy">Academy</a></li>
-          <li><a href="#process">How it works</a></li>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#faq">FAQ</a></li>
-        </ul>
-      </div>
-      <div class="foot-col">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="https://wa.me/447304372973" target="_blank" rel="noopener">WhatsApp +44 7304 372973</a></li>
-          <li><a href="mailto:info@jestechsolutions.co.uk">info@jestechsolutions.co.uk</a></li>
-          <li><a href="https://instagram.com/jestechsolutions" target="_blank" rel="noopener">@jestechsolutions</a></li>
-          <li><a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener">Book a free call</a></li>
-        </ul>
-      </div>
-      <div class="foot-col">
-        <h4>Get started</h4>
-        <ul>
-          <li><a href="https://calendly.com/jestechsolutions" target="_blank" rel="noopener">Free discovery call</a></li>
-          <li><a href="analysis.html">Free AI Analysis</a></li>
-          <li><a href="#pricing">Pricing options</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <div>&copy; <span id="year">2026</span> JesTech Solutions Ltd. All rights reserved.</div>
-      <div><a href="#top">Back to top &uarr;</a></div>
-    </div>
-  </div>
-</footer>
-
-<div class="modal-backdrop" id="analysisModal" role="dialog" aria-modal="true">
-  <div class="modal">
-    <button class="modal-close" type="button" data-close-analysis aria-label="Close">&times;</button>
-    <span class="modal-eyebrow">Free &middot; 30 seconds</span>
-    <h2>Get your AI Business Analysis</h2>
-    <p>Drop in your website and we'll generate a tailored report on the biggest AI opportunities for your business &mdash; savings, quick wins, and a step-by-step roadmap.</p>
-    <form class="modal-form" id="analysisForm" novalidate>
-      <div class="url-field">
-        <span class="protocol">https://</span>
-        <input id="analysisUrl" type="text" inputmode="url" autocomplete="off" placeholder="yourwebsite.com" required />
-        <button type="submit">Analyse with AI
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </button>
-      </div>
-      <div class="modal-error" id="analysisError">Please enter a valid website (e.g. example.com)</div>
-    </form>
-    <div class="modal-foot">
-      <span class="checkmark">&check;</span>
-      <span>No signup. No credit card. Report ready in under a minute.</span>
-    </div>
-  </div>
-</div>
-
-<a href="https://wa.me/447304372973" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
-
-<script>
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>8)});
-const menuBtn=document.getElementById('menuBtn');
-const mobileMenu=document.getElementById('mobileMenu');
-menuBtn.addEventListener('click',()=>{const o=mobileMenu.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o)});
-mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobileMenu.classList.remove('open');menuBtn.setAttribute('aria-expanded','false')}));
-document.querySelectorAll('.faq-item').forEach(item=>{
-  const q=item.querySelector('.faq-q');
-  q.addEventListener('click',()=>{
-    const wasOpen=item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
-    if(!wasOpen)item.classList.add('open');
-  });
-});
-const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-document.getElementById('year').textContent=new Date().getFullYear();
-const modal=document.getElementById('analysisModal');
-const openButtons=document.querySelectorAll('[data-open-analysis]');
-const closeButtons=document.querySelectorAll('[data-close-analysis]');
-function openModal(){modal.classList.add('open');document.body.style.overflow='hidden';setTimeout(()=>document.getElementById('analysisUrl').focus(),150)}
-function closeModal(){modal.classList.remove('open');document.body.style.overflow=''}
-openButtons.forEach(b=>b.addEventListener('click',openModal));
-closeButtons.forEach(b=>b.addEventListener('click',closeModal));
-modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal()});
-document.getElementById('analysisForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const input=document.getElementById('analysisUrl');
-  const err=document.getElementById('analysisError');
-  let raw=input.value.trim();
-  if(!raw){err.classList.add('show');return}
-  raw=raw.replace(/^https?:\/\//i,'').replace(/\/.*$/,'').trim();
-  if(!/^[a-z0-9][a-z0-9-]*(\.[a-z0-9-]+)+$/i.test(raw)){err.classList.add('show');return}
-  err.classList.remove('show');
-  window.location.href='analysis.html?url='+encodeURIComponent(raw);
-});
-</script>
 </body>
 </html>
