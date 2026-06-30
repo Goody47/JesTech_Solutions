@@ -1990,4 +1990,19 @@ function openModal(){modal.classList.add('open');document.body.style.overflow='h
 function closeModal(){modal.classList.remove('open');document.body.style.overflow=''}
 openButtons.forEach(b=>b.addEventListener('click',openModal));
 closeButtons.forEach(b=>b.addEventListener('click',closeModal));
-modal.addEventListener('click',e=>{if(e.ta
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal()});
+document.getElementById('analysisForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const input=document.getElementById('analysisUrl');
+  const err=document.getElementById('analysisError');
+  let raw=input.value.trim();
+  if(!raw){err.classList.add('show');return}
+  raw=raw.replace(/^https?:\/\//i,'').replace(/\/.*$/,'').trim();
+  if(!/^[a-z0-9][a-z0-9-]*(\.[a-z0-9-]+)+$/i.test(raw)){err.classList.add('show');return}
+  err.classList.remove('show');
+  window.location.href='analysis.html?url='+encodeURIComponent(raw);
+});
+</script>
+</body>
+</html>
