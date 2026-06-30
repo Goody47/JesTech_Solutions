@@ -1,3 +1,7 @@
+https://raw.githubusercontent.com/Goody47/JesTech_Solutions/main/index.html
+→ https://raw.githubusercontent.com/Goody47/JesTech_Solutions/main/index.html
+Content-Type: text/plain; charset=utf-8
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -997,6 +1001,17 @@
     font-size: 14px;
     color: var(--ink-mute);
   }
+  .foot-legal {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .foot-legal a {
+    color: var(--ink-soft);
+    transition: color .15s ease;
+  }
+  .foot-legal a:hover { color: var(--ink); }
   @media (max-width: 880px) {
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .foot-brand { grid-column: span 2; }
@@ -1889,7 +1904,8 @@
         <h4>Explore</h4>
         <ul>
           <li><a href="#services">Services</a></li>
-          <li><a href="/academy">Academy</a></li>
+          <li><a href="/academy">JesTech Academy</a></li>
+          <li><a href="/galaxydefenders">Galaxy Defenders</a></li>
           <li><a href="#process">How it works</a></li>
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -1915,6 +1931,12 @@
     </div>
     <div class="foot-bottom">
       <div>&copy; <span id="year">2026</span> JesTech Solutions Ltd. All rights reserved.</div>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/refund-policy.html">Refund</a>
+        <a href="/cookie-policy.html">Cookies</a>
+      </nav>
       <div><a href="#top">Back to top &uarr;</a></div>
     </div>
   </div>
