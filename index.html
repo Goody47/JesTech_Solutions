@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- v2 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -1983,6 +1982,7 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 });
 const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in')),1500);
 document.getElementById('year').textContent=new Date().getFullYear();
 const modal=document.getElementById('analysisModal');
 const openButtons=document.querySelectorAll('[data-open-analysis]');
