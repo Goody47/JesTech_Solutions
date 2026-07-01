@@ -10,7 +10,7 @@
      • Paste the hex value into PASSWORD_HASH below
 */
 
-const PASSWORD_HASH = "a3b35602cb9c68237f6f5401de2cc6bade3f44adb3e6df3fac69681ab24ce522";
+const PASSWORD_HASH = "4ddd604a6e5b5285c396a27a6f6325504274e56e82528291aacaff0beaf2deeb";
 const STORAGE_KEY   = "ngc_galaxy_unlock_v1";
 const TOKEN_VALUE   = "unlocked";
 
